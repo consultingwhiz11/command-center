@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ Command Center</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #1a1d27;
+    color: #e4e4e7;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    padding: 24px 16px;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  /* ── LOCK SCREEN ── */
+  #lock-screen {
+    position: fixed; inset: 0;
+    background: #1a1d27;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+    padding: 24px;
+  }
+  .lock-card {
+    background: #23263a;
+    border-radius: 20px;
+    padding: 40px 36px;
+    width: 100%; max-width: 380px;
+    text-align: center;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+    border: 1px solid #374151;
+  }
+  .lock-icon { font-size: 44px; margin-bottom: 16px; }
+  .lock-title { font-size: 22px; font-weight: 800; color: #e4e4e7; margin-bottom: 6px; }
+  .lock-sub { font-size: 13px; color: #6b7280; margin-bottom: 28px; }
+  .lock-input {
+    width: 100%;
+    background: #12141f;
+    border: 1px solid #374151;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 16px;
+    color: #e4e4e7;
+    outline: none;
+    margin-bottom: 14px;
+    letter-spacing: 2px;
+    transition: border-color 0.2s;
+  }
+  .lock-input:focus { border-color: #6366f1; }
+  .lock-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .lock-btn:hover { opacity: 0.9; }
+  .lock-error {
+    color: #f87171;
+    font-size: 12px;
+    margin-top: 10px;
+    min-height: 18px;
+  }
+  .lock-remember {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; margin-bottom: 14px;
+    font-size: 12px; color: #9ca3af; cursor: pointer;
+  }
+  .lock-remember input { cursor: pointer; accent-color: #6366f1; }
+
+  /* ── MAIN CONTENT (hidden until unlocked) ── */
+  #main-content { display: none; }
+
+  /* ── LOGOUT BUTTON ── */
+  .logout-btn {
+    position: fixed; bottom: 20px; right: 20px;
+    background: #23263a; border: 1px solid #374151;
+    color: #6b7280; border-radius: 8px;
+    padding: 8px 14px; font-size: 11px;
+    cursor: pointer; transition: all 0.2s;
+    z-index: 100;
+  }
+  .logout-btn:hover { color: #e4e4e7; border-color: #6366f1; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .header-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #c4b5fd; font-weight: 600; }
+  .header h1 { font-size: 28px; font-weight: 800; color: #fff; margin: 6px 0 4px; }
+  .header-sub { font-size: 14px; color: #c4b5fd; }
+
+  /* STATS ROW */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: #23263a; border-radius: 12px; padding: 20px; text-align: center; }
+  .stat-num { font-size: 36px; font-weight: 800; }
+  .stat-num.red { color: #f87171; }
+  .stat-num.green { color: #34d399; }
+  .stat-num.yellow { color: #fbbf24; }
+  .stat-label { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+  /* AI BANNER */
+  .ai-banner {
+    background: #23263a; border-left: 4px solid #6366f1;
+    border-radius: 0 12px 12px 0; padding: 18px 24px; margin-bottom: 20px;
+  }
+  .ai-banner .label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #6366f1; font-weight: 700; margin-bottom: 8px; }
+  .ai-banner p { font-size: 14px; line-height: 1.7; color: #c4b5fd; }
+
+  /* SECTION */
+  .section { margin-bottom: 20px; }
+  .section-title {
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #374151;
+  }
+  .section-title.red { color: #f87171; }
+  .section-title.green { color: #34d399; }
+  .section-title.yellow { color: #fbbf24; }
+  .section-title.indigo { color: #6366f1; }
+
+  /* CARDS */
+  .card { background: #23263a; border-radius: 10px; padding: 16px; margin-bottom: 10px; }
+  .card-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .card-title.red { color: #f87171; }
+  .card-title.yellow { color: #fbbf24; }
+  .card-title.green { color: #34d399; }
+  .card-meta { font-size: 11px; color: #9ca3af; margin-bottom: 4px; }
+  .card-action { font-size: 12px; color: #6b7280; }
+
+  /* GOAL CARDS */
+  .goal-card {
+    background: #23263a; border-radius: 10px; padding: 16px; margin-bottom: 10px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .goal-num {
+    background: #6366f1; color: #fff; width: 28px; height: 28px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; flex-shrink: 0; margin-top: 2px;
+  }
+  .goal-content .title { font-size: 13px; font-weight: 700; color: #e4e4e7; margin-bottom: 5px; }
+  .goal-content .desc { font-size: 12px; color: #9ca3af; line-height: 1.6; }
+
+  /* BADGE */
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 4px; margin-right: 6px; vertical-align: middle;
+  }
+  .badge.cw { background: #1e3a5f; color: #60a5fa; }
+  .badge.govcon { background: #1a3320; color: #34d399; }
+  .badge.viral { background: #2d1f5c; color: #a78bfa; }
+  .badge.critical { background: #7f1d1d; color: #f87171; }
+  .badge.new { background: #065f46; color: #34d399; }
+
+  /* GOV OPP */
+  .opp-row { background: #1e2133; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; }
+  .opp-row:nth-child(even) { background: #23263a; }
+  .opp-title { font-size: 13px; font-weight: 600; color: #e4e4e7; margin-bottom: 4px; }
+  .opp-meta { font-size: 11px; color: #6b7280; }
+
+  /* FOOTER */
+  .footer {
+    background: #12141f; border-radius: 12px; padding: 16px 24px;
+    margin-top: 24px; text-align: center; font-size: 11px; color: #4b5563;
+    line-height: 1.6; border: 1px solid #1f2335;
+  }
+
+  @media (max-width: 600px) {
+    .stats { grid-template-columns: repeat(3, 1fr); }
+    .stat-num { font-size: 26px; }
+    .header { padding: 20px; }
+    .lock-card { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     LOCK SCREEN — shown until correct password entered
+═══════════════════════════════════════════════════ -->
+<div id="lock-screen">
+  <div class="lock-card">
+    <div class="lock-icon">⚡</div>
+    <div class="lock-title">Command Center</div>
+    <div class="lock-sub">Mikel's Daily Business Briefing<br>Enter your password to continue</div>
+    <input type="password" id="pw-input" class="lock-input" placeholder="Password" autocomplete="current-password" />
+    <label class="lock-remember">
+      <input type="checkbox" id="remember-me" checked />
+      Keep me signed in on this device
+    </label>
+    <button class="lock-btn" onclick="unlock()">Unlock →</button>
+    <div class="lock-error" id="pw-error"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════════════════ -->
+<div id="main-content">
+  <button class="logout-btn" onclick="logout()">🔒 Lock</button>
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="header-label">Daily Briefing</div>
+      <h1>⚡ Command Center</h1>
+      <div class="header-sub">Thursday, May 7, 2026 &nbsp;·&nbsp; Last updated: 7:00 AM</div>
+    </div>
+
+    <!-- QUICK STATS -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-num red">50+</div>
+        <div class="stat-label">Unread Emails</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num red">8</div>
+        <div class="stat-label">Action Required</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num green">9+</div>
+        <div class="stat-label">Gov Opp Alerts</div>
+      </div>
+    </div>
+
+    <!-- AI RECOMMENDATION -->
+    <div class="ai-banner">
+      <div class="label">🤖 AI Recommendation</div>
+      <p>
+        <strong style="color:#e4e4e7;">Your #1 priority today is the AIGovBid proposal backlog</strong> — 8 overdue proposals (ranging 1–35 days past due) need immediate triage. This is direct revenue risk for TheGovConBD. Simultaneously, the GitHub compliance lead pipeline is broken — fix it before CW loses inbound leads. Two registration deadlines expire <strong style="color:#fbbf24;">TODAY</strong>: ASBCC Simply Matchmaking (May 13 event) and Venture Summit West.
+      </p>
+    </div>
+
+    <!-- TOP 5 GOALS -->
+    <div class="section">
+      <div class="section-title indigo">🎯 Top 5 Goals for Today</div>
+
+      <div class="goal-card">
+        <div class="goal-num">1</div>
+        <div class="goal-content">
+          <div class="title"><span class="badge critical">URGENT</span><span class="badge govcon">GovCon</span> Triage 8 Overdue AIGovBid Proposals</div>
+          <div class="desc">Log into aigovbid.com and process each overdue proposal. Most critical: <em>Dynamics CRM Migration (1 day)</em> — can still be salvaged. Formally close anything beyond 30 days (Chemistry CPRR BACH, AK — 35 days). This directly affects GovConBD client revenue and platform reputation.</div>
+        </div>
+      </div>
+
+      <div class="goal-card">
+        <div class="goal-num">2</div>
+        <div class="goal-content">
+          <div class="title"><span class="badge critical">FIX NOW</span><span class="badge cw">CW</span> Repair GitHub Compliance Lead Pipeline</div>
+          <div class="desc">The "Daily Compliance Lead Pipeline (Staged)" workflow on consultingwhiz11/website-compliance failed on commit 14c2358. Check GitHub Actions logs → identify error → patch and re-run. Every day this is broken = missed inbound leads for ConsultingWhiz.</div>
+        </div>
+      </div>
+
+      <div class="goal-card">
+        <div class="goal-num">3</div>
+        <div class="goal-content">
+          <div class="title"><span class="badge critical">TODAY ONLY</span><span class="badge govcon">GovCon</span> Register for ASBCC Simply Matchmaking (May 13)</div>
+          <div class="desc">American Small Business Chamber of Commerce virtual B2G matchmaking event is May 13, 2026. <strong>FINAL DAY to register is today.</strong> Direct agency connection opportunity for TheGovConBD — register at americansbcc.org.</div>
+        </div>
+      </div>
+
+      <div class="goal-card">
+        <div class="goal-num">4</div>
+        <div class="goal-content">
+          <div class="title"><span class="badge critical">OVERDUE</span><span class="badge cw">CW</span> Pay Zoom Invoice (7 Days Past Due)</div>
+          <div class="desc">Zoom invoice is 7 days overdue on contact@consultingwhiz.com. Risk of service interruption to webinar hosting and client calls. Pay now at zoom.us/billing.</div>
+        </div>
+      </div>
+
+      <div class="goal-card">
+        <div class="goal-num">5</div>
+        <div class="goal-content">
+          <div class="title"><span class="badge new">NEW</span><span class="badge govcon">GovCon</span> Review COMMBUYS: Event Management Products &amp; Services</div>
+          <div class="desc">Massachusetts Executive Office of Education posted BD-26-1036-EDU02-EDU02-129117 with an amendment already filed same day. Active, live solicitation — check scope at commbuys.com to determine if a GovConBD client can bid.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTION REQUIRED -->
+    <div class="section">
+      <div class="section-title red">🔴 Action Required</div>
+
+      <div class="card">
+        <div class="card-title red">AIGovBid: 8 Overdue Proposals (mikela@aigovbid.com)</div>
+        <div class="card-meta">From: noreply@aigovbid.com</div>
+        <table style="width:100%;border-collapse:collapse;margin-top:8px;">
+          <tr style="background:#1a1d27;">
+            <th style="text-align:left;font-size:11px;color:#6b7280;padding:6px 8px;">Proposal</th>
+            <th style="text-align:center;font-size:11px;color:#6b7280;padding:6px 8px;white-space:nowrap;">Days OD</th>
+          </tr>
+          <tr style="border-top:1px solid #374151;">
+            <td style="padding:7px 8px;font-size:12px;color:#f87171;">Dynamics CRM Migration Support, Portal Dev &amp; Train-the-Trainer</td>
+            <td style="text-align:center;padding:7px 8px;font-size:12px;font-weight:700;color:#f87171;">1</td>
+          </tr>
+          <tr style="border-top:1px solid #374151;background:#1e2133;">
+            <td style="padding:7px 8px;font-size:12px;color:#e4e4e7;">Data Abstraction and NLP Solution</td>
+            <td style="text-align:center;padding:7px 8px;font-size:12px;color:#fbbf24;">7</td>
+          </tr>
+          <tr style="border-top:1px solid #374151;">
+            <td style="padding:7px 8px;font-size:12px;color:#e4e4e7;">Information Technology Support Services (ITSS)</td>
+            <td style="text-align:center;padding:7px 8px;font-size:12px;color:#fbbf24;">8</td>
+          </tr>
+          <tr style="border-top:1px solid #374151;background:#1e2133;">
+            <td style="padding:7px 8px;font-size:12px;color:#e4e4e7;">Naval Info Warfighting Dev Center — EW Data Support</td>
+            <td style="text-align:center;padding:7px 8px;font-size:12px;color:#fbbf24;">8</td>
+          </tr>
+          <tr style="border-top:1px solid #374151;">
+            <td style="padding:7px 8px;font-size:12px;color:#e4e4e7;">RFI/SS — Program &amp; Budget Enterprise System (PBES) 2026</td>
+            <td style="text-align:center;padding:7px 8px;font-size:12px;color:#fbbf24;">8</td>
+          </tr>
+          <tr style="border-top:1px solid #374151;background:#1e2133;">
+            <td style="padding:7px 8px;font-size:12px;color:#e4e4e7;">DJ10 — Data Monitoring &amp; Sensing / Structured Data (VA)</td>
+            <td style="text-align:center;padding:7px 8px;font-size:12px;color:#f87171;">13</td>
+          </tr>
+          <tr style="border-top:1px solid #374151;">
+            <td style="padding:7px 8px;font-size:12px;color:#e4e4e7;">Early Detection of Wildfires Using AI / Thermal Monitoring</td>
+            <td style="text-align:center;padding:7px 8px;font-size:12px;color:#f87171;">13</td>
+          </tr>
+          <tr style="border-top:1px solid #374151;background:#1e2133;">
+            <td style="padding:7px 8px;font-size:12px;color:#f87171;font-weight:700;">Chemistry and Immunoassay CPRR for BACH, AK</td>
+            <td style="text-align:center;padding:7px 8px;font-size:12px;font-weight:800;color:#f87171;">35</td>
+          </tr>
+        </table>
+        <div class="card-action" style="margin-top:10px;">→ Log in to aigovbid.com → Review each proposal → Close or escalate</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title red">GitHub: Workflow FAILED — website-compliance</div>
+        <div class="card-meta">Repo: consultingwhiz11/website-compliance · Commit: 14c2358 · Branch: main</div>
+        <div class="card-action">Workflow: "Daily Compliance Lead Pipeline (Staged)" failed → Check GitHub Actions logs and fix</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title red">Zoom Invoice 7 Days Past Due</div>
+        <div class="card-meta">From: billing@zoom.us → contact@consultingwhiz.com</div>
+        <div class="card-action">→ Pay at zoom.us/billing to prevent service suspension — impacts client webinars</div>
+      </div>
+    </div>
+
+    <!-- GOV OPP ALERTS -->
+    <div class="section">
+      <div class="section-title green">🏛️ Gov Opp Alerts — 9+ New Today</div>
+
+      <div class="opp-row">
+        <span class="badge new">HIGH PRIORITY</span><span class="badge govcon">COMMBUYS · MA</span>
+        <div class="opp-title">BD-26-1036: Event Management Products &amp; Professional Services</div>
+        <div class="opp-meta">Executive Office of Education (MA) · Amendment issued same day · Check commbuys.com</div>
+      </div>
+      <div class="opp-row">
+        <span class="badge cw">OpenGov · San Mateo, CA</span>
+        <div class="opp-title">Traffic Software for Analytics, Crash Data and Reporting</div>
+        <div class="opp-meta">County of San Mateo · IT/Analytics software — potential CW opportunity</div>
+      </div>
+      <div class="opp-row">
+        <span class="badge cw">OpenGov · San Mateo, CA</span>
+        <div class="opp-title">Live Agent Services — San Mateo Medical Center</div>
+        <div class="opp-meta">Contact center / BPO potential</div>
+      </div>
+      <div class="opp-row">
+        <span class="badge govcon">InternationaleProcurement · NC</span>
+        <div class="opp-title">Lumberton Housing Authority — Computer Services</div>
+        <div class="opp-meta">Strong CW fit for IT/Computer services — review scope</div>
+      </div>
+      <div class="opp-row">
+        <span class="badge govcon">HigherGov · Federal</span>
+        <div class="opp-title">SAP FAR 13 Saved Search — 3 New Results (05/07/2026)</div>
+        <div class="opp-meta">Check HigherGov dashboard for 3 new federal opportunities matching your filter</div>
+      </div>
+      <div class="opp-row">
+        <span class="badge govcon">Region 4 ESC</span>
+        <div class="opp-title">Addendum 1: Facilities Management Software and Solutions (26-12)</div>
+        <div class="opp-meta">Amendment to existing bid — review changes before close date</div>
+      </div>
+      <div class="opp-row">
+        <span class="badge govcon">OS Fresh Squeezed · Federal</span>
+        <div class="opp-title">MDA AI SIDECAR / Navy ONR SBIR III / AFWERX TTS + FDA/HHS Matchmaking Days</div>
+        <div class="opp-meta">Multiple AI-adjacent federal contracts — review for GovConBD clients</div>
+      </div>
+    </div>
+
+    <!-- REVIEW & DECIDE -->
+    <div class="section">
+      <div class="section-title yellow">🟡 Review &amp; Decide</div>
+
+      <div class="card">
+        <div class="card-title yellow">⏰ EXPIRES TONIGHT — Venture Summit West Early Bird</div>
+        <div class="card-meta">Deadline: Tonight at midnight</div>
+        <div class="card-action">→ Decide if worth attending for ViralAILabs / CW BD — early bird expires tonight</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:#e4e4e7;">CMMC L2: GCC High vs. Google Workspace for Gov</div>
+        <div class="card-meta">From: Overwatch Tools newsletter</div>
+        <div class="card-action">→ Forward to CW clients pursuing CMMC L2 certification or use as GovCon content</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:#e4e4e7;">AI Procurement Webinar — How Agencies Approach AI</div>
+        <div class="card-meta">Live today via Zoom — check for replay</div>
+        <div class="card-action">→ High relevance for GovConBD BD strategy and client advisory</div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:#e4e4e7;">Fireflies Recap: Lunch &amp; Learn Brain²! (L5.ai)</div>
+        <div class="card-meta">From: fred@fireflies.ai · Via: prince.singh@l5.ai</div>
+        <div class="card-action">→ Review for L5.ai partnership relevance</div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      Auto-generated by Command Center AI · Thursday, May 7, 2026 at 7:00 AM<br>
+      Accounts: mikela@consultingwhiz.com · mikela@aigovbid.com<br>
+      Businesses: <strong>ConsultingWhiz</strong> (CW) · <strong>TheGovConBD</strong> (GovCon) · <strong>ViralAILabs</strong> (Viral)
+    </div>
+
+  </div><!-- /container -->
+</div><!-- /main-content -->
+
+<!-- ═══════════════════════════════════════════════════
+     AUTH SCRIPT
+     Password: CW@2026!
+     To change: run this in browser console and update HASH below:
+       const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('yourNewPassword'));
+       console.log([...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join(''));
+═══════════════════════════════════════════════════ -->
+<script>
+  const HASH = 'e9010d491a7c3ce6f87c40078ece679de6fb8e950afe657b32004d55e3401c25';
+  const STORAGE_KEY = 'cc_auth_v1';
+
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function showContent() {
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+  }
+
+  function logout() {
+    localStorage.removeItem(STORAGE_KEY);
+    sessionStorage.removeItem(STORAGE_KEY);
+    document.getElementById('lock-screen').style.display = 'flex';
+    document.getElementById('main-content').style.display = 'none';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-error').textContent = '';
+  }
+
+  async function unlock() {
+    const pw = document.getElementById('pw-input').value;
+    const remember = document.getElementById('remember-me').checked;
+    const hash = await sha256(pw);
+    if (hash === HASH) {
+      if (remember) localStorage.setItem(STORAGE_KEY, '1');
+      else sessionStorage.setItem(STORAGE_KEY, '1');
+      showContent();
+    } else {
+      document.getElementById('pw-error').textContent = 'Incorrect password. Try again.';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+    }
+  }
+
+  // Allow Enter key to submit
+  document.getElementById('pw-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') unlock();
+  });
+
+  // Auto-unlock if already authenticated on this device
+  if (localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY)) {
+    showContent();
+  } else {
+    document.getElementById('pw-input').focus();
+  }
+</script>
+
+</body>
+</html>
