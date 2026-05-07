@@ -5,188 +5,434 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>⚡ Command Center</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: #1a1d27;
-    color: #e4e4e7;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    min-height: 100vh;
-    padding: 24px 16px;
-  }
-  .container { max-width: 900px; margin: 0 auto; }
+:root {
+  --bg: #1a1d27; --bg2: #23263a; --bg3: #12141f; --bg4: #1e2133;
+  --border: #374151; --border2: #2d3148;
+  --text: #e4e4e7; --text2: #9ca3af; --text3: #6b7280;
+  --indigo: #6366f1; --indigo2: #4f46e5; --indigo3: #7c3aed;
+  --red: #f87171; --red-bg: #7f1d1d; --red-bg2: #2d1515;
+  --yellow: #fbbf24; --yellow-bg: #78350f;
+  --green: #34d399; --green-bg: #065f46;
+  --blue: #60a5fa; --blue-bg: #1e3a5f;
+  --purple: #a78bfa; --purple-bg: #2d1f5c;
+  --sidebar-w: 220px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; flex-direction: column; overflow: hidden; }
 
-  /* ── LOCK SCREEN ── */
-  #lock-screen {
-    position: fixed; inset: 0;
-    background: #1a1d27;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 9999;
-    padding: 24px;
-  }
-  .lock-card {
-    background: #23263a;
-    border-radius: 20px;
-    padding: 40px 36px;
-    width: 100%; max-width: 380px;
-    text-align: center;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.6);
-    border: 1px solid #374151;
-  }
-  .lock-icon { font-size: 44px; margin-bottom: 16px; }
-  .lock-title { font-size: 22px; font-weight: 800; color: #e4e4e7; margin-bottom: 6px; }
-  .lock-sub { font-size: 13px; color: #6b7280; margin-bottom: 28px; }
-  .lock-input {
-    width: 100%;
-    background: #12141f;
-    border: 1px solid #374151;
-    border-radius: 10px;
-    padding: 14px 16px;
-    font-size: 16px;
-    color: #e4e4e7;
-    outline: none;
-    margin-bottom: 14px;
-    letter-spacing: 2px;
-    transition: border-color 0.2s;
-  }
-  .lock-input:focus { border-color: #6366f1; }
-  .lock-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 14px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-  .lock-btn:hover { opacity: 0.9; }
-  .lock-error {
-    color: #f87171;
-    font-size: 12px;
-    margin-top: 10px;
-    min-height: 18px;
-  }
-  .lock-remember {
-    display: flex; align-items: center; justify-content: center;
-    gap: 8px; margin-bottom: 14px;
-    font-size: 12px; color: #9ca3af; cursor: pointer;
-  }
-  .lock-remember input { cursor: pointer; accent-color: #6366f1; }
+/* ── LOCK SCREEN ── */
+#lock-screen {
+  position: fixed; inset: 0; background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999; padding: 24px;
+}
+.lock-card {
+  background: var(--bg2); border-radius: 20px; padding: 40px 36px;
+  width: 100%; max-width: 380px; text-align: center;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.6); border: 1px solid var(--border);
+}
+.lock-icon { font-size: 44px; margin-bottom: 16px; }
+.lock-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.lock-sub { font-size: 13px; color: var(--text3); margin-bottom: 28px; }
+.lock-input {
+  width: 100%; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px; font-size: 16px; color: var(--text);
+  outline: none; margin-bottom: 12px; letter-spacing: 2px; transition: border-color .2s;
+}
+.lock-input:focus { border-color: var(--indigo); }
+.lock-btn {
+  width: 100%; background: linear-gradient(135deg, var(--indigo2), var(--indigo3));
+  color: #fff; border: none; border-radius: 10px; padding: 14px;
+  font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity .2s;
+}
+.lock-btn:hover { opacity: .9; }
+.lock-error { color: var(--red); font-size: 12px; margin-top: 10px; min-height: 18px; }
+.lock-remember {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; margin-bottom: 14px; font-size: 12px; color: var(--text2); cursor: pointer;
+}
+.lock-remember input { cursor: pointer; accent-color: var(--indigo); }
 
-  /* ── MAIN CONTENT (hidden until unlocked) ── */
-  #main-content { display: none; }
+/* ── APP SHELL ── */
+#app { display: none; flex: 1; flex-direction: column; height: 100vh; overflow: hidden; }
 
-  /* ── LOGOUT BUTTON ── */
-  .logout-btn {
-    position: fixed; bottom: 20px; right: 20px;
-    background: #23263a; border: 1px solid #374151;
-    color: #6b7280; border-radius: 8px;
-    padding: 8px 14px; font-size: 11px;
-    cursor: pointer; transition: all 0.2s;
-    z-index: 100;
-  }
-  .logout-btn:hover { color: #e4e4e7; border-color: #6366f1; }
+/* ── TOP BAR ── */
+.topbar {
+  background: var(--bg3); border-bottom: 1px solid var(--border);
+  padding: 0 20px; height: 52px; display: flex; align-items: center;
+  justify-content: space-between; flex-shrink: 0; gap: 12px;
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.topbar-logo { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, var(--indigo), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.topbar-date { font-size: 12px; color: var(--text3); }
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+.topbar-btn {
+  background: var(--bg2); border: 1px solid var(--border); color: var(--text2);
+  border-radius: 7px; padding: 6px 12px; font-size: 11px; cursor: pointer; transition: all .2s;
+}
+.topbar-btn:hover { color: var(--text); border-color: var(--indigo); }
+.hamburger { background: none; border: none; color: var(--text2); font-size: 18px; cursor: pointer; display: none; padding: 4px 8px; }
 
-  /* HEADER */
-  .header {
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
-    border-radius: 16px;
-    padding: 28px 32px;
-    margin-bottom: 20px;
-  }
-  .header-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #c4b5fd; font-weight: 600; }
-  .header h1 { font-size: 28px; font-weight: 800; color: #fff; margin: 6px 0 4px; }
-  .header-sub { font-size: 14px; color: #c4b5fd; }
+/* ── BODY LAYOUT ── */
+.app-body { display: flex; flex: 1; overflow: hidden; }
 
-  /* STATS ROW */
-  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-  .stat-card { background: #23263a; border-radius: 12px; padding: 20px; text-align: center; }
-  .stat-num { font-size: 36px; font-weight: 800; }
-  .stat-num.red { color: #f87171; }
-  .stat-num.green { color: #34d399; }
-  .stat-num.yellow { color: #fbbf24; }
-  .stat-label { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w); background: var(--bg3); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto;
+  transition: transform .25s ease;
+}
+.sidebar-section { padding: 16px 12px 8px; }
+.sidebar-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); font-weight: 700; padding: 0 8px; margin-bottom: 6px; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+  border-radius: 8px; cursor: pointer; font-size: 13px; color: var(--text2);
+  transition: all .15s; user-select: none; margin-bottom: 2px;
+}
+.nav-item:hover { background: var(--bg2); color: var(--text); }
+.nav-item.active { background: rgba(99,102,241,.18); color: var(--indigo); font-weight: 600; }
+.nav-item .nav-icon { font-size: 15px; flex-shrink: 0; width: 20px; text-align: center; }
+.nav-item .nav-badge {
+  margin-left: auto; background: var(--red-bg); color: var(--red);
+  font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 10px;
+}
+.nav-item .nav-badge.green { background: var(--green-bg); color: var(--green); }
+.nav-item .nav-badge.yellow { background: var(--yellow-bg); color: var(--yellow); }
+.nav-separator { height: 1px; background: var(--border); margin: 10px 12px; }
 
-  /* AI BANNER */
-  .ai-banner {
-    background: #23263a; border-left: 4px solid #6366f1;
-    border-radius: 0 12px 12px 0; padding: 18px 24px; margin-bottom: 20px;
-  }
-  .ai-banner .label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #6366f1; font-weight: 700; margin-bottom: 8px; }
-  .ai-banner p { font-size: 14px; line-height: 1.7; color: #c4b5fd; }
+/* ── MAIN PANE ── */
+.main-pane { flex: 1; overflow-y: auto; padding: 24px; }
 
-  /* SECTION */
-  .section { margin-bottom: 20px; }
-  .section-title {
-    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
-    font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #374151;
-  }
-  .section-title.red { color: #f87171; }
-  .section-title.green { color: #34d399; }
-  .section-title.yellow { color: #fbbf24; }
-  .section-title.indigo { color: #6366f1; }
+/* ── VIEWS ── */
+.view { display: none; }
+.view.active { display: block; }
 
-  /* CARDS */
-  .card { background: #23263a; border-radius: 10px; padding: 16px; margin-bottom: 10px; }
-  .card-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
-  .card-title.red { color: #f87171; }
-  .card-title.yellow { color: #fbbf24; }
-  .card-title.green { color: #34d399; }
-  .card-meta { font-size: 11px; color: #9ca3af; margin-bottom: 4px; }
-  .card-action { font-size: 12px; color: #6b7280; }
+/* ── PAGE HEADER ── */
+.page-header { margin-bottom: 20px; }
+.page-title { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+.page-sub { font-size: 13px; color: var(--text3); }
 
-  /* GOAL CARDS */
-  .goal-card {
-    background: #23263a; border-radius: 10px; padding: 16px; margin-bottom: 10px;
-    display: flex; gap: 14px; align-items: flex-start;
-  }
-  .goal-num {
-    background: #6366f1; color: #fff; width: 28px; height: 28px;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 800; flex-shrink: 0; margin-top: 2px;
-  }
-  .goal-content .title { font-size: 13px; font-weight: 700; color: #e4e4e7; margin-bottom: 5px; }
-  .goal-content .desc { font-size: 12px; color: #9ca3af; line-height: 1.6; }
+/* ── KPI GRID ── */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+.kpi-card {
+  background: var(--bg2); border-radius: 12px; padding: 16px 18px;
+  border: 1px solid var(--border2); position: relative; overflow: hidden;
+}
+.kpi-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--indigo2), var(--indigo3));
+}
+.kpi-card.red::before { background: linear-gradient(90deg, #dc2626, #f87171); }
+.kpi-card.green::before { background: linear-gradient(90deg, #059669, #34d399); }
+.kpi-card.yellow::before { background: linear-gradient(90deg, #d97706, #fbbf24); }
+.kpi-card.blue::before { background: linear-gradient(90deg, #2563eb, #60a5fa); }
+.kpi-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; font-weight: 600; }
+.kpi-value { font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+.kpi-value.red { color: var(--red); }
+.kpi-value.green { color: var(--green); }
+.kpi-value.yellow { color: var(--yellow); }
+.kpi-value.blue { color: var(--blue); }
+.kpi-change { font-size: 11px; color: var(--text3); }
+.kpi-change .up { color: var(--green); }
+.kpi-change .down { color: var(--red); }
 
-  /* BADGE */
-  .badge {
-    display: inline-block; font-size: 10px; font-weight: 700;
-    padding: 2px 7px; border-radius: 4px; margin-right: 6px; vertical-align: middle;
-  }
-  .badge.cw { background: #1e3a5f; color: #60a5fa; }
-  .badge.govcon { background: #1a3320; color: #34d399; }
-  .badge.viral { background: #2d1f5c; color: #a78bfa; }
-  .badge.critical { background: #7f1d1d; color: #f87171; }
-  .badge.new { background: #065f46; color: #34d399; }
+/* ── AI BANNER ── */
+.ai-banner {
+  background: var(--bg2); border-left: 4px solid var(--indigo);
+  border-radius: 0 12px 12px 0; padding: 16px 20px; margin-bottom: 20px;
+}
+.ai-banner .ai-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--indigo); font-weight: 700; margin-bottom: 8px; }
+.ai-banner p { font-size: 13px; line-height: 1.7; color: #c4b5fd; }
 
-  /* GOV OPP */
-  .opp-row { background: #1e2133; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; }
-  .opp-row:nth-child(even) { background: #23263a; }
-  .opp-title { font-size: 13px; font-weight: 600; color: #e4e4e7; margin-bottom: 4px; }
-  .opp-meta { font-size: 11px; color: #6b7280; }
+/* ── SECTION HEADER ── */
+.section { margin-bottom: 24px; }
+.section-hdr {
+  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700;
+  padding-bottom: 8px; border-bottom: 1px solid var(--border); margin-bottom: 12px;
+}
+.section-hdr.red { color: var(--red); }
+.section-hdr.green { color: var(--green); }
+.section-hdr.yellow { color: var(--yellow); }
+.section-hdr.indigo { color: var(--indigo); }
 
-  /* FOOTER */
-  .footer {
-    background: #12141f; border-radius: 12px; padding: 16px 24px;
-    margin-top: 24px; text-align: center; font-size: 11px; color: #4b5563;
-    line-height: 1.6; border: 1px solid #1f2335;
-  }
+/* ── CARDS ── */
+.card { background: var(--bg2); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border2); }
+.card-title { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+.card-title.red { color: var(--red); }
+.card-title.yellow { color: var(--yellow); }
+.card-meta { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
+.card-action { font-size: 12px; color: var(--text3); }
 
-  @media (max-width: 600px) {
-    .stats { grid-template-columns: repeat(3, 1fr); }
-    .stat-num { font-size: 26px; }
-    .header { padding: 20px; }
-    .lock-card { padding: 32px 24px; }
-  }
+/* ── GOAL CARDS ── */
+.goal-card {
+  background: var(--bg2); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
+  display: flex; gap: 14px; align-items: flex-start; border: 1px solid var(--border2);
+}
+.goal-num {
+  background: var(--indigo); color: #fff; width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 12px;
+  font-weight: 800; flex-shrink: 0; margin-top: 2px;
+}
+.goal-content .g-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.goal-content .g-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  padding: 2px 6px; border-radius: 4px; margin-right: 5px; vertical-align: middle;
+}
+.badge.cw { background: var(--blue-bg); color: var(--blue); }
+.badge.govcon { background: var(--green-bg); color: var(--green); }
+.badge.viral { background: var(--purple-bg); color: var(--purple); }
+.badge.crit { background: var(--red-bg); color: var(--red); }
+.badge.new-b { background: var(--green-bg); color: var(--green); }
+
+/* ── OPP ROWS ── */
+.opp-row { background: var(--bg4); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid var(--border2); }
+.opp-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.opp-meta { font-size: 11px; color: var(--text3); }
+
+/* ── PROPOSALS TABLE ── */
+.prop-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+.prop-table th { text-align: left; font-size: 10px; color: var(--text3); padding: 6px 8px; letter-spacing: .5px; text-transform: uppercase; }
+.prop-table td { padding: 7px 8px; font-size: 12px; border-top: 1px solid var(--border); }
+.prop-table tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+
+/* ═══════════════════════════════════════════════
+   TASKS VIEW — TODOIST CLONE
+═══════════════════════════════════════════════ */
+.tasks-layout { display: flex; gap: 0; height: calc(100vh - 52px - 48px); overflow: hidden; }
+
+/* Task sidebar */
+.task-sidebar {
+  width: 200px; flex-shrink: 0; border-right: 1px solid var(--border);
+  padding: 12px 8px; overflow-y: auto;
+}
+.task-nav-item {
+  display: flex; align-items: center; gap: 8px; padding: 7px 10px;
+  border-radius: 7px; font-size: 13px; color: var(--text2); cursor: pointer;
+  margin-bottom: 2px; transition: all .15s;
+}
+.task-nav-item:hover { background: var(--bg2); color: var(--text); }
+.task-nav-item.active { background: rgba(99,102,241,.15); color: var(--indigo); font-weight: 600; }
+.task-nav-item .t-count { margin-left: auto; font-size: 11px; color: var(--text3); }
+
+.task-project-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* Task main */
+.task-main { flex: 1; overflow-y: auto; padding: 20px 24px; }
+.task-view-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.task-view-count { font-size: 12px; color: var(--text3); margin-bottom: 16px; }
+
+/* Add task bar */
+.add-task-bar {
+  display: flex; align-items: center; gap: 10px; background: var(--bg2);
+  border: 2px dashed var(--border); border-radius: 10px; padding: 12px 14px;
+  margin-bottom: 16px; cursor: pointer; transition: border-color .2s;
+}
+.add-task-bar:hover { border-color: var(--indigo); }
+.add-task-bar .plus { color: var(--indigo); font-size: 18px; font-weight: 300; line-height: 1; }
+.add-task-bar span { font-size: 13px; color: var(--text3); }
+
+/* Add task form */
+.add-task-form {
+  background: var(--bg2); border: 1px solid var(--indigo); border-radius: 10px;
+  padding: 14px; margin-bottom: 16px; display: none;
+}
+.add-task-form.open { display: block; }
+.atf-title {
+  width: 100%; background: transparent; border: none; color: var(--text);
+  font-size: 14px; font-weight: 600; outline: none; margin-bottom: 8px;
+}
+.atf-title::placeholder { color: var(--text3); font-weight: 400; }
+.atf-notes {
+  width: 100%; background: transparent; border: none; color: var(--text2);
+  font-size: 12px; outline: none; resize: none; min-height: 40px;
+  margin-bottom: 10px; line-height: 1.5;
+}
+.atf-notes::placeholder { color: var(--text3); }
+.atf-toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.atf-select {
+  background: var(--bg4); border: 1px solid var(--border); color: var(--text2);
+  border-radius: 6px; padding: 4px 8px; font-size: 11px; cursor: pointer; outline: none;
+}
+.atf-select option { background: var(--bg3); }
+.atf-date { background: var(--bg4); border: 1px solid var(--border); color: var(--text2); border-radius: 6px; padding: 4px 8px; font-size: 11px; outline: none; cursor: pointer; }
+.atf-date::-webkit-calendar-picker-indicator { filter: invert(.5); }
+.atf-actions { margin-left: auto; display: flex; gap: 6px; }
+.atf-btn {
+  padding: 6px 14px; border-radius: 7px; font-size: 12px; font-weight: 600;
+  cursor: pointer; border: none; transition: all .2s;
+}
+.atf-btn.primary { background: var(--indigo); color: #fff; }
+.atf-btn.primary:hover { background: var(--indigo2); }
+.atf-btn.cancel { background: var(--bg4); color: var(--text2); }
+.atf-btn.cancel:hover { color: var(--text); }
+
+/* Task item */
+.task-item {
+  display: flex; align-items: flex-start; gap: 12px; padding: 10px 12px;
+  border-radius: 8px; transition: background .15s; group: true;
+  border: 1px solid transparent; margin-bottom: 4px;
+}
+.task-item:hover { background: var(--bg2); border-color: var(--border2); }
+.task-item.completed .t-title { text-decoration: line-through; color: var(--text3); }
+.task-item.completed .t-meta { color: var(--text3); opacity: .6; }
+
+/* Checkbox */
+.t-check {
+  width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border);
+  flex-shrink: 0; cursor: pointer; margin-top: 2px; position: relative;
+  transition: all .2s; background: transparent;
+  display: flex; align-items: center; justify-content: center;
+}
+.t-check:hover { border-color: var(--indigo); }
+.t-check.p1 { border-color: var(--red); }
+.t-check.p2 { border-color: var(--yellow); }
+.t-check.p3 { border-color: var(--blue); }
+.t-check.checked { background: var(--green-bg); border-color: var(--green); }
+.t-check.checked::after { content: '✓'; color: var(--green); font-size: 11px; font-weight: 700; }
+
+.t-body { flex: 1; min-width: 0; }
+.t-title { font-size: 13px; color: var(--text); line-height: 1.4; margin-bottom: 3px; }
+.t-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.t-project { font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 4px; }
+.t-due { font-size: 11px; color: var(--text3); }
+.t-due.overdue { color: var(--red); }
+.t-notes-preview { font-size: 11px; color: var(--text3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 400px; }
+
+.t-actions { display: flex; gap: 4px; opacity: 0; transition: opacity .15s; }
+.task-item:hover .t-actions { opacity: 1; }
+.t-action-btn {
+  background: none; border: none; color: var(--text3); cursor: pointer;
+  padding: 4px 6px; border-radius: 5px; font-size: 13px; transition: all .15s;
+}
+.t-action-btn:hover { background: var(--bg4); color: var(--text); }
+
+/* Task detail panel */
+.task-detail {
+  width: 320px; flex-shrink: 0; border-left: 1px solid var(--border);
+  padding: 20px 16px; overflow-y: auto; display: none;
+}
+.task-detail.open { display: block; }
+.td-close { float: right; background: none; border: none; color: var(--text3); cursor: pointer; font-size: 16px; margin-top: -2px; }
+.td-title-input {
+  width: 100%; background: transparent; border: none; color: var(--text);
+  font-size: 15px; font-weight: 700; outline: none; margin-bottom: 12px; line-height: 1.4;
+}
+.td-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); font-weight: 600; margin-bottom: 6px; margin-top: 14px; }
+.td-notes {
+  width: 100%; background: var(--bg4); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text2); font-size: 12px; padding: 10px 12px;
+  outline: none; resize: vertical; min-height: 80px; line-height: 1.6;
+}
+.td-notes:focus { border-color: var(--indigo); }
+.td-select {
+  width: 100%; background: var(--bg4); border: 1px solid var(--border);
+  color: var(--text2); border-radius: 8px; padding: 8px 10px; font-size: 12px; outline: none;
+}
+.td-date { width: 100%; background: var(--bg4); border: 1px solid var(--border); color: var(--text2); border-radius: 8px; padding: 8px 10px; font-size: 12px; outline: none; }
+.td-date::-webkit-calendar-picker-indicator { filter: invert(.5); }
+.td-save { width: 100%; background: var(--indigo); color: #fff; border: none; border-radius: 8px; padding: 10px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 16px; }
+
+/* Section label in tasks */
+.task-section-label {
+  font-size: 11px; font-weight: 700; color: var(--text2); padding: 12px 12px 6px;
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+}
+.task-section-label::before { content: '▾'; font-size: 10px; color: var(--text3); }
+.task-section-label.collapsed::before { content: '▸'; }
+
+/* Completed section */
+.completed-section { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 12px; }
+.completed-toggle { font-size: 12px; color: var(--text3); cursor: pointer; padding: 4px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; }
+.completed-toggle:hover { background: var(--bg2); color: var(--text2); }
+
+/* Priority indicator bar */
+.priority-bar { width: 3px; height: 100%; border-radius: 2px; flex-shrink: 0; align-self: stretch; min-height: 22px; }
+.priority-bar.p1 { background: var(--red); }
+.priority-bar.p2 { background: var(--yellow); }
+.priority-bar.p3 { background: var(--blue); }
+.priority-bar.p4 { background: var(--border); }
+
+/* ── INBOX VIEW ── */
+.inbox-filter { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.filter-chip {
+  padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;
+  cursor: pointer; border: 1px solid var(--border); color: var(--text2); transition: all .15s;
+}
+.filter-chip:hover { border-color: var(--indigo); color: var(--text); }
+.filter-chip.active { background: rgba(99,102,241,.2); border-color: var(--indigo); color: var(--indigo); }
+
+/* ── GOV OPP VIEW ── */
+.opp-card {
+  background: var(--bg2); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
+  border: 1px solid var(--border2); display: flex; gap: 14px; align-items: flex-start;
+}
+.opp-priority-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+.opp-priority-dot.high { background: var(--red); box-shadow: 0 0 8px var(--red); }
+.opp-priority-dot.med { background: var(--yellow); }
+.opp-priority-dot.low { background: var(--green); }
+.opp-card-title { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+.opp-card-meta { font-size: 11px; color: var(--text3); margin-bottom: 6px; }
+.opp-card-action { font-size: 12px; color: var(--text2); }
+
+/* ── METRICS VIEW ── */
+.metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.metric-card {
+  background: var(--bg2); border-radius: 12px; padding: 20px;
+  border: 1px solid var(--border2);
+}
+.metric-biz { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); font-weight: 700; margin-bottom: 12px; }
+.metric-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border2); }
+.metric-row:last-child { border-bottom: none; }
+.metric-key { font-size: 12px; color: var(--text2); }
+.metric-val { font-size: 12px; font-weight: 700; }
+.metric-val.green { color: var(--green); }
+.metric-val.red { color: var(--red); }
+.metric-val.yellow { color: var(--yellow); }
+.metric-val.blue { color: var(--blue); }
+
+/* Progress bar */
+.progress-wrap { margin-top: 16px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); margin-bottom: 5px; }
+.progress-bar { height: 6px; background: var(--bg4); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 3px; transition: width .6s ease; }
+.progress-fill.indigo { background: linear-gradient(90deg, var(--indigo2), var(--indigo3)); }
+.progress-fill.green { background: linear-gradient(90deg, #059669, var(--green)); }
+.progress-fill.yellow { background: linear-gradient(90deg, #d97706, var(--yellow)); }
+
+/* ── FOOTER ── */
+.footer { text-align: center; font-size: 11px; color: var(--text3); padding: 16px; border-top: 1px solid var(--border); flex-shrink: 0; background: var(--bg3); }
+
+/* ── MOBILE OVERLAY SIDEBAR ── */
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  :root { --sidebar-w: 240px; }
+  .sidebar { position: fixed; top: 52px; left: 0; bottom: 0; z-index: 300; transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-overlay.open { display: block; }
+  .hamburger { display: block; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .metrics-grid { grid-template-columns: 1fr; }
+  .tasks-layout { flex-direction: column; height: auto; }
+  .task-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); display: flex; overflow-x: auto; padding: 8px; gap: 4px; }
+  .task-main { padding: 16px; }
+  .task-detail { width: 100%; border-left: none; border-top: 1px solid var(--border); }
+  .topbar-date { display: none; }
+}
+@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .main-pane { padding: 14px; }
+}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════
-     LOCK SCREEN — shown until correct password entered
-═══════════════════════════════════════════════════ -->
+<!-- ═══ LOCK SCREEN ═══ -->
 <div id="lock-screen">
   <div class="lock-card">
     <div class="lock-icon">⚡</div>
@@ -202,285 +448,883 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     MAIN CONTENT
-═══════════════════════════════════════════════════ -->
-<div id="main-content">
-  <button class="logout-btn" onclick="logout()">🔒 Lock</button>
+<!-- ═══ APP ═══ -->
+<div id="app">
 
-  <div class="container">
-
-    <!-- HEADER -->
-    <div class="header">
-      <div class="header-label">Daily Briefing</div>
-      <h1>⚡ Command Center</h1>
-      <div class="header-sub">Thursday, May 7, 2026 &nbsp;·&nbsp; Last updated: 7:00 AM</div>
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-logo">⚡ Command Center</div>
+      <div class="topbar-date" id="topbar-date"></div>
     </div>
-
-    <!-- QUICK STATS -->
-    <div class="stats">
-      <div class="stat-card">
-        <div class="stat-num red">50+</div>
-        <div class="stat-label">Unread Emails</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num red">8</div>
-        <div class="stat-label">Action Required</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num green">9+</div>
-        <div class="stat-label">Gov Opp Alerts</div>
-      </div>
+    <div class="topbar-right">
+      <button class="topbar-btn" onclick="logout()">🔒 Lock</button>
     </div>
+  </div>
 
-    <!-- AI RECOMMENDATION -->
-    <div class="ai-banner">
-      <div class="label">🤖 AI Recommendation</div>
-      <p>
-        <strong style="color:#e4e4e7;">Your #1 priority today is the AIGovBid proposal backlog</strong> — 8 overdue proposals (ranging 1–35 days past due) need immediate triage. This is direct revenue risk for TheGovConBD. Simultaneously, the GitHub compliance lead pipeline is broken — fix it before CW loses inbound leads. Two registration deadlines expire <strong style="color:#fbbf24;">TODAY</strong>: ASBCC Simply Matchmaking (May 13 event) and Venture Summit West.
-      </p>
-    </div>
+  <div class="app-body">
+    <!-- SIDEBAR OVERLAY -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
-    <!-- TOP 5 GOALS -->
-    <div class="section">
-      <div class="section-title indigo">🎯 Top 5 Goals for Today</div>
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Main</div>
+        <div class="nav-item active" onclick="showView('today', this)">
+          <span class="nav-icon">📋</span> Today
+          <span class="nav-badge">8</span>
+        </div>
+        <div class="nav-item" onclick="showView('tasks', this)">
+          <span class="nav-icon">✅</span> Tasks
+          <span class="nav-badge" id="tasks-badge" style="background:var(--blue-bg);color:var(--blue);">0</span>
+        </div>
+        <div class="nav-item" onclick="showView('inbox', this)">
+          <span class="nav-icon">📧</span> Inbox
+          <span class="nav-badge">50+</span>
+        </div>
+        <div class="nav-item" onclick="showView('govops', this)">
+          <span class="nav-icon">🏛️</span> Gov Opps
+          <span class="nav-badge green">9</span>
+        </div>
+        <div class="nav-item" onclick="showView('metrics', this)">
+          <span class="nav-icon">📊</span> Metrics
+        </div>
+      </div>
+      <div class="nav-separator"></div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Projects</div>
+        <div class="nav-item" onclick="showProjectFilter('CW', this)">
+          <span class="task-project-dot" style="background:#60a5fa"></span> ConsultingWhiz
+          <span class="nav-badge" id="proj-cw-count" style="background:var(--blue-bg);color:var(--blue);">0</span>
+        </div>
+        <div class="nav-item" onclick="showProjectFilter('GovCon', this)">
+          <span class="task-project-dot" style="background:#34d399"></span> TheGovConBD
+          <span class="nav-badge" id="proj-gc-count" style="background:var(--green-bg);color:var(--green);">0</span>
+        </div>
+        <div class="nav-item" onclick="showProjectFilter('Viral', this)">
+          <span class="task-project-dot" style="background:#a78bfa"></span> ViralAILabs
+          <span class="nav-badge" id="proj-vl-count" style="background:var(--purple-bg);color:var(--purple);">0</span>
+        </div>
+        <div class="nav-item" onclick="showProjectFilter('Personal', this)">
+          <span class="task-project-dot" style="background:#6b7280"></span> Personal
+          <span class="nav-badge" id="proj-pe-count" style="background:#374151;color:#9ca3af;">0</span>
+        </div>
+      </div>
+    </nav>
 
-      <div class="goal-card">
-        <div class="goal-num">1</div>
-        <div class="goal-content">
-          <div class="title"><span class="badge critical">URGENT</span><span class="badge govcon">GovCon</span> Triage 8 Overdue AIGovBid Proposals</div>
-          <div class="desc">Log into aigovbid.com and process each overdue proposal. Most critical: <em>Dynamics CRM Migration (1 day)</em> — can still be salvaged. Formally close anything beyond 30 days (Chemistry CPRR BACH, AK — 35 days). This directly affects GovConBD client revenue and platform reputation.</div>
+    <!-- MAIN PANE -->
+    <main class="main-pane">
+
+      <!-- ═══ TODAY VIEW ═══ -->
+      <div class="view active" id="view-today">
+        <div class="page-header">
+          <div class="page-title">📋 Today's Briefing</div>
+          <div class="page-sub" id="today-date-sub"></div>
+        </div>
+
+        <!-- KPI ROW -->
+        <div class="kpi-grid">
+          <div class="kpi-card red">
+            <div class="kpi-label">Unread Emails</div>
+            <div class="kpi-value red">50+</div>
+            <div class="kpi-change"><span class="down">↑</span> Needs attention</div>
+          </div>
+          <div class="kpi-card red">
+            <div class="kpi-label">Action Required</div>
+            <div class="kpi-value red">8</div>
+            <div class="kpi-change">Overdue proposals</div>
+          </div>
+          <div class="kpi-card green">
+            <div class="kpi-label">Gov Opp Alerts</div>
+            <div class="kpi-value green">9+</div>
+            <div class="kpi-change"><span class="up">↑</span> New today</div>
+          </div>
+          <div class="kpi-card yellow">
+            <div class="kpi-label">Deadlines Today</div>
+            <div class="kpi-value yellow">2</div>
+            <div class="kpi-change">Expire at midnight</div>
+          </div>
+        </div>
+
+        <!-- AI RECOMMENDATION -->
+        <div class="ai-banner">
+          <div class="ai-label">🤖 AI Recommendation</div>
+          <p><strong style="color:#e4e4e7;">Your #1 priority is the AIGovBid proposal backlog</strong> — 8 overdue proposals (1–35 days past due) need immediate triage. The GitHub compliance lead pipeline is also broken — fix it before CW loses inbound leads. Two registration deadlines expire <strong style="color:#fbbf24;">TODAY</strong>: ASBCC Simply Matchmaking and Venture Summit West.</p>
+        </div>
+
+        <!-- TOP 5 GOALS -->
+        <div class="section">
+          <div class="section-hdr indigo">🎯 Top 5 Goals for Today</div>
+
+          <div class="goal-card">
+            <div class="goal-num">1</div>
+            <div class="goal-content">
+              <div class="g-title"><span class="badge crit">URGENT</span><span class="badge govcon">GovCon</span> Triage 8 Overdue AIGovBid Proposals</div>
+              <div class="g-desc">Log into aigovbid.com and process each overdue proposal. Critical: <em>Dynamics CRM Migration (1 day)</em> — still salvageable. Formally close anything 30+ days (Chemistry CPRR BACH AK — 35 days).</div>
+            </div>
+          </div>
+          <div class="goal-card">
+            <div class="goal-num">2</div>
+            <div class="goal-content">
+              <div class="g-title"><span class="badge crit">FIX NOW</span><span class="badge cw">CW</span> Repair GitHub Compliance Lead Pipeline</div>
+              <div class="g-desc">Daily Compliance Lead Pipeline failed on consultingwhiz11/website-compliance (commit 14c2358). Check Actions logs → patch → re-run. Every day broken = missed inbound leads.</div>
+            </div>
+          </div>
+          <div class="goal-card">
+            <div class="goal-num">3</div>
+            <div class="goal-content">
+              <div class="g-title"><span class="badge crit">TODAY ONLY</span><span class="badge govcon">GovCon</span> Register: ASBCC Simply Matchmaking (May 13)</div>
+              <div class="g-desc">FINAL DAY to register for ASBCC virtual B2G matchmaking event May 13. Direct agency connection for TheGovConBD — register at americansbcc.org now.</div>
+            </div>
+          </div>
+          <div class="goal-card">
+            <div class="goal-num">4</div>
+            <div class="goal-content">
+              <div class="g-title"><span class="badge crit">OVERDUE</span><span class="badge cw">CW</span> Pay Zoom Invoice (7 Days Past Due)</div>
+              <div class="g-desc">Zoom invoice 7 days overdue on contact@consultingwhiz.com. Risk of webinar suspension. Pay at zoom.us/billing.</div>
+            </div>
+          </div>
+          <div class="goal-card">
+            <div class="goal-num">5</div>
+            <div class="goal-content">
+              <div class="g-title"><span class="badge new-b">NEW</span><span class="badge govcon">GovCon</span> Review COMMBUYS: Event Management BD-26-1036</div>
+              <div class="g-desc">MA Executive Office of Education posted BD-26-1036 with same-day amendment. Active solicitation — check commbuys.com scope for GovConBD client bid potential.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTION REQUIRED -->
+        <div class="section">
+          <div class="section-hdr red">🔴 Action Required</div>
+          <div class="card">
+            <div class="card-title red">AIGovBid: 8 Overdue Proposals</div>
+            <div class="card-meta">mikela@aigovbid.com · From: noreply@aigovbid.com</div>
+            <table class="prop-table">
+              <tr><th>Proposal</th><th style="text-align:center;white-space:nowrap">Days OD</th></tr>
+              <tr><td style="color:var(--red)">Dynamics CRM Migration Support, Portal Dev & Train-the-Trainer</td><td style="text-align:center;color:var(--red);font-weight:700">1</td></tr>
+              <tr><td>Data Abstraction and NLP Solution</td><td style="text-align:center;color:var(--yellow)">7</td></tr>
+              <tr><td>Information Technology Support Services (ITSS)</td><td style="text-align:center;color:var(--yellow)">8</td></tr>
+              <tr><td>Naval Info Warfighting Dev Center — EW Data Support</td><td style="text-align:center;color:var(--yellow)">8</td></tr>
+              <tr><td>RFI/SS — Program & Budget Enterprise System (PBES) 2026</td><td style="text-align:center;color:var(--yellow)">8</td></tr>
+              <tr><td>DJ10 — Data Monitoring & Sensing / Structured Data (VA)</td><td style="text-align:center;color:var(--red)">13</td></tr>
+              <tr><td>Early Detection of Wildfires Using AI / Thermal Monitoring</td><td style="text-align:center;color:var(--red)">13</td></tr>
+              <tr><td style="color:var(--red);font-weight:700">Chemistry and Immunoassay CPRR for BACH, AK</td><td style="text-align:center;color:var(--red);font-weight:800">35</td></tr>
+            </table>
+            <div class="card-action" style="margin-top:10px">→ Log in to aigovbid.com → Review each → Close or escalate</div>
+          </div>
+          <div class="card">
+            <div class="card-title red">GitHub: Workflow FAILED — website-compliance</div>
+            <div class="card-meta">consultingwhiz11/website-compliance · Commit: 14c2358 · Branch: main</div>
+            <div class="card-action">"Daily Compliance Lead Pipeline (Staged)" failed → Check GitHub Actions logs and fix</div>
+          </div>
+          <div class="card">
+            <div class="card-title red">Zoom Invoice 7 Days Past Due</div>
+            <div class="card-meta">billing@zoom.us → contact@consultingwhiz.com</div>
+            <div class="card-action">→ Pay at zoom.us/billing — risk of service suspension affecting client webinars</div>
+          </div>
+        </div>
+
+        <!-- REVIEW & DECIDE -->
+        <div class="section">
+          <div class="section-hdr yellow">🟡 Review & Decide</div>
+          <div class="card">
+            <div class="card-title yellow">⏰ EXPIRES TONIGHT — Venture Summit West Early Bird</div>
+            <div class="card-meta">venturesummits@ · Deadline: Midnight tonight</div>
+            <div class="card-action">→ Decide on attendance for ViralAILabs / CW BD</div>
+          </div>
+          <div class="card">
+            <div class="card-title">CMMC L2: GCC High vs. Google Workspace for Gov</div>
+            <div class="card-meta">Overwatch Tools newsletter</div>
+            <div class="card-action">→ Forward to CW clients pursuing CMMC L2 / use as GovCon content</div>
+          </div>
+          <div class="card">
+            <div class="card-title">AI Procurement Webinar — How Agencies Approach AI</div>
+            <div class="card-meta">Zoom · Live today — check for replay</div>
+            <div class="card-action">→ High relevance for GovConBD BD strategy and client advisory</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Fireflies Recap: Lunch & Learn Brain²! (L5.ai)</div>
+            <div class="card-meta">fred@fireflies.ai · Via: prince.singh@l5.ai</div>
+            <div class="card-action">→ Review for L5.ai partnership relevance</div>
+          </div>
         </div>
       </div>
 
-      <div class="goal-card">
-        <div class="goal-num">2</div>
-        <div class="goal-content">
-          <div class="title"><span class="badge critical">FIX NOW</span><span class="badge cw">CW</span> Repair GitHub Compliance Lead Pipeline</div>
-          <div class="desc">The "Daily Compliance Lead Pipeline (Staged)" workflow on consultingwhiz11/website-compliance failed on commit 14c2358. Check GitHub Actions logs → identify error → patch and re-run. Every day this is broken = missed inbound leads for ConsultingWhiz.</div>
+      <!-- ═══ TASKS VIEW ═══ -->
+      <div class="view" id="view-tasks">
+        <div class="page-header">
+          <div class="page-title">✅ Tasks</div>
+        </div>
+        <div class="tasks-layout" style="height:auto">
+
+          <!-- Task sub-nav -->
+          <div class="task-sidebar" id="task-sub-nav">
+            <div class="task-nav-item active" onclick="showTaskFilter('today-tasks', this)">📅 Today <span class="t-count" id="cnt-today">0</span></div>
+            <div class="task-nav-item" onclick="showTaskFilter('upcoming', this)">📆 Upcoming <span class="t-count" id="cnt-upcoming">0</span></div>
+            <div class="task-nav-item" onclick="showTaskFilter('all-tasks', this)">📝 All Tasks <span class="t-count" id="cnt-all">0</span></div>
+            <div class="task-nav-item" onclick="showTaskFilter('completed', this)">✓ Completed <span class="t-count" id="cnt-done">0</span></div>
+          </div>
+
+          <!-- Task main -->
+          <div class="task-main" id="task-main-area">
+            <div class="task-view-title" id="task-view-label">Today</div>
+            <div class="task-view-count" id="task-view-count"></div>
+
+            <!-- Add task -->
+            <div class="add-task-bar" onclick="openAddTask()" id="add-task-bar">
+              <span class="plus">+</span>
+              <span>Add task</span>
+            </div>
+            <div class="add-task-form" id="add-task-form">
+              <input type="text" class="atf-title" id="atf-title" placeholder="Task name" />
+              <textarea class="atf-notes" id="atf-notes" placeholder="Notes (optional)"></textarea>
+              <div class="atf-toolbar">
+                <select class="atf-select" id="atf-project">
+                  <option value="CW">ConsultingWhiz</option>
+                  <option value="GovCon">TheGovConBD</option>
+                  <option value="Viral">ViralAILabs</option>
+                  <option value="Personal">Personal</option>
+                </select>
+                <select class="atf-select" id="atf-priority">
+                  <option value="1">🔴 P1 – Urgent</option>
+                  <option value="2">🟡 P2 – High</option>
+                  <option value="3">🔵 P3 – Medium</option>
+                  <option value="4" selected>⚪ P4 – Low</option>
+                </select>
+                <input type="date" class="atf-date" id="atf-due" />
+                <div class="atf-actions">
+                  <button class="atf-btn cancel" onclick="closeAddTask()">Cancel</button>
+                  <button class="atf-btn primary" onclick="addTask()">Add Task</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Task list -->
+            <div id="task-list"></div>
+            <div id="completed-section" class="completed-section" style="display:none">
+              <div class="completed-toggle" onclick="toggleCompleted()">
+                <span id="completed-arrow">▸</span> Completed (<span id="completed-count">0</span>)
+              </div>
+              <div id="completed-list" style="display:none; margin-top:10px;"></div>
+            </div>
+          </div>
+
+          <!-- Task detail panel -->
+          <div class="task-detail" id="task-detail-panel">
+            <button class="td-close" onclick="closeDetail()">✕</button>
+            <div class="td-label">Task</div>
+            <input type="text" class="td-title-input" id="td-title" placeholder="Task name" />
+            <div class="td-label">Notes</div>
+            <textarea class="td-notes" id="td-notes" placeholder="Add notes, links, or context..."></textarea>
+            <div class="td-label">Project</div>
+            <select class="td-select" id="td-project">
+              <option value="CW">ConsultingWhiz</option>
+              <option value="GovCon">TheGovConBD</option>
+              <option value="Viral">ViralAILabs</option>
+              <option value="Personal">Personal</option>
+            </select>
+            <div class="td-label">Priority</div>
+            <select class="td-select" id="td-priority">
+              <option value="1">🔴 P1 – Urgent</option>
+              <option value="2">🟡 P2 – High</option>
+              <option value="3">🔵 P3 – Medium</option>
+              <option value="4">⚪ P4 – Low</option>
+            </select>
+            <div class="td-label">Due Date</div>
+            <input type="date" class="td-date" id="td-due" />
+            <button class="td-save" onclick="saveDetail()">Save Changes</button>
+          </div>
         </div>
       </div>
 
-      <div class="goal-card">
-        <div class="goal-num">3</div>
-        <div class="goal-content">
-          <div class="title"><span class="badge critical">TODAY ONLY</span><span class="badge govcon">GovCon</span> Register for ASBCC Simply Matchmaking (May 13)</div>
-          <div class="desc">American Small Business Chamber of Commerce virtual B2G matchmaking event is May 13, 2026. <strong>FINAL DAY to register is today.</strong> Direct agency connection opportunity for TheGovConBD — register at americansbcc.org.</div>
+      <!-- ═══ INBOX VIEW ═══ -->
+      <div class="view" id="view-inbox">
+        <div class="page-header">
+          <div class="page-title">📧 Inbox — Today</div>
+          <div class="page-sub">50+ unread emails · mikela@consultingwhiz.com · mikela@aigovbid.com</div>
+        </div>
+        <div class="inbox-filter">
+          <div class="filter-chip active" onclick="filterInbox('all', this)">All</div>
+          <div class="filter-chip" onclick="filterInbox('action', this)">🔴 Action</div>
+          <div class="filter-chip" onclick="filterInbox('govcon', this)">🏛️ GovCon</div>
+          <div class="filter-chip" onclick="filterInbox('decide', this)">🟡 Decide</div>
+          <div class="filter-chip" onclick="filterInbox('low', this)">⚪ Low Priority</div>
+        </div>
+        <div id="inbox-list">
+          <!-- populated by JS -->
         </div>
       </div>
 
-      <div class="goal-card">
-        <div class="goal-num">4</div>
-        <div class="goal-content">
-          <div class="title"><span class="badge critical">OVERDUE</span><span class="badge cw">CW</span> Pay Zoom Invoice (7 Days Past Due)</div>
-          <div class="desc">Zoom invoice is 7 days overdue on contact@consultingwhiz.com. Risk of service interruption to webinar hosting and client calls. Pay now at zoom.us/billing.</div>
+      <!-- ═══ GOV OPPS VIEW ═══ -->
+      <div class="view" id="view-govops">
+        <div class="page-header">
+          <div class="page-title">🏛️ Gov Opportunities</div>
+          <div class="page-sub">9 new alerts today · COMMBUYS · OpenGov · HigherGov · Region 4 ESC</div>
+        </div>
+
+        <div class="section">
+          <div class="section-hdr red">🔴 High Priority</div>
+          <div class="opp-card">
+            <div class="opp-priority-dot high"></div>
+            <div>
+              <div class="opp-card-title">BD-26-1036: Event Management Products & Professional Services</div>
+              <div class="opp-card-meta">COMMBUYS · MA Executive Office of Education · Amendment issued same day</div>
+              <div><span class="badge govcon">GovCon</span><span class="badge crit">AMENDMENT</span></div>
+              <div class="opp-card-action" style="margin-top:6px">→ Check commbuys.com for due date — amendment signals active procurement</div>
+            </div>
+          </div>
+          <div class="opp-card">
+            <div class="opp-priority-dot high"></div>
+            <div>
+              <div class="opp-card-title">Lumberton Housing Authority — Computer Services</div>
+              <div class="opp-card-meta">InternationaleProcurement · Lumberton, NC</div>
+              <div><span class="badge cw">CW</span></div>
+              <div class="opp-card-action" style="margin-top:6px">→ Strong CW fit for IT/computer services — review scope and bid</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-hdr yellow">🟡 Review</div>
+          <div class="opp-card">
+            <div class="opp-priority-dot med"></div>
+            <div>
+              <div class="opp-card-title">Traffic Software for Analytics, Crash Data and Reporting</div>
+              <div class="opp-card-meta">OpenGov · County of San Mateo, CA</div>
+              <div><span class="badge cw">CW</span></div>
+              <div class="opp-card-action" style="margin-top:6px">→ IT/Analytics software — potential CW opportunity, check NAICS</div>
+            </div>
+          </div>
+          <div class="opp-card">
+            <div class="opp-priority-dot med"></div>
+            <div>
+              <div class="opp-card-title">Live Agent Services — San Mateo Medical Center</div>
+              <div class="opp-card-meta">OpenGov · County of San Mateo, CA</div>
+              <div><span class="badge cw">CW</span></div>
+              <div class="opp-card-action" style="margin-top:6px">→ Contact center / BPO potential — review scope</div>
+            </div>
+          </div>
+          <div class="opp-card">
+            <div class="opp-priority-dot med"></div>
+            <div>
+              <div class="opp-card-title">SAP FAR 13 Saved Search — 3 New Results</div>
+              <div class="opp-card-meta">HigherGov · Federal · 05/07/2026</div>
+              <div><span class="badge govcon">GovCon</span></div>
+              <div class="opp-card-action" style="margin-top:6px">→ Check HigherGov dashboard for 3 new federal contract opportunities</div>
+            </div>
+          </div>
+          <div class="opp-card">
+            <div class="opp-priority-dot med"></div>
+            <div>
+              <div class="opp-card-title">Addendum 1: Facilities Management Software and Solutions (26-12)</div>
+              <div class="opp-card-meta">Region 4 ESC</div>
+              <div><span class="badge govcon">GovCon</span><span class="badge crit">AMENDMENT</span></div>
+              <div class="opp-card-action" style="margin-top:6px">→ Review addendum changes before bid close</div>
+            </div>
+          </div>
+          <div class="opp-card">
+            <div class="opp-priority-dot med"></div>
+            <div>
+              <div class="opp-card-title">MDA AI SIDECAR / Navy ONR SBIR III / AFWERX TTS + FDA/HHS Matchmaking Days</div>
+              <div class="opp-card-meta">OS Fresh Squeezed Daily · Federal</div>
+              <div><span class="badge govcon">GovCon</span></div>
+              <div class="opp-card-action" style="margin-top:6px">→ Multiple AI-adjacent federal contracts — review for GovConBD clients</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-hdr">⚪ Low Priority / FYI</div>
+          <div class="opp-card">
+            <div class="opp-priority-dot low"></div>
+            <div>
+              <div class="opp-card-title">9500 Pescadero Creek Road Alarm System</div>
+              <div class="opp-card-meta">OpenGov · County of San Mateo, CA</div>
+              <div class="opp-card-action" style="margin-top:6px">→ Security/alarm — not a core CW/GovCon focus area</div>
+            </div>
+          </div>
+          <div class="opp-card">
+            <div class="opp-priority-dot low"></div>
+            <div>
+              <div class="opp-card-title">WSSC Water Police, Security Officer Uniform</div>
+              <div class="opp-card-meta">OpenGov · Washington Suburban Sanitary Commission, MD</div>
+              <div class="opp-card-action" style="margin-top:6px">→ Non-core — skip</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="goal-card">
-        <div class="goal-num">5</div>
-        <div class="goal-content">
-          <div class="title"><span class="badge new">NEW</span><span class="badge govcon">GovCon</span> Review COMMBUYS: Event Management Products &amp; Services</div>
-          <div class="desc">Massachusetts Executive Office of Education posted BD-26-1036-EDU02-EDU02-129117 with an amendment already filed same day. Active, live solicitation — check scope at commbuys.com to determine if a GovConBD client can bid.</div>
+      <!-- ═══ METRICS VIEW ═══ -->
+      <div class="view" id="view-metrics">
+        <div class="page-header">
+          <div class="page-title">📊 Business Metrics</div>
+          <div class="page-sub">Update these weekly — data as of May 7, 2026</div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-biz" style="color:var(--blue)">🔵 ConsultingWhiz</div>
+            <div class="metric-row"><span class="metric-key">Active Clients</span><span class="metric-val blue">—</span></div>
+            <div class="metric-row"><span class="metric-key">Monthly Revenue</span><span class="metric-val green">—</span></div>
+            <div class="metric-row"><span class="metric-key">Open Proposals</span><span class="metric-val yellow">—</span></div>
+            <div class="metric-row"><span class="metric-key">Pipeline Value</span><span class="metric-val blue">—</span></div>
+            <div class="metric-row"><span class="metric-key">Lead Pipeline (Compliance)</span><span class="metric-val red">BROKEN</span></div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span>Monthly Goal</span><span>—%</span></div>
+              <div class="progress-bar"><div class="progress-fill indigo" style="width:0%"></div></div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-biz" style="color:var(--green)">🟢 TheGovConBD</div>
+            <div class="metric-row"><span class="metric-key">Active Clients</span><span class="metric-val blue">—</span></div>
+            <div class="metric-row"><span class="metric-key">Monthly Revenue</span><span class="metric-val green">—</span></div>
+            <div class="metric-row"><span class="metric-key">Overdue Proposals</span><span class="metric-val red">8</span></div>
+            <div class="metric-row"><span class="metric-key">Webinars This Month</span><span class="metric-val yellow">—</span></div>
+            <div class="metric-row"><span class="metric-key">Signups / Webinar</span><span class="metric-val blue">—</span></div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span>Monthly Goal</span><span>—%</span></div>
+              <div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-biz" style="color:var(--purple)">🟣 ViralAILabs</div>
+            <div class="metric-row"><span class="metric-key">Active Clients</span><span class="metric-val blue">—</span></div>
+            <div class="metric-row"><span class="metric-key">Monthly Revenue</span><span class="metric-val green">—</span></div>
+            <div class="metric-row"><span class="metric-key">Booked Calls / Week</span><span class="metric-val yellow">—</span></div>
+            <div class="metric-row"><span class="metric-key">Email Sequences Live</span><span class="metric-val blue">—</span></div>
+            <div class="metric-row"><span class="metric-key">Reply Rate Avg</span><span class="metric-val green">—</span></div>
+            <div class="progress-wrap">
+              <div class="progress-label"><span>Monthly Goal</span><span>—%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:0%;background:linear-gradient(90deg,#7c3aed,#a78bfa)"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-hdr indigo">📈 SEO / Content Pipeline</div>
+          <div class="card">
+            <div class="card-title">Daily Blog Status</div>
+            <div class="card-meta">Last published: May 6, 2026 — Pentagon AI Classified Networks</div>
+            <table class="prop-table" style="margin-top:8px">
+              <tr><th>Site</th><th>Last Post</th><th>IndexNow</th></tr>
+              <tr><td>ConsultingWhiz.com</td><td>May 6 — Pentagon AI</td><td style="color:var(--green)">✓ 202</td></tr>
+              <tr><td>AIGovBid.com (TheGovConBD)</td><td>May 6 — Pentagon AI</td><td style="color:var(--green)">✓ 202</td></tr>
+              <tr><td>ViralAILabs.com</td><td>May 6 — Pentagon AI</td><td style="color:var(--green)">✓ 202</td></tr>
+            </table>
+          </div>
+          <div class="card">
+            <div class="card-title">GitHub Deployments</div>
+            <div class="card-meta">All 3 sites: GitHub → DigitalOcean (digitalocean-deploy branch)</div>
+            <div class="card-action" style="color:var(--red)">⚠ website-compliance Daily Compliance Lead Pipeline — FAILED (commit 14c2358)</div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- ACTION REQUIRED -->
-    <div class="section">
-      <div class="section-title red">🔴 Action Required</div>
+    </main>
+  </div>
 
-      <div class="card">
-        <div class="card-title red">AIGovBid: 8 Overdue Proposals (mikela@aigovbid.com)</div>
-        <div class="card-meta">From: noreply@aigovbid.com</div>
-        <table style="width:100%;border-collapse:collapse;margin-top:8px;">
-          <tr style="background:#1a1d27;">
-            <th style="text-align:left;font-size:11px;color:#6b7280;padding:6px 8px;">Proposal</th>
-            <th style="text-align:center;font-size:11px;color:#6b7280;padding:6px 8px;white-space:nowrap;">Days OD</th>
-          </tr>
-          <tr style="border-top:1px solid #374151;">
-            <td style="padding:7px 8px;font-size:12px;color:#f87171;">Dynamics CRM Migration Support, Portal Dev &amp; Train-the-Trainer</td>
-            <td style="text-align:center;padding:7px 8px;font-size:12px;font-weight:700;color:#f87171;">1</td>
-          </tr>
-          <tr style="border-top:1px solid #374151;background:#1e2133;">
-            <td style="padding:7px 8px;font-size:12px;color:#e4e4e7;">Data Abstraction and NLP Solution</td>
-            <td style="text-align:center;padding:7px 8px;font-size:12px;color:#fbbf24;">7</td>
-          </tr>
-          <tr style="border-top:1px solid #374151;">
-            <td style="padding:7px 8px;font-size:12px;color:#e4e4e7;">Information Technology Support Services (ITSS)</td>
-            <td style="text-align:center;padding:7px 8px;font-size:12px;color:#fbbf24;">8</td>
-          </tr>
-          <tr style="border-top:1px solid #374151;background:#1e2133;">
-            <td style="padding:7px 8px;font-size:12px;color:#e4e4e7;">Naval Info Warfighting Dev Center — EW Data Support</td>
-            <td style="text-align:center;padding:7px 8px;font-size:12px;color:#fbbf24;">8</td>
-          </tr>
-          <tr style="border-top:1px solid #374151;">
-            <td style="padding:7px 8px;font-size:12px;color:#e4e4e7;">RFI/SS — Program &amp; Budget Enterprise System (PBES) 2026</td>
-            <td style="text-align:center;padding:7px 8px;font-size:12px;color:#fbbf24;">8</td>
-          </tr>
-          <tr style="border-top:1px solid #374151;background:#1e2133;">
-            <td style="padding:7px 8px;font-size:12px;color:#e4e4e7;">DJ10 — Data Monitoring &amp; Sensing / Structured Data (VA)</td>
-            <td style="text-align:center;padding:7px 8px;font-size:12px;color:#f87171;">13</td>
-          </tr>
-          <tr style="border-top:1px solid #374151;">
-            <td style="padding:7px 8px;font-size:12px;color:#e4e4e7;">Early Detection of Wildfires Using AI / Thermal Monitoring</td>
-            <td style="text-align:center;padding:7px 8px;font-size:12px;color:#f87171;">13</td>
-          </tr>
-          <tr style="border-top:1px solid #374151;background:#1e2133;">
-            <td style="padding:7px 8px;font-size:12px;color:#f87171;font-weight:700;">Chemistry and Immunoassay CPRR for BACH, AK</td>
-            <td style="text-align:center;padding:7px 8px;font-size:12px;font-weight:800;color:#f87171;">35</td>
-          </tr>
-        </table>
-        <div class="card-action" style="margin-top:10px;">→ Log in to aigovbid.com → Review each proposal → Close or escalate</div>
-      </div>
+  <div class="footer">⚡ Command Center · Auto-generated daily · Businesses: ConsultingWhiz · TheGovConBD · ViralAILabs</div>
+</div>
 
-      <div class="card">
-        <div class="card-title red">GitHub: Workflow FAILED — website-compliance</div>
-        <div class="card-meta">Repo: consultingwhiz11/website-compliance · Commit: 14c2358 · Branch: main</div>
-        <div class="card-action">Workflow: "Daily Compliance Lead Pipeline (Staged)" failed → Check GitHub Actions logs and fix</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title red">Zoom Invoice 7 Days Past Due</div>
-        <div class="card-meta">From: billing@zoom.us → contact@consultingwhiz.com</div>
-        <div class="card-action">→ Pay at zoom.us/billing to prevent service suspension — impacts client webinars</div>
-      </div>
-    </div>
-
-    <!-- GOV OPP ALERTS -->
-    <div class="section">
-      <div class="section-title green">🏛️ Gov Opp Alerts — 9+ New Today</div>
-
-      <div class="opp-row">
-        <span class="badge new">HIGH PRIORITY</span><span class="badge govcon">COMMBUYS · MA</span>
-        <div class="opp-title">BD-26-1036: Event Management Products &amp; Professional Services</div>
-        <div class="opp-meta">Executive Office of Education (MA) · Amendment issued same day · Check commbuys.com</div>
-      </div>
-      <div class="opp-row">
-        <span class="badge cw">OpenGov · San Mateo, CA</span>
-        <div class="opp-title">Traffic Software for Analytics, Crash Data and Reporting</div>
-        <div class="opp-meta">County of San Mateo · IT/Analytics software — potential CW opportunity</div>
-      </div>
-      <div class="opp-row">
-        <span class="badge cw">OpenGov · San Mateo, CA</span>
-        <div class="opp-title">Live Agent Services — San Mateo Medical Center</div>
-        <div class="opp-meta">Contact center / BPO potential</div>
-      </div>
-      <div class="opp-row">
-        <span class="badge govcon">InternationaleProcurement · NC</span>
-        <div class="opp-title">Lumberton Housing Authority — Computer Services</div>
-        <div class="opp-meta">Strong CW fit for IT/Computer services — review scope</div>
-      </div>
-      <div class="opp-row">
-        <span class="badge govcon">HigherGov · Federal</span>
-        <div class="opp-title">SAP FAR 13 Saved Search — 3 New Results (05/07/2026)</div>
-        <div class="opp-meta">Check HigherGov dashboard for 3 new federal opportunities matching your filter</div>
-      </div>
-      <div class="opp-row">
-        <span class="badge govcon">Region 4 ESC</span>
-        <div class="opp-title">Addendum 1: Facilities Management Software and Solutions (26-12)</div>
-        <div class="opp-meta">Amendment to existing bid — review changes before close date</div>
-      </div>
-      <div class="opp-row">
-        <span class="badge govcon">OS Fresh Squeezed · Federal</span>
-        <div class="opp-title">MDA AI SIDECAR / Navy ONR SBIR III / AFWERX TTS + FDA/HHS Matchmaking Days</div>
-        <div class="opp-meta">Multiple AI-adjacent federal contracts — review for GovConBD clients</div>
-      </div>
-    </div>
-
-    <!-- REVIEW & DECIDE -->
-    <div class="section">
-      <div class="section-title yellow">🟡 Review &amp; Decide</div>
-
-      <div class="card">
-        <div class="card-title yellow">⏰ EXPIRES TONIGHT — Venture Summit West Early Bird</div>
-        <div class="card-meta">Deadline: Tonight at midnight</div>
-        <div class="card-action">→ Decide if worth attending for ViralAILabs / CW BD — early bird expires tonight</div>
-      </div>
-      <div class="card">
-        <div class="card-title" style="color:#e4e4e7;">CMMC L2: GCC High vs. Google Workspace for Gov</div>
-        <div class="card-meta">From: Overwatch Tools newsletter</div>
-        <div class="card-action">→ Forward to CW clients pursuing CMMC L2 certification or use as GovCon content</div>
-      </div>
-      <div class="card">
-        <div class="card-title" style="color:#e4e4e7;">AI Procurement Webinar — How Agencies Approach AI</div>
-        <div class="card-meta">Live today via Zoom — check for replay</div>
-        <div class="card-action">→ High relevance for GovConBD BD strategy and client advisory</div>
-      </div>
-      <div class="card">
-        <div class="card-title" style="color:#e4e4e7;">Fireflies Recap: Lunch &amp; Learn Brain²! (L5.ai)</div>
-        <div class="card-meta">From: fred@fireflies.ai · Via: prince.singh@l5.ai</div>
-        <div class="card-action">→ Review for L5.ai partnership relevance</div>
-      </div>
-    </div>
-
-    <!-- FOOTER -->
-    <div class="footer">
-      Auto-generated by Command Center AI · Thursday, May 7, 2026 at 7:00 AM<br>
-      Accounts: mikela@consultingwhiz.com · mikela@aigovbid.com<br>
-      Businesses: <strong>ConsultingWhiz</strong> (CW) · <strong>TheGovConBD</strong> (GovCon) · <strong>ViralAILabs</strong> (Viral)
-    </div>
-
-  </div><!-- /container -->
-</div><!-- /main-content -->
-
-<!-- ═══════════════════════════════════════════════════
-     AUTH SCRIPT
-     Password: CW@2026!
-     To change: run this in browser console and update HASH below:
-       const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('yourNewPassword'));
-       console.log([...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join(''));
-═══════════════════════════════════════════════════ -->
 <script>
-  const HASH = 'e9010d491a7c3ce6f87c40078ece679de6fb8e950afe657b32004d55e3401c25';
-  const STORAGE_KEY = 'cc_auth_v1';
+/* ═══════════════════════════════════════════
+   AUTH
+═══════════════════════════════════════════ */
+const HASH = 'e9010d491a7c3ce6f87c40078ece679de6fb8e950afe657b32004d55e3401c25';
+const AUTH_KEY = 'cc_auth_v2';
 
-  async function sha256(str) {
-    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
-  }
-
-  function showContent() {
-    document.getElementById('lock-screen').style.display = 'none';
-    document.getElementById('main-content').style.display = 'block';
-  }
-
-  function logout() {
-    localStorage.removeItem(STORAGE_KEY);
-    sessionStorage.removeItem(STORAGE_KEY);
-    document.getElementById('lock-screen').style.display = 'flex';
-    document.getElementById('main-content').style.display = 'none';
-    document.getElementById('pw-input').value = '';
-    document.getElementById('pw-error').textContent = '';
-  }
-
-  async function unlock() {
-    const pw = document.getElementById('pw-input').value;
-    const remember = document.getElementById('remember-me').checked;
-    const hash = await sha256(pw);
-    if (hash === HASH) {
-      if (remember) localStorage.setItem(STORAGE_KEY, '1');
-      else sessionStorage.setItem(STORAGE_KEY, '1');
-      showContent();
-    } else {
-      document.getElementById('pw-error').textContent = 'Incorrect password. Try again.';
-      document.getElementById('pw-input').value = '';
-      document.getElementById('pw-input').focus();
-    }
-  }
-
-  // Allow Enter key to submit
-  document.getElementById('pw-input').addEventListener('keydown', e => {
-    if (e.key === 'Enter') unlock();
-  });
-
-  // Auto-unlock if already authenticated on this device
-  if (localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY)) {
-    showContent();
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+}
+function showApp() {
+  document.getElementById('lock-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  initApp();
+}
+function logout() {
+  localStorage.removeItem(AUTH_KEY); sessionStorage.removeItem(AUTH_KEY);
+  document.getElementById('lock-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-error').textContent = '';
+}
+async function unlock() {
+  const pw = document.getElementById('pw-input').value;
+  const remember = document.getElementById('remember-me').checked;
+  if (!pw) { document.getElementById('pw-error').textContent = 'Enter your password.'; return; }
+  const hash = await sha256(pw);
+  if (hash === HASH) {
+    if (remember) localStorage.setItem(AUTH_KEY,'1'); else sessionStorage.setItem(AUTH_KEY,'1');
+    showApp();
   } else {
-    document.getElementById('pw-input').focus();
+    document.getElementById('pw-error').textContent = 'Incorrect password. Try again.';
+    document.getElementById('pw-input').value = ''; document.getElementById('pw-input').focus();
   }
-</script>
+}
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
+if (localStorage.getItem(AUTH_KEY) || sessionStorage.getItem(AUTH_KEY)) showApp();
+else document.getElementById('pw-input').focus();
 
+/* ═══════════════════════════════════════════
+   APP INIT
+═══════════════════════════════════════════ */
+function initApp() {
+  // Set dates
+  const now = new Date();
+  const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+  const dateStr = now.toLocaleDateString('en-US', opts);
+  document.getElementById('topbar-date').textContent = dateStr;
+  document.getElementById('today-date-sub').textContent = dateStr + ' · Last updated 7:00 AM';
+  // Set default due date to today
+  const todayISO = now.toISOString().split('T')[0];
+  document.getElementById('atf-due').value = todayISO;
+  // Render tasks
+  renderTasks();
+  renderInbox();
+  updateCounts();
+}
+
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+function showView(id, el) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+  closeSidebar();
+}
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
+/* ═══════════════════════════════════════════
+   TASKS ENGINE
+═══════════════════════════════════════════ */
+const TASKS_KEY = 'cc_tasks_v1';
+let tasks = JSON.parse(localStorage.getItem(TASKS_KEY) || '[]');
+let currentFilter = 'today-tasks';
+let activeTaskId = null;
+
+function saveTasks() { localStorage.setItem(TASKS_KEY, JSON.stringify(tasks)); }
+
+function genId() { return 't_' + Date.now() + '_' + Math.random().toString(36).slice(2,7); }
+
+function addTask() {
+  const title = document.getElementById('atf-title').value.trim();
+  if (!title) { document.getElementById('atf-title').focus(); return; }
+  const task = {
+    id: genId(),
+    title,
+    notes: document.getElementById('atf-notes').value.trim(),
+    project: document.getElementById('atf-project').value,
+    priority: parseInt(document.getElementById('atf-priority').value),
+    due: document.getElementById('atf-due').value,
+    done: false,
+    createdAt: new Date().toISOString()
+  };
+  tasks.unshift(task);
+  saveTasks();
+  closeAddTask();
+  renderTasks();
+  updateCounts();
+}
+
+function toggleDone(id) {
+  const t = tasks.find(x => x.id === id);
+  if (!t) return;
+  t.done = !t.done;
+  t.completedAt = t.done ? new Date().toISOString() : null;
+  saveTasks();
+  renderTasks();
+  updateCounts();
+}
+
+function deleteTask(id) {
+  tasks = tasks.filter(x => x.id !== id);
+  saveTasks();
+  if (activeTaskId === id) closeDetail();
+  renderTasks();
+  updateCounts();
+}
+
+function openDetail(id) {
+  const t = tasks.find(x => x.id === id);
+  if (!t) return;
+  activeTaskId = id;
+  document.getElementById('td-title').value = t.title;
+  document.getElementById('td-notes').value = t.notes || '';
+  document.getElementById('td-project').value = t.project || 'CW';
+  document.getElementById('td-priority').value = t.priority || 4;
+  document.getElementById('td-due').value = t.due || '';
+  document.getElementById('task-detail-panel').classList.add('open');
+}
+
+function saveDetail() {
+  const t = tasks.find(x => x.id === activeTaskId);
+  if (!t) return;
+  t.title = document.getElementById('td-title').value.trim() || t.title;
+  t.notes = document.getElementById('td-notes').value.trim();
+  t.project = document.getElementById('td-project').value;
+  t.priority = parseInt(document.getElementById('td-priority').value);
+  t.due = document.getElementById('td-due').value;
+  saveTasks();
+  renderTasks();
+  updateCounts();
+  // Visual feedback
+  const btn = document.querySelector('.td-save');
+  btn.textContent = '✓ Saved'; btn.style.background = 'var(--green-bg)'; btn.style.color = 'var(--green)';
+  setTimeout(() => { btn.textContent = 'Save Changes'; btn.style.background = ''; btn.style.color = ''; }, 1500);
+}
+
+function closeDetail() {
+  activeTaskId = null;
+  document.getElementById('task-detail-panel').classList.remove('open');
+}
+
+function openAddTask() {
+  document.getElementById('add-task-bar').style.display = 'none';
+  document.getElementById('add-task-form').classList.add('open');
+  document.getElementById('atf-title').focus();
+}
+function closeAddTask() {
+  document.getElementById('add-task-bar').style.display = 'flex';
+  document.getElementById('add-task-form').classList.remove('open');
+  document.getElementById('atf-title').value = '';
+  document.getElementById('atf-notes').value = '';
+  document.getElementById('atf-priority').value = '4';
+  document.getElementById('atf-due').value = new Date().toISOString().split('T')[0];
+}
+
+const projectColors = { CW:'#60a5fa', GovCon:'#34d399', Viral:'#a78bfa', Personal:'#6b7280' };
+const projectBgs = { CW:'#1e3a5f', GovCon:'#065f46', Viral:'#2d1f5c', Personal:'#374151' };
+const prioColors = { 1:'var(--red)', 2:'var(--yellow)', 3:'var(--blue)', 4:'var(--border)' };
+const prioLabels = { 1:'P1', 2:'P2', 3:'P3', 4:'P4' };
+
+function getFilteredTasks(filter) {
+  const today = new Date().toISOString().split('T')[0];
+  if (filter === 'today-tasks') return tasks.filter(t => !t.done && (!t.due || t.due <= today));
+  if (filter === 'upcoming') return tasks.filter(t => !t.done && t.due && t.due > today);
+  if (filter === 'all-tasks') return tasks.filter(t => !t.done);
+  if (filter === 'completed') return tasks.filter(t => t.done);
+  // project filter
+  return tasks.filter(t => !t.done && t.project === filter);
+}
+
+function renderTasks(filter) {
+  if (filter) currentFilter = filter;
+  const today = new Date().toISOString().split('T')[0];
+  const active = getFilteredTasks(currentFilter);
+  const done = tasks.filter(t => t.done);
+
+  const list = document.getElementById('task-list');
+  list.innerHTML = '';
+
+  if (active.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text3);font-size:13px">No tasks here 🎉</div>';
+  } else {
+    active.forEach(t => {
+      const isOverdue = t.due && t.due < today && !t.done;
+      const pClass = t.priority <= 3 ? 'p' + t.priority : '';
+      const el = document.createElement('div');
+      el.className = 'task-item';
+      el.innerHTML = `
+        <div class="priority-bar p${t.priority}"></div>
+        <div class="t-check ${pClass}" onclick="toggleDone('${t.id}')"></div>
+        <div class="t-body" onclick="openDetail('${t.id}')" style="cursor:pointer">
+          <div class="t-title">${escHtml(t.title)}</div>
+          <div class="t-meta">
+            <span class="t-project" style="background:${projectBgs[t.project]||'#374151'};color:${projectColors[t.project]||'#9ca3af'}">${t.project}</span>
+            ${t.due ? `<span class="t-due ${isOverdue?'overdue':''}">${isOverdue?'⚠ ':''} ${formatDate(t.due)}</span>` : ''}
+            <span style="font-size:10px;color:${prioColors[t.priority]};font-weight:700">${prioLabels[t.priority]}</span>
+          </div>
+          ${t.notes ? `<div class="t-notes-preview">📝 ${escHtml(t.notes)}</div>` : ''}
+        </div>
+        <div class="t-actions">
+          <button class="t-action-btn" onclick="openDetail('${t.id}')" title="Edit">✏️</button>
+          <button class="t-action-btn" onclick="deleteTask('${t.id}')" title="Delete">🗑</button>
+        </div>`;
+      list.appendChild(el);
+    });
+  }
+
+  // Completed section
+  const compSection = document.getElementById('completed-section');
+  const compList = document.getElementById('completed-list');
+  document.getElementById('completed-count').textContent = done.length;
+  if (done.length > 0 && currentFilter !== 'completed') {
+    compSection.style.display = 'block';
+    compList.innerHTML = done.slice(0, 20).map(t => `
+      <div class="task-item completed">
+        <div class="priority-bar p4"></div>
+        <div class="t-check checked" onclick="toggleDone('${t.id}')"></div>
+        <div class="t-body">
+          <div class="t-title">${escHtml(t.title)}</div>
+          <div class="t-meta">
+            <span class="t-project" style="background:${projectBgs[t.project]||'#374151'};color:${projectColors[t.project]||'#9ca3af'}">${t.project}</span>
+          </div>
+        </div>
+        <div class="t-actions">
+          <button class="t-action-btn" onclick="deleteTask('${t.id}')">🗑</button>
+        </div>
+      </div>`).join('');
+  } else if (currentFilter === 'completed') {
+    compSection.style.display = 'none';
+    list.innerHTML = done.length === 0 ? '<div style="text-align:center;padding:32px;color:var(--text3);font-size:13px">No completed tasks yet</div>' :
+      done.map(t => `
+        <div class="task-item completed">
+          <div class="priority-bar p4"></div>
+          <div class="t-check checked" onclick="toggleDone('${t.id}')"></div>
+          <div class="t-body">
+            <div class="t-title">${escHtml(t.title)}</div>
+            <div class="t-meta">
+              <span class="t-project" style="background:${projectBgs[t.project]||'#374151'};color:${projectColors[t.project]||'#9ca3af'}">${t.project}</span>
+              ${t.completedAt ? `<span class="t-due">${formatDate(t.completedAt.split('T')[0])}</span>` : ''}
+            </div>
+          </div>
+          <div class="t-actions">
+            <button class="t-action-btn" onclick="deleteTask('${t.id}')">🗑</button>
+          </div>
+        </div>`).join('');
+  } else {
+    compSection.style.display = 'none';
+  }
+
+  // Update view label
+  const labels = { 'today-tasks':'Today', 'upcoming':'Upcoming', 'all-tasks':'All Tasks', 'completed':'Completed' };
+  document.getElementById('task-view-label').textContent = labels[currentFilter] || currentFilter;
+  document.getElementById('task-view-count').textContent = `${active.length} task${active.length !== 1 ? 's' : ''}`;
+}
+
+let completedOpen = false;
+function toggleCompleted() {
+  completedOpen = !completedOpen;
+  document.getElementById('completed-list').style.display = completedOpen ? 'block' : 'none';
+  document.getElementById('completed-arrow').textContent = completedOpen ? '▾' : '▸';
+}
+
+function showTaskFilter(filter, el) {
+  currentFilter = filter;
+  document.querySelectorAll('.task-nav-item').forEach(x => x.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderTasks(filter);
+}
+
+function showProjectFilter(proj, el) {
+  showView('tasks', null);
+  document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+  if (el) el.classList.add('active');
+  currentFilter = proj;
+  document.querySelectorAll('.task-nav-item').forEach(x => x.classList.remove('active'));
+  renderTasks(proj);
+}
+
+function updateCounts() {
+  const today = new Date().toISOString().split('T')[0];
+  const active = tasks.filter(t => !t.done);
+  const todayTasks = tasks.filter(t => !t.done && (!t.due || t.due <= today));
+  const upcoming = tasks.filter(t => !t.done && t.due && t.due > today);
+  const done = tasks.filter(t => t.done);
+
+  document.getElementById('cnt-today').textContent = todayTasks.length;
+  document.getElementById('cnt-upcoming').textContent = upcoming.length;
+  document.getElementById('cnt-all').textContent = active.length;
+  document.getElementById('cnt-done').textContent = done.length;
+
+  const badge = document.getElementById('tasks-badge');
+  badge.textContent = active.length;
+
+  const projs = { CW: 'cw', GovCon: 'gc', Viral: 'vl', Personal: 'pe' };
+  Object.entries(projs).forEach(([proj, key]) => {
+    const count = tasks.filter(t => !t.done && t.project === proj).length;
+    const el = document.getElementById(`proj-${key}-count`);
+    if (el) el.textContent = count;
+  });
+}
+
+/* ═══════════════════════════════════════════
+   INBOX DATA
+═══════════════════════════════════════════ */
+const inboxData = [
+  { cat:'action', biz:'GovCon', from:'noreply@aigovbid.com', subject:'OVERDUE: Dynamics CRM Migration — 1 Day Past Due', action:'Log into aigovbid.com and close or escalate', time:'10:00 AM' },
+  { cat:'action', biz:'GovCon', from:'noreply@aigovbid.com', subject:'OVERDUE: 7 More Proposals — 7–35 Days Past Due', action:'Batch review all overdue proposals in aigovbid.com', time:'10:00 AM' },
+  { cat:'action', biz:'CW', from:'notifications@github.com', subject:'[consultingwhiz11/website-compliance] Run FAILED: Daily Compliance Lead Pipeline', action:'Check Actions tab in GitHub → fix commit 14c2358', time:'12:28 PM' },
+  { cat:'action', biz:'CW', from:'billing@zoom.us', subject:'Zoom Invoice 7 Days Past Due', action:'Pay immediately at zoom.us/billing', time:'3:00 PM' },
+  { cat:'govcon', biz:'GovCon', from:'notifications@mail.commbuys.com', subject:'Bid Notification — BD-26-1036-EDU02: Event Management Products & Professional Services', action:'Review bid at commbuys.com', time:'2:03 PM' },
+  { cat:'govcon', biz:'GovCon', from:'notifications@mail.commbuys.com', subject:'Bid Amendment Notification — BD-26-1036 (Amendment 1)', action:'Review amendment changes', time:'2:47 PM' },
+  { cat:'govcon', biz:'CW', from:'procurement-notifications@opengov.com', subject:'New Opp: County of San Mateo — Traffic Software for Analytics', action:'Review NAICS and scope', time:'3:43 PM' },
+  { cat:'govcon', biz:'CW', from:'procurement-notifications@opengov.com', subject:'New Opp: County of San Mateo — Live Agent Services', action:'Review scope for BPO potential', time:'2:01 PM' },
+  { cat:'govcon', biz:'GovCon', from:'subscriptions@highergov.com', subject:'HigherGov Saved Search Update — SAP FAR 13 (3 new results)', action:'Review 3 new federal opportunities in HigherGov dashboard', time:'11:41 AM' },
+  { cat:'govcon', biz:'GovCon', from:'support@internationaleprocurement.com', subject:'Lumberton Housing Authority, NC — Computer Services', action:'Review bid scope — strong CW fit', time:'2:33 PM' },
+  { cat:'govcon', biz:'GovCon', from:'region4esc@customer.ionwave.net', subject:'Region 4 ESC Bid Addendum: 26-12 Facilities Management Software', action:'Review addendum before bid close', time:'12:16 PM' },
+  { cat:'govcon', biz:'GovCon', from:'OSFreshSqueezedDaily@orangeslices.ai', subject:'CMS HQR / MDA AI SIDECAR / Navy ONR SBIR III / FDA Matchmaking Days', action:'Review AI-adjacent federal contracts for GovConBD clients', time:'12:24 PM' },
+  { cat:'decide', biz:'CW', from:'fred@fireflies.ai', subject:'Meeting Recap — Lunch & Learn: Brain²! (EMEA/AMER)', action:'Review for L5.ai partnership relevance', time:'4:05 PM' },
+  { cat:'decide', biz:'GovCon', from:'no-reply@zoom.us', subject:'Webinar reminder: How agencies approach AI procurement (LIVE)', action:'Watch now or find replay — highly relevant for GovConBD', time:'2:56 PM' },
+  { cat:'decide', biz:'CW', from:'info-overwatchtools.com@shared1.ccsend.com', subject:'CMMC L2 Platform Decision — GCC High vs Google Workspace for Gov', action:'Forward to CMMC-pursuing clients or use as content', time:'4:02 PM' },
+  { cat:'decide', biz:'CW', from:'venturesummits@youngstartupmailercampaign.com', subject:'Early Bird Rate Expires TODAY — Venture Summit West ⏰', action:'Decide on attendance before midnight', time:'3:05 PM' },
+  { cat:'decide', biz:'GovCon', from:'notify@americansbcc.org', subject:'FINAL DAY to Register — ASBCC ConnectPoint Simply Matchmaking May 13', action:'Register today at americansbcc.org', time:'1:31 PM' },
+  { cat:'low', biz:'CW', from:'marketing@engage.canva.com', subject:'Be the first to shop Canva Originals', action:'Newsletter — skip', time:'4:05 PM' },
+  { cat:'low', biz:'CW', from:'linkedin@em.linkedin.com', subject:'Thanks for being a valued member, Mikel', action:'Promotional — skip', time:'3:11 PM' },
+  { cat:'low', biz:'Personal', from:'noreply@news.paypal.com', subject:'Use your PayPal Balance wherever you shop', action:'Promotional — skip', time:'3:01 PM' },
+  { cat:'low', biz:'CW', from:'theaipixel@substack.com', subject:'OpenAI just swapped ChatGPT\'s brain — hallucinates 52% less', action:'Newsletter — read when time allows', time:'3:03 PM' },
+];
+
+let activeInboxFilter = 'all';
+function filterInbox(filter, el) {
+  activeInboxFilter = filter;
+  document.querySelectorAll('.filter-chip').forEach(x => x.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderInbox();
+}
+
+const bizColors = { CW:'#60a5fa', GovCon:'#34d399', Viral:'#a78bfa', Personal:'#6b7280' };
+const bizBgs = { CW:'#1e3a5f', GovCon:'#065f46', Viral:'#2d1f5c', Personal:'#374151' };
+const catColors = { action:'var(--red)', govcon:'var(--green)', decide:'var(--yellow)', low:'var(--text3)' };
+const catLabels = { action:'🔴 Action', govcon:'🏛️ GovCon', decide:'🟡 Decide', low:'⚪ FYI' };
+
+function renderInbox() {
+  const filtered = activeInboxFilter === 'all' ? inboxData : inboxData.filter(m => m.cat === activeInboxFilter);
+  const list = document.getElementById('inbox-list');
+  list.innerHTML = filtered.map(m => `
+    <div class="card" style="margin-bottom:8px">
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap">
+            <span style="font-size:10px;font-weight:700;color:${catColors[m.cat]}">${catLabels[m.cat]}</span>
+            <span class="badge" style="background:${bizBgs[m.biz]||'#374151'};color:${bizColors[m.biz]||'#9ca3af'}">${m.biz}</span>
+            <span style="font-size:11px;color:var(--text3);margin-left:auto">${m.time}</span>
+          </div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:3px">${escHtml(m.subject)}</div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:6px">${escHtml(m.from)}</div>
+          <div style="font-size:12px;color:var(--text2)">→ ${escHtml(m.action)}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════ */
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function formatDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T12:00:00');
+  return d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+}
+
+// Close add-task form on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAddTask(); closeDetail(); } });
+</script>
 </body>
 </html>
