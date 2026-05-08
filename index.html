@@ -3,455 +3,347 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>⚡ Command Center</title>
+<title>⚡ Command Center — $50k Mission</title>
 <style>
 :root {
-  --bg: #1a1d27; --bg2: #23263a; --bg3: #12141f; --bg4: #1e2133;
-  --border: #374151; --border2: #2d3148;
-  --text: #e4e4e7; --text2: #9ca3af; --text3: #6b7280;
-  --indigo: #6366f1; --indigo2: #4f46e5; --indigo3: #7c3aed;
-  --red: #f87171; --red-bg: #7f1d1d; --red-bg2: #2d1515;
-  --yellow: #fbbf24; --yellow-bg: #78350f;
-  --green: #34d399; --green-bg: #065f46;
-  --blue: #60a5fa; --blue-bg: #1e3a5f;
-  --purple: #a78bfa; --purple-bg: #2d1f5c;
-  --sidebar-w: 220px;
+  --bg:#1a1d27;--bg2:#23263a;--bg3:#12141f;--bg4:#1e2133;
+  --border:#374151;--border2:#2d3148;
+  --text:#e4e4e7;--text2:#9ca3af;--text3:#6b7280;
+  --indigo:#6366f1;--indigo2:#4f46e5;--indigo3:#7c3aed;
+  --red:#f87171;--red-bg:#7f1d1d;
+  --yellow:#fbbf24;--yellow-bg:#78350f;
+  --green:#34d399;--green-bg:#065f46;
+  --blue:#60a5fa;--blue-bg:#1e3a5f;
+  --purple:#a78bfa;--purple-bg:#2d1f5c;
+  --sidebar-w:220px;
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
-body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; flex-direction: column; overflow: hidden; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;display:flex;flex-direction:column;overflow:hidden;}
 
-/* ── LOCK SCREEN ── */
-#lock-screen {
-  position: fixed; inset: 0; background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 9999; padding: 24px;
-}
-.lock-card {
-  background: var(--bg2); border-radius: 20px; padding: 40px 36px;
-  width: 100%; max-width: 380px; text-align: center;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.6); border: 1px solid var(--border);
-}
-.lock-icon { font-size: 44px; margin-bottom: 16px; }
-.lock-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
-.lock-sub { font-size: 13px; color: var(--text3); margin-bottom: 28px; }
-.lock-input {
-  width: 100%; background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 10px; padding: 14px 16px; font-size: 16px; color: var(--text);
-  outline: none; margin-bottom: 12px; letter-spacing: 2px; transition: border-color .2s;
-}
-.lock-input:focus { border-color: var(--indigo); }
-.lock-btn {
-  width: 100%; background: linear-gradient(135deg, var(--indigo2), var(--indigo3));
-  color: #fff; border: none; border-radius: 10px; padding: 14px;
-  font-size: 15px; font-weight: 700; cursor: pointer; transition: opacity .2s;
-}
-.lock-btn:hover { opacity: .9; }
-.lock-error { color: var(--red); font-size: 12px; margin-top: 10px; min-height: 18px; }
-.lock-remember {
-  display: flex; align-items: center; justify-content: center;
-  gap: 8px; margin-bottom: 14px; font-size: 12px; color: var(--text2); cursor: pointer;
-}
-.lock-remember input { cursor: pointer; accent-color: var(--indigo); }
+/* LOCK */
+#lock-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;padding:24px;}
+.lock-card{background:var(--bg2);border-radius:20px;padding:40px 36px;width:100%;max-width:380px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.6);border:1px solid var(--border);}
+.lock-icon{font-size:44px;margin-bottom:16px;}
+.lock-title{font-size:22px;font-weight:800;margin-bottom:6px;}
+.lock-sub{font-size:13px;color:var(--text3);margin-bottom:28px;}
+.lock-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;font-size:16px;color:var(--text);outline:none;margin-bottom:12px;letter-spacing:2px;transition:border-color .2s;}
+.lock-input:focus{border-color:var(--indigo);}
+.lock-btn{width:100%;background:linear-gradient(135deg,var(--indigo2),var(--indigo3));color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.lock-btn:hover{opacity:.9;}
+.lock-error{color:var(--red);font-size:12px;margin-top:10px;min-height:18px;}
+.lock-remember{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;font-size:12px;color:var(--text2);cursor:pointer;}
+.lock-remember input{cursor:pointer;accent-color:var(--indigo);}
 
-/* ── APP SHELL ── */
-#app { display: none; flex: 1; flex-direction: column; height: 100vh; overflow: hidden; }
+/* APP */
+#app{display:none;flex:1;flex-direction:column;height:100vh;overflow:hidden;}
 
-/* ── TOP BAR ── */
-.topbar {
-  background: var(--bg3); border-bottom: 1px solid var(--border);
-  padding: 0 20px; height: 52px; display: flex; align-items: center;
-  justify-content: space-between; flex-shrink: 0; gap: 12px;
+/* TOPBAR */
+.topbar{background:var(--bg3);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:12px;}
+.topbar-left{display:flex;align-items:center;gap:12px;}
+.topbar-logo{font-size:18px;font-weight:800;background:linear-gradient(135deg,var(--indigo),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.topbar-date{font-size:12px;color:var(--text3);}
+.topbar-right{display:flex;align-items:center;gap:8px;}
+.topbar-btn{background:var(--bg2);border:1px solid var(--border);color:var(--text2);border-radius:7px;padding:6px 12px;font-size:11px;cursor:pointer;transition:all .2s;}
+.topbar-btn:hover{color:var(--text);border-color:var(--indigo);}
+.hamburger{background:none;border:none;color:var(--text2);font-size:18px;cursor:pointer;display:none;padding:4px 8px;}
+
+/* BODY */
+.app-body{display:flex;flex:1;overflow:hidden;}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);background:var(--bg3);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;transition:transform .25s ease;}
+.sidebar-section{padding:16px 12px 8px;}
+.sidebar-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);font-weight:700;padding:0 8px;margin-bottom:6px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--text2);transition:all .15s;user-select:none;margin-bottom:2px;}
+.nav-item:hover{background:var(--bg2);color:var(--text);}
+.nav-item.active{background:rgba(99,102,241,.18);color:var(--indigo);font-weight:600;}
+.nav-item .nav-icon{font-size:15px;flex-shrink:0;width:20px;text-align:center;}
+.nav-item .nav-badge{margin-left:auto;background:var(--red-bg);color:var(--red);font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;}
+.nav-item .nav-badge.green{background:var(--green-bg);color:var(--green);}
+.nav-item .nav-badge.yellow{background:var(--yellow-bg);color:var(--yellow);}
+.nav-separator{height:1px;background:var(--border);margin:10px 12px;}
+.task-project-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+/* MAIN */
+.main-pane{flex:1;overflow-y:auto;padding:24px;}
+.view{display:none;}
+.view.active{display:block;}
+.page-header{margin-bottom:20px;}
+.page-title{font-size:22px;font-weight:800;margin-bottom:4px;}
+.page-sub{font-size:13px;color:var(--text3);}
+
+/* REVENUE TRACKER BAR */
+.rev-tracker{background:var(--bg2);border-radius:14px;padding:18px 22px;margin-bottom:22px;border:1px solid var(--border2);display:flex;gap:24px;align-items:center;flex-wrap:wrap;}
+.rev-left{min-width:160px;}
+.rev-label-sm{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);font-weight:700;margin-bottom:4px;}
+.rev-amount{font-size:30px;font-weight:900;color:var(--green);line-height:1;}
+.rev-of-goal{font-size:12px;color:var(--text3);margin-top:4px;}
+.rev-bar-wrap{flex:1;min-width:200px;}
+.rev-bar-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:5px;}
+.rev-bar-track{height:12px;background:var(--bg4);border-radius:6px;overflow:hidden;position:relative;}
+.rev-bar-fill{height:100%;background:linear-gradient(90deg,#059669,#34d399);border-radius:6px;transition:width 1s ease;}
+.rev-milestones{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:5px;}
+.rev-right{display:flex;gap:16px;flex-wrap:wrap;}
+.rev-stat{text-align:center;}
+.rev-stat-val{font-size:20px;font-weight:800;color:var(--text);}
+.rev-stat-val.urgent{color:var(--red);}
+.rev-stat-val.ok{color:var(--yellow);}
+.rev-stat-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-top:2px;}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px;}
+.kpi-card{background:var(--bg2);border-radius:12px;padding:16px 18px;border:1px solid var(--border2);position:relative;overflow:hidden;cursor:pointer;}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--indigo2),var(--indigo3));}
+.kpi-card.red::before{background:linear-gradient(90deg,#dc2626,#f87171);}
+.kpi-card.green::before{background:linear-gradient(90deg,#059669,#34d399);}
+.kpi-card.yellow::before{background:linear-gradient(90deg,#d97706,#fbbf24);}
+.kpi-card.blue::before{background:linear-gradient(90deg,#2563eb,#60a5fa);}
+.kpi-label{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;font-weight:600;}
+.kpi-value{font-size:26px;font-weight:800;line-height:1;margin-bottom:6px;}
+.kpi-value.red{color:var(--red);}
+.kpi-value.green{color:var(--green);}
+.kpi-value.yellow{color:var(--yellow);}
+.kpi-value.blue{color:var(--blue);}
+.kpi-change{font-size:11px;color:var(--text3);}
+.kpi-edit-input{background:transparent;border:none;color:inherit;font-size:inherit;font-weight:inherit;width:100%;outline:none;cursor:text;}
+.kpi-edit-input:focus{border-bottom:1px dashed var(--indigo);}
+.kpi-hint{font-size:9px;color:var(--text3);margin-top:3px;font-style:italic;}
+
+/* AI BANNER */
+.ai-banner{background:var(--bg2);border-left:4px solid var(--green);border-radius:0 12px 12px 0;padding:14px 18px;margin-bottom:20px;}
+.ai-banner .ai-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);font-weight:700;margin-bottom:6px;}
+.ai-banner p{font-size:13px;line-height:1.7;color:#a7f3d0;}
+
+/* SECTION */
+.section{margin-bottom:22px;}
+.section-hdr{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.section-hdr.red{color:var(--red);}
+.section-hdr.green{color:var(--green);}
+.section-hdr.yellow{color:var(--yellow);}
+.section-hdr.indigo{color:var(--indigo);}
+
+/* GOAL CARDS */
+.goal-card{background:var(--bg2);border-radius:10px;padding:14px 16px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;border:1px solid var(--border2);transition:border-color .2s;}
+.goal-card:hover{border-color:var(--border);}
+.goal-card.done{opacity:.55;}
+.goal-num{background:var(--indigo);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;margin-top:2px;transition:all .2s;}
+.goal-num.done-num{background:var(--green-bg);color:var(--green);}
+.g-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.g-title.done-title{text-decoration:line-through;color:var(--text3);}
+.g-desc{font-size:12px;color:var(--text2);line-height:1.6;}
+.g-revenue{font-size:11px;color:var(--green);font-weight:700;margin-top:4px;}
+.goal-btns{display:flex;flex-direction:column;gap:4px;flex-shrink:0;align-items:flex-end;}
+.goal-check-btn{width:24px;height:24px;border-radius:50%;border:2px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;transition:all .2s;color:transparent;}
+.goal-check-btn:hover{border-color:var(--green);color:var(--green);}
+.goal-check-btn.checked{background:var(--green-bg);border-color:var(--green);color:var(--green);}
+.goal-task-btn{background:none;border:1px solid var(--border);color:var(--text3);border-radius:5px;padding:2px 7px;font-size:10px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.goal-task-btn:hover{border-color:var(--indigo);color:var(--indigo);}
+
+/* BADGES */
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;margin-right:4px;vertical-align:middle;}
+.badge.cw{background:var(--blue-bg);color:var(--blue);}
+.badge.govcon{background:var(--green-bg);color:var(--green);}
+.badge.viral{background:var(--purple-bg);color:var(--purple);}
+.badge.crit{background:var(--red-bg);color:var(--red);}
+.badge.new-b{background:var(--green-bg);color:var(--green);}
+.badge.money{background:#1a2e1a;color:#4ade80;border:1px solid #065f46;}
+
+/* ACTION CARDS */
+.action-card{background:var(--bg2);border-radius:10px;padding:14px 16px;margin-bottom:8px;border:1px solid var(--border2);display:flex;gap:12px;align-items:flex-start;transition:border-color .2s;}
+.action-card:hover{border-color:var(--border);}
+.action-card.dismissed{opacity:.35;background:var(--bg3);}
+.ac-body{flex:1;min-width:0;}
+.ac-title{font-size:13px;font-weight:700;margin-bottom:4px;}
+.ac-title.red{color:var(--red);}
+.ac-title.done-t{text-decoration:line-through;color:var(--text3);}
+.ac-meta{font-size:11px;color:var(--text2);margin-bottom:4px;}
+.ac-action{font-size:12px;color:var(--text3);}
+.ac-revenue{font-size:11px;color:var(--red);font-weight:700;margin-top:4px;}
+.ac-btns{display:flex;flex-direction:column;gap:4px;flex-shrink:0;min-width:72px;}
+.ac-btn{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:none;color:var(--text2);transition:all .15s;white-space:nowrap;width:100%;text-align:center;}
+.ac-btn.done-btn:hover{border-color:var(--green);color:var(--green);}
+.ac-btn.task-btn:hover{border-color:var(--blue);color:var(--blue);}
+.ac-btn.skip-btn:hover{border-color:var(--text3);color:var(--text3);}
+.ac-btn.restore-btn:hover{border-color:var(--indigo);color:var(--indigo);}
+
+/* OPP TABLE */
+.prop-table{width:100%;border-collapse:collapse;margin-top:8px;}
+.prop-table th{text-align:left;font-size:10px;color:var(--text3);padding:5px 8px;letter-spacing:.5px;text-transform:uppercase;}
+.prop-table td{padding:6px 8px;font-size:12px;border-top:1px solid var(--border);}
+
+/* DISMISSED BAR */
+.dismissed-bar{font-size:12px;color:var(--text3);cursor:pointer;text-align:center;padding:8px;border-radius:6px;transition:all .2s;margin-top:4px;}
+.dismissed-bar:hover{background:var(--bg2);color:var(--text2);}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--indigo);color:var(--text);padding:10px 22px;border-radius:10px;font-size:13px;z-index:9998;box-shadow:0 8px 24px rgba(0,0,0,.5);opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;}
+
+/* TASKS VIEW */
+.tasks-layout{display:flex;gap:0;height:calc(100vh - 52px - 48px);overflow:hidden;}
+.task-sidebar{width:200px;flex-shrink:0;border-right:1px solid var(--border);padding:12px 8px;overflow-y:auto;}
+.task-nav-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;font-size:13px;color:var(--text2);cursor:pointer;margin-bottom:2px;transition:all .15s;}
+.task-nav-item:hover{background:var(--bg2);color:var(--text);}
+.task-nav-item.active{background:rgba(99,102,241,.15);color:var(--indigo);font-weight:600;}
+.task-nav-item .t-count{margin-left:auto;font-size:11px;color:var(--text3);}
+.task-main{flex:1;overflow-y:auto;padding:20px 24px;}
+.task-view-title{font-size:20px;font-weight:800;margin-bottom:4px;}
+.task-view-count{font-size:12px;color:var(--text3);margin-bottom:16px;}
+.add-task-bar{display:flex;align-items:center;gap:10px;background:var(--bg2);border:2px dashed var(--border);border-radius:10px;padding:12px 14px;margin-bottom:16px;cursor:pointer;transition:border-color .2s;}
+.add-task-bar:hover{border-color:var(--indigo);}
+.add-task-bar .plus{color:var(--indigo);font-size:18px;}
+.add-task-bar span{font-size:13px;color:var(--text3);}
+.add-task-form{background:var(--bg2);border:1px solid var(--indigo);border-radius:10px;padding:14px;margin-bottom:16px;display:none;}
+.add-task-form.open{display:block;}
+.atf-title{width:100%;background:transparent;border:none;color:var(--text);font-size:14px;font-weight:600;outline:none;margin-bottom:8px;}
+.atf-title::placeholder{color:var(--text3);font-weight:400;}
+.atf-notes{width:100%;background:transparent;border:none;color:var(--text2);font-size:12px;outline:none;resize:none;min-height:40px;margin-bottom:10px;line-height:1.5;}
+.atf-notes::placeholder{color:var(--text3);}
+.atf-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.atf-select{background:var(--bg4);border:1px solid var(--border);color:var(--text2);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;outline:none;}
+.atf-select option{background:var(--bg3);}
+.atf-date{background:var(--bg4);border:1px solid var(--border);color:var(--text2);border-radius:6px;padding:4px 8px;font-size:11px;outline:none;cursor:pointer;}
+.atf-date::-webkit-calendar-picker-indicator{filter:invert(.5);}
+.atf-actions{margin-left:auto;display:flex;gap:6px;}
+.atf-btn{padding:6px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all .2s;}
+.atf-btn.primary{background:var(--indigo);color:#fff;}
+.atf-btn.primary:hover{background:var(--indigo2);}
+.atf-btn.cancel{background:var(--bg4);color:var(--text2);}
+.task-item{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;border-radius:8px;transition:background .15s;border:1px solid transparent;margin-bottom:4px;}
+.task-item:hover{background:var(--bg2);border-color:var(--border2);}
+.task-item.completed .t-title{text-decoration:line-through;color:var(--text3);}
+.t-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;cursor:pointer;margin-top:2px;position:relative;transition:all .2s;background:transparent;display:flex;align-items:center;justify-content:center;}
+.t-check:hover{border-color:var(--indigo);}
+.t-check.p1{border-color:var(--red);}
+.t-check.p2{border-color:var(--yellow);}
+.t-check.p3{border-color:var(--blue);}
+.t-check.checked{background:var(--green-bg);border-color:var(--green);}
+.t-check.checked::after{content:'✓';color:var(--green);font-size:11px;font-weight:700;}
+.t-body{flex:1;min-width:0;}
+.t-title{font-size:13px;color:var(--text);line-height:1.4;margin-bottom:3px;}
+.t-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.t-project{font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;}
+.t-due{font-size:11px;color:var(--text3);}
+.t-due.overdue{color:var(--red);}
+.t-notes-preview{font-size:11px;color:var(--text3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px;}
+.t-actions{display:flex;gap:4px;opacity:0;transition:opacity .15s;}
+.task-item:hover .t-actions{opacity:1;}
+.t-action-btn{background:none;border:none;color:var(--text3);cursor:pointer;padding:4px 6px;border-radius:5px;font-size:13px;transition:all .15s;}
+.t-action-btn:hover{background:var(--bg4);color:var(--text);}
+.priority-bar{width:3px;height:100%;border-radius:2px;flex-shrink:0;align-self:stretch;min-height:22px;}
+.priority-bar.p1{background:var(--red);}
+.priority-bar.p2{background:var(--yellow);}
+.priority-bar.p3{background:var(--blue);}
+.priority-bar.p4{background:var(--border);}
+.task-detail{width:320px;flex-shrink:0;border-left:1px solid var(--border);padding:20px 16px;overflow-y:auto;display:none;}
+.task-detail.open{display:block;}
+.td-close{float:right;background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;}
+.td-title-input{width:100%;background:transparent;border:none;color:var(--text);font-size:15px;font-weight:700;outline:none;margin-bottom:12px;line-height:1.4;}
+.td-label{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);font-weight:600;margin-bottom:6px;margin-top:14px;}
+.td-notes{width:100%;background:var(--bg4);border:1px solid var(--border);border-radius:8px;color:var(--text2);font-size:12px;padding:10px 12px;outline:none;resize:vertical;min-height:80px;line-height:1.6;}
+.td-notes:focus{border-color:var(--indigo);}
+.td-select{width:100%;background:var(--bg4);border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:8px 10px;font-size:12px;outline:none;}
+.td-date{width:100%;background:var(--bg4);border:1px solid var(--border);color:var(--text2);border-radius:8px;padding:8px 10px;font-size:12px;outline:none;}
+.td-date::-webkit-calendar-picker-indicator{filter:invert(.5);}
+.td-save{width:100%;background:var(--indigo);color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:600;cursor:pointer;margin-top:16px;}
+.completed-section{margin-top:20px;border-top:1px solid var(--border);padding-top:12px;}
+.completed-toggle{font-size:12px;color:var(--text3);cursor:pointer;padding:4px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:6px;}
+.completed-toggle:hover{background:var(--bg2);color:var(--text2);}
+
+/* INBOX */
+.inbox-filter{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.filter-chip{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);color:var(--text2);transition:all .15s;}
+.filter-chip:hover{border-color:var(--indigo);color:var(--text);}
+.filter-chip.active{background:rgba(99,102,241,.2);border-color:var(--indigo);color:var(--indigo);}
+.card{background:var(--bg2);border-radius:10px;padding:14px 16px;margin-bottom:10px;border:1px solid var(--border2);}
+.card-title{font-size:13px;font-weight:700;margin-bottom:5px;}
+.card-title.red{color:var(--red);}
+.card-title.yellow{color:var(--yellow);}
+.card-meta{font-size:11px;color:var(--text2);margin-bottom:4px;}
+.card-action{font-size:12px;color:var(--text3);}
+
+/* GOV OPPS */
+.opp-card{background:var(--bg2);border-radius:10px;padding:14px 16px;margin-bottom:10px;border:1px solid var(--border2);display:flex;gap:14px;align-items:flex-start;}
+.opp-priority-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:6px;}
+.opp-priority-dot.high{background:var(--red);box-shadow:0 0 8px var(--red);}
+.opp-priority-dot.med{background:var(--yellow);}
+.opp-priority-dot.low{background:var(--green);}
+.opp-card-title{font-size:13px;font-weight:700;margin-bottom:5px;}
+.opp-card-meta{font-size:11px;color:var(--text3);margin-bottom:6px;}
+
+/* METRICS */
+.goal-bar-wrap{background:var(--bg2);border-radius:14px;padding:20px 24px;margin-bottom:20px;border:1px solid var(--border2);}
+.goal-bar-title{font-size:16px;font-weight:800;margin-bottom:4px;}
+.goal-bar-sub{font-size:12px;color:var(--text3);margin-bottom:16px;}
+.goal-bar-track{height:16px;background:var(--bg4);border-radius:8px;overflow:hidden;position:relative;margin-bottom:8px;}
+.goal-bar-fill{height:100%;background:linear-gradient(90deg,#059669,#34d399);border-radius:8px;transition:width 1s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;}
+.goal-bar-pct{font-size:10px;font-weight:800;color:#fff;}
+.goal-bar-markers{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);}
+.biz-split{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
+.biz-card{background:var(--bg2);border-radius:12px;padding:16px;border:1px solid var(--border2);}
+.biz-name{font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:700;margin-bottom:12px;}
+.biz-rev{font-size:24px;font-weight:900;margin-bottom:4px;}
+.biz-target{font-size:11px;color:var(--text3);margin-bottom:10px;}
+.biz-bar-sm{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;}
+.biz-bar-fill{height:100%;border-radius:3px;transition:width .8s ease;}
+.metric-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border2);font-size:12px;}
+.metric-row:last-child{border-bottom:none;}
+.metric-val{font-weight:700;}
+.metric-val.green{color:var(--green);}
+.metric-val.red{color:var(--red);}
+.metric-val.yellow{color:var(--yellow);}
+.metric-val.blue{color:var(--blue);}
+.funnel-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border2);}
+.funnel-row:last-child{border-bottom:none;}
+.funnel-label{font-size:12px;color:var(--text2);flex:1;}
+.funnel-val{font-size:14px;font-weight:800;min-width:60px;text-align:right;}
+.funnel-arrow{color:var(--text3);font-size:14px;}
+.funnel-rate{font-size:11px;color:var(--text3);min-width:50px;text-align:right;}
+
+/* FOOTER */
+.footer{text-align:center;font-size:11px;color:var(--text3);padding:14px;border-top:1px solid var(--border);flex-shrink:0;background:var(--bg3);}
+
+/* MOBILE */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;}
+@media(max-width:768px){
+  :root{--sidebar-w:240px;}
+  .sidebar{position:fixed;top:52px;left:0;bottom:0;z-index:300;transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-overlay.open{display:block;}
+  .hamburger{display:block;}
+  .kpi-grid{grid-template-columns:repeat(2,1fr);}
+  .biz-split{grid-template-columns:1fr;}
+  .tasks-layout{flex-direction:column;height:auto;}
+  .task-sidebar{width:100%;border-right:none;border-bottom:1px solid var(--border);display:flex;overflow-x:auto;padding:8px;gap:4px;}
+  .task-main{padding:16px;}
+  .task-detail{width:100%;border-left:none;border-top:1px solid var(--border);}
+  .topbar-date{display:none;}
+  .rev-tracker{flex-direction:column;gap:12px;}
 }
-.topbar-left { display: flex; align-items: center; gap: 12px; }
-.topbar-logo { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, var(--indigo), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.topbar-date { font-size: 12px; color: var(--text3); }
-.topbar-right { display: flex; align-items: center; gap: 8px; }
-.topbar-btn {
-  background: var(--bg2); border: 1px solid var(--border); color: var(--text2);
-  border-radius: 7px; padding: 6px 12px; font-size: 11px; cursor: pointer; transition: all .2s;
-}
-.topbar-btn:hover { color: var(--text); border-color: var(--indigo); }
-.hamburger { background: none; border: none; color: var(--text2); font-size: 18px; cursor: pointer; display: none; padding: 4px 8px; }
-
-/* ── BODY LAYOUT ── */
-.app-body { display: flex; flex: 1; overflow: hidden; }
-
-/* ── SIDEBAR ── */
-.sidebar {
-  width: var(--sidebar-w); background: var(--bg3); border-right: 1px solid var(--border);
-  display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto;
-  transition: transform .25s ease;
-}
-.sidebar-section { padding: 16px 12px 8px; }
-.sidebar-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text3); font-weight: 700; padding: 0 8px; margin-bottom: 6px; }
-.nav-item {
-  display: flex; align-items: center; gap: 10px; padding: 8px 10px;
-  border-radius: 8px; cursor: pointer; font-size: 13px; color: var(--text2);
-  transition: all .15s; user-select: none; margin-bottom: 2px;
-}
-.nav-item:hover { background: var(--bg2); color: var(--text); }
-.nav-item.active { background: rgba(99,102,241,.18); color: var(--indigo); font-weight: 600; }
-.nav-item .nav-icon { font-size: 15px; flex-shrink: 0; width: 20px; text-align: center; }
-.nav-item .nav-badge {
-  margin-left: auto; background: var(--red-bg); color: var(--red);
-  font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 10px;
-}
-.nav-item .nav-badge.green { background: var(--green-bg); color: var(--green); }
-.nav-item .nav-badge.yellow { background: var(--yellow-bg); color: var(--yellow); }
-.nav-separator { height: 1px; background: var(--border); margin: 10px 12px; }
-
-/* ── MAIN PANE ── */
-.main-pane { flex: 1; overflow-y: auto; padding: 24px; }
-
-/* ── VIEWS ── */
-.view { display: none; }
-.view.active { display: block; }
-
-/* ── PAGE HEADER ── */
-.page-header { margin-bottom: 20px; }
-.page-title { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
-.page-sub { font-size: 13px; color: var(--text3); }
-
-/* ── KPI GRID ── */
-.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
-.kpi-card {
-  background: var(--bg2); border-radius: 12px; padding: 16px 18px;
-  border: 1px solid var(--border2); position: relative; overflow: hidden;
-}
-.kpi-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--indigo2), var(--indigo3));
-}
-.kpi-card.red::before { background: linear-gradient(90deg, #dc2626, #f87171); }
-.kpi-card.green::before { background: linear-gradient(90deg, #059669, #34d399); }
-.kpi-card.yellow::before { background: linear-gradient(90deg, #d97706, #fbbf24); }
-.kpi-card.blue::before { background: linear-gradient(90deg, #2563eb, #60a5fa); }
-.kpi-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; font-weight: 600; }
-.kpi-value { font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
-.kpi-value.red { color: var(--red); }
-.kpi-value.green { color: var(--green); }
-.kpi-value.yellow { color: var(--yellow); }
-.kpi-value.blue { color: var(--blue); }
-.kpi-change { font-size: 11px; color: var(--text3); }
-.kpi-change .up { color: var(--green); }
-.kpi-change .down { color: var(--red); }
-
-/* ── AI BANNER ── */
-.ai-banner {
-  background: var(--bg2); border-left: 4px solid var(--indigo);
-  border-radius: 0 12px 12px 0; padding: 16px 20px; margin-bottom: 20px;
-}
-.ai-banner .ai-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--indigo); font-weight: 700; margin-bottom: 8px; }
-.ai-banner p { font-size: 13px; line-height: 1.7; color: #c4b5fd; }
-
-/* ── SECTION HEADER ── */
-.section { margin-bottom: 24px; }
-.section-hdr {
-  font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700;
-  padding-bottom: 8px; border-bottom: 1px solid var(--border); margin-bottom: 12px;
-}
-.section-hdr.red { color: var(--red); }
-.section-hdr.green { color: var(--green); }
-.section-hdr.yellow { color: var(--yellow); }
-.section-hdr.indigo { color: var(--indigo); }
-
-/* ── CARDS ── */
-.card { background: var(--bg2); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border2); }
-.card-title { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
-.card-title.red { color: var(--red); }
-.card-title.yellow { color: var(--yellow); }
-.card-meta { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
-.card-action { font-size: 12px; color: var(--text3); }
-
-/* ── GOAL CARDS ── */
-.goal-card {
-  background: var(--bg2); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
-  display: flex; gap: 14px; align-items: flex-start; border: 1px solid var(--border2);
-}
-.goal-num {
-  background: var(--indigo); color: #fff; width: 26px; height: 26px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center; font-size: 12px;
-  font-weight: 800; flex-shrink: 0; margin-top: 2px;
-}
-.goal-content .g-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-.goal-content .g-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
-
-/* ── BADGES ── */
-.badge {
-  display: inline-block; font-size: 10px; font-weight: 700;
-  padding: 2px 6px; border-radius: 4px; margin-right: 5px; vertical-align: middle;
-}
-.badge.cw { background: var(--blue-bg); color: var(--blue); }
-.badge.govcon { background: var(--green-bg); color: var(--green); }
-.badge.viral { background: var(--purple-bg); color: var(--purple); }
-.badge.crit { background: var(--red-bg); color: var(--red); }
-.badge.new-b { background: var(--green-bg); color: var(--green); }
-
-/* ── OPP ROWS ── */
-.opp-row { background: var(--bg4); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid var(--border2); }
-.opp-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
-.opp-meta { font-size: 11px; color: var(--text3); }
-
-/* ── PROPOSALS TABLE ── */
-.prop-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
-.prop-table th { text-align: left; font-size: 10px; color: var(--text3); padding: 6px 8px; letter-spacing: .5px; text-transform: uppercase; }
-.prop-table td { padding: 7px 8px; font-size: 12px; border-top: 1px solid var(--border); }
-.prop-table tr:nth-child(even) td { background: rgba(255,255,255,.02); }
-
-/* ═══════════════════════════════════════════════
-   TASKS VIEW — TODOIST CLONE
-═══════════════════════════════════════════════ */
-.tasks-layout { display: flex; gap: 0; height: calc(100vh - 52px - 48px); overflow: hidden; }
-
-/* Task sidebar */
-.task-sidebar {
-  width: 200px; flex-shrink: 0; border-right: 1px solid var(--border);
-  padding: 12px 8px; overflow-y: auto;
-}
-.task-nav-item {
-  display: flex; align-items: center; gap: 8px; padding: 7px 10px;
-  border-radius: 7px; font-size: 13px; color: var(--text2); cursor: pointer;
-  margin-bottom: 2px; transition: all .15s;
-}
-.task-nav-item:hover { background: var(--bg2); color: var(--text); }
-.task-nav-item.active { background: rgba(99,102,241,.15); color: var(--indigo); font-weight: 600; }
-.task-nav-item .t-count { margin-left: auto; font-size: 11px; color: var(--text3); }
-
-.task-project-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-
-/* Task main */
-.task-main { flex: 1; overflow-y: auto; padding: 20px 24px; }
-.task-view-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-.task-view-count { font-size: 12px; color: var(--text3); margin-bottom: 16px; }
-
-/* Add task bar */
-.add-task-bar {
-  display: flex; align-items: center; gap: 10px; background: var(--bg2);
-  border: 2px dashed var(--border); border-radius: 10px; padding: 12px 14px;
-  margin-bottom: 16px; cursor: pointer; transition: border-color .2s;
-}
-.add-task-bar:hover { border-color: var(--indigo); }
-.add-task-bar .plus { color: var(--indigo); font-size: 18px; font-weight: 300; line-height: 1; }
-.add-task-bar span { font-size: 13px; color: var(--text3); }
-
-/* Add task form */
-.add-task-form {
-  background: var(--bg2); border: 1px solid var(--indigo); border-radius: 10px;
-  padding: 14px; margin-bottom: 16px; display: none;
-}
-.add-task-form.open { display: block; }
-.atf-title {
-  width: 100%; background: transparent; border: none; color: var(--text);
-  font-size: 14px; font-weight: 600; outline: none; margin-bottom: 8px;
-}
-.atf-title::placeholder { color: var(--text3); font-weight: 400; }
-.atf-notes {
-  width: 100%; background: transparent; border: none; color: var(--text2);
-  font-size: 12px; outline: none; resize: none; min-height: 40px;
-  margin-bottom: 10px; line-height: 1.5;
-}
-.atf-notes::placeholder { color: var(--text3); }
-.atf-toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.atf-select {
-  background: var(--bg4); border: 1px solid var(--border); color: var(--text2);
-  border-radius: 6px; padding: 4px 8px; font-size: 11px; cursor: pointer; outline: none;
-}
-.atf-select option { background: var(--bg3); }
-.atf-date { background: var(--bg4); border: 1px solid var(--border); color: var(--text2); border-radius: 6px; padding: 4px 8px; font-size: 11px; outline: none; cursor: pointer; }
-.atf-date::-webkit-calendar-picker-indicator { filter: invert(.5); }
-.atf-actions { margin-left: auto; display: flex; gap: 6px; }
-.atf-btn {
-  padding: 6px 14px; border-radius: 7px; font-size: 12px; font-weight: 600;
-  cursor: pointer; border: none; transition: all .2s;
-}
-.atf-btn.primary { background: var(--indigo); color: #fff; }
-.atf-btn.primary:hover { background: var(--indigo2); }
-.atf-btn.cancel { background: var(--bg4); color: var(--text2); }
-.atf-btn.cancel:hover { color: var(--text); }
-
-/* Task item */
-.task-item {
-  display: flex; align-items: flex-start; gap: 12px; padding: 10px 12px;
-  border-radius: 8px; transition: background .15s; group: true;
-  border: 1px solid transparent; margin-bottom: 4px;
-}
-.task-item:hover { background: var(--bg2); border-color: var(--border2); }
-.task-item.completed .t-title { text-decoration: line-through; color: var(--text3); }
-.task-item.completed .t-meta { color: var(--text3); opacity: .6; }
-
-/* Checkbox */
-.t-check {
-  width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border);
-  flex-shrink: 0; cursor: pointer; margin-top: 2px; position: relative;
-  transition: all .2s; background: transparent;
-  display: flex; align-items: center; justify-content: center;
-}
-.t-check:hover { border-color: var(--indigo); }
-.t-check.p1 { border-color: var(--red); }
-.t-check.p2 { border-color: var(--yellow); }
-.t-check.p3 { border-color: var(--blue); }
-.t-check.checked { background: var(--green-bg); border-color: var(--green); }
-.t-check.checked::after { content: '✓'; color: var(--green); font-size: 11px; font-weight: 700; }
-
-.t-body { flex: 1; min-width: 0; }
-.t-title { font-size: 13px; color: var(--text); line-height: 1.4; margin-bottom: 3px; }
-.t-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.t-project { font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 4px; }
-.t-due { font-size: 11px; color: var(--text3); }
-.t-due.overdue { color: var(--red); }
-.t-notes-preview { font-size: 11px; color: var(--text3); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 400px; }
-
-.t-actions { display: flex; gap: 4px; opacity: 0; transition: opacity .15s; }
-.task-item:hover .t-actions { opacity: 1; }
-.t-action-btn {
-  background: none; border: none; color: var(--text3); cursor: pointer;
-  padding: 4px 6px; border-radius: 5px; font-size: 13px; transition: all .15s;
-}
-.t-action-btn:hover { background: var(--bg4); color: var(--text); }
-
-/* Task detail panel */
-.task-detail {
-  width: 320px; flex-shrink: 0; border-left: 1px solid var(--border);
-  padding: 20px 16px; overflow-y: auto; display: none;
-}
-.task-detail.open { display: block; }
-.td-close { float: right; background: none; border: none; color: var(--text3); cursor: pointer; font-size: 16px; margin-top: -2px; }
-.td-title-input {
-  width: 100%; background: transparent; border: none; color: var(--text);
-  font-size: 15px; font-weight: 700; outline: none; margin-bottom: 12px; line-height: 1.4;
-}
-.td-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); font-weight: 600; margin-bottom: 6px; margin-top: 14px; }
-.td-notes {
-  width: 100%; background: var(--bg4); border: 1px solid var(--border);
-  border-radius: 8px; color: var(--text2); font-size: 12px; padding: 10px 12px;
-  outline: none; resize: vertical; min-height: 80px; line-height: 1.6;
-}
-.td-notes:focus { border-color: var(--indigo); }
-.td-select {
-  width: 100%; background: var(--bg4); border: 1px solid var(--border);
-  color: var(--text2); border-radius: 8px; padding: 8px 10px; font-size: 12px; outline: none;
-}
-.td-date { width: 100%; background: var(--bg4); border: 1px solid var(--border); color: var(--text2); border-radius: 8px; padding: 8px 10px; font-size: 12px; outline: none; }
-.td-date::-webkit-calendar-picker-indicator { filter: invert(.5); }
-.td-save { width: 100%; background: var(--indigo); color: #fff; border: none; border-radius: 8px; padding: 10px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 16px; }
-
-/* Section label in tasks */
-.task-section-label {
-  font-size: 11px; font-weight: 700; color: var(--text2); padding: 12px 12px 6px;
-  display: flex; align-items: center; gap: 8px; cursor: pointer;
-}
-.task-section-label::before { content: '▾'; font-size: 10px; color: var(--text3); }
-.task-section-label.collapsed::before { content: '▸'; }
-
-/* Completed section */
-.completed-section { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 12px; }
-.completed-toggle { font-size: 12px; color: var(--text3); cursor: pointer; padding: 4px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px; }
-.completed-toggle:hover { background: var(--bg2); color: var(--text2); }
-
-/* Priority indicator bar */
-.priority-bar { width: 3px; height: 100%; border-radius: 2px; flex-shrink: 0; align-self: stretch; min-height: 22px; }
-.priority-bar.p1 { background: var(--red); }
-.priority-bar.p2 { background: var(--yellow); }
-.priority-bar.p3 { background: var(--blue); }
-.priority-bar.p4 { background: var(--border); }
-
-/* ── INBOX VIEW ── */
-.inbox-filter { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-.filter-chip {
-  padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;
-  cursor: pointer; border: 1px solid var(--border); color: var(--text2); transition: all .15s;
-}
-.filter-chip:hover { border-color: var(--indigo); color: var(--text); }
-.filter-chip.active { background: rgba(99,102,241,.2); border-color: var(--indigo); color: var(--indigo); }
-
-/* ── GOV OPP VIEW ── */
-.opp-card {
-  background: var(--bg2); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
-  border: 1px solid var(--border2); display: flex; gap: 14px; align-items: flex-start;
-}
-.opp-priority-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
-.opp-priority-dot.high { background: var(--red); box-shadow: 0 0 8px var(--red); }
-.opp-priority-dot.med { background: var(--yellow); }
-.opp-priority-dot.low { background: var(--green); }
-.opp-card-title { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
-.opp-card-meta { font-size: 11px; color: var(--text3); margin-bottom: 6px; }
-.opp-card-action { font-size: 12px; color: var(--text2); }
-
-/* ── METRICS VIEW ── */
-.metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
-.metric-card {
-  background: var(--bg2); border-radius: 12px; padding: 20px;
-  border: 1px solid var(--border2);
-}
-.metric-biz { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); font-weight: 700; margin-bottom: 12px; }
-.metric-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border2); }
-.metric-row:last-child { border-bottom: none; }
-.metric-key { font-size: 12px; color: var(--text2); }
-.metric-val { font-size: 12px; font-weight: 700; }
-.metric-val.green { color: var(--green); }
-.metric-val.red { color: var(--red); }
-.metric-val.yellow { color: var(--yellow); }
-.metric-val.blue { color: var(--blue); }
-
-/* Progress bar */
-.progress-wrap { margin-top: 16px; }
-.progress-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); margin-bottom: 5px; }
-.progress-bar { height: 6px; background: var(--bg4); border-radius: 3px; overflow: hidden; }
-.progress-fill { height: 100%; border-radius: 3px; transition: width .6s ease; }
-.progress-fill.indigo { background: linear-gradient(90deg, var(--indigo2), var(--indigo3)); }
-.progress-fill.green { background: linear-gradient(90deg, #059669, var(--green)); }
-.progress-fill.yellow { background: linear-gradient(90deg, #d97706, var(--yellow)); }
-
-/* ── FOOTER ── */
-.footer { text-align: center; font-size: 11px; color: var(--text3); padding: 16px; border-top: 1px solid var(--border); flex-shrink: 0; background: var(--bg3); }
-
-/* ── MOBILE OVERLAY SIDEBAR ── */
-.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 768px) {
-  :root { --sidebar-w: 240px; }
-  .sidebar { position: fixed; top: 52px; left: 0; bottom: 0; z-index: 300; transform: translateX(-100%); }
-  .sidebar.open { transform: translateX(0); }
-  .sidebar-overlay.open { display: block; }
-  .hamburger { display: block; }
-  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-  .metrics-grid { grid-template-columns: 1fr; }
-  .tasks-layout { flex-direction: column; height: auto; }
-  .task-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); display: flex; overflow-x: auto; padding: 8px; gap: 4px; }
-  .task-main { padding: 16px; }
-  .task-detail { width: 100%; border-left: none; border-top: 1px solid var(--border); }
-  .topbar-date { display: none; }
-}
-@media (max-width: 480px) {
-  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-  .main-pane { padding: 14px; }
+@media(max-width:480px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr);}
+  .main-pane{padding:14px;}
 }
 </style>
 </head>
 <body>
 
-<!-- ═══ LOCK SCREEN ═══ -->
+<!-- LOCK -->
 <div id="lock-screen">
   <div class="lock-card">
     <div class="lock-icon">⚡</div>
     <div class="lock-title">Command Center</div>
-    <div class="lock-sub">Mikel's Daily Business Briefing<br>Enter your password to continue</div>
-    <input type="password" id="pw-input" class="lock-input" placeholder="Password" autocomplete="current-password" />
-    <label class="lock-remember">
-      <input type="checkbox" id="remember-me" checked />
-      Keep me signed in on this device
-    </label>
+    <div class="lock-sub">$50k Mission Control · Enter password to continue</div>
+    <input type="password" id="pw-input" class="lock-input" placeholder="Password" autocomplete="current-password"/>
+    <label class="lock-remember"><input type="checkbox" id="remember-me" checked/> Keep me signed in on this device</label>
     <button class="lock-btn" onclick="unlock()">Unlock →</button>
     <div class="lock-error" id="pw-error"></div>
   </div>
 </div>
 
-<!-- ═══ APP ═══ -->
+<!-- APP -->
 <div id="app">
-
-  <!-- TOP BAR -->
   <div class="topbar">
     <div class="topbar-left">
       <button class="hamburger" onclick="toggleSidebar()">☰</button>
@@ -459,225 +351,130 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
       <div class="topbar-date" id="topbar-date"></div>
     </div>
     <div class="topbar-right">
+      <span id="topbar-pace" style="font-size:11px;color:var(--text3);"></span>
       <button class="topbar-btn" onclick="logout()">🔒 Lock</button>
     </div>
   </div>
 
   <div class="app-body">
-    <!-- SIDEBAR OVERLAY -->
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
-
-    <!-- SIDEBAR -->
     <nav class="sidebar" id="sidebar">
       <div class="sidebar-section">
-        <div class="sidebar-label">Main</div>
-        <div class="nav-item active" onclick="showView('today', this)">
-          <span class="nav-icon">📋</span> Today
-          <span class="nav-badge">8</span>
-        </div>
-        <div class="nav-item" onclick="showView('tasks', this)">
-          <span class="nav-icon">✅</span> Tasks
-          <span class="nav-badge" id="tasks-badge" style="background:var(--blue-bg);color:var(--blue);">0</span>
-        </div>
-        <div class="nav-item" onclick="showView('inbox', this)">
-          <span class="nav-icon">📧</span> Inbox
-          <span class="nav-badge">50+</span>
-        </div>
-        <div class="nav-item" onclick="showView('govops', this)">
-          <span class="nav-icon">🏛️</span> Gov Opps
-          <span class="nav-badge green">9</span>
-        </div>
-        <div class="nav-item" onclick="showView('metrics', this)">
-          <span class="nav-icon">📊</span> Metrics
-        </div>
+        <div class="sidebar-label">Mission</div>
+        <div class="nav-item active" onclick="showView('today',this)"><span class="nav-icon">🎯</span> Today <span class="nav-badge" id="today-badge">5</span></div>
+        <div class="nav-item" onclick="showView('tasks',this)"><span class="nav-icon">✅</span> Tasks <span class="nav-badge" id="tasks-badge" style="background:var(--blue-bg);color:var(--blue);">0</span></div>
+        <div class="nav-item" onclick="showView('inbox',this)"><span class="nav-icon">📧</span> Inbox <span class="nav-badge">50+</span></div>
+        <div class="nav-item" onclick="showView('govops',this)"><span class="nav-icon">🏛️</span> Gov Opps <span class="nav-badge green">9</span></div>
+        <div class="nav-item" onclick="showView('metrics',this)"><span class="nav-icon">📊</span> $50k Tracker</div>
       </div>
       <div class="nav-separator"></div>
       <div class="sidebar-section">
         <div class="sidebar-label">Projects</div>
-        <div class="nav-item" onclick="showProjectFilter('CW', this)">
-          <span class="task-project-dot" style="background:#60a5fa"></span> ConsultingWhiz
-          <span class="nav-badge" id="proj-cw-count" style="background:var(--blue-bg);color:var(--blue);">0</span>
-        </div>
-        <div class="nav-item" onclick="showProjectFilter('GovCon', this)">
-          <span class="task-project-dot" style="background:#34d399"></span> TheGovConBD
-          <span class="nav-badge" id="proj-gc-count" style="background:var(--green-bg);color:var(--green);">0</span>
-        </div>
-        <div class="nav-item" onclick="showProjectFilter('Viral', this)">
-          <span class="task-project-dot" style="background:#a78bfa"></span> ViralAILabs
-          <span class="nav-badge" id="proj-vl-count" style="background:var(--purple-bg);color:var(--purple);">0</span>
-        </div>
-        <div class="nav-item" onclick="showProjectFilter('Personal', this)">
-          <span class="task-project-dot" style="background:#6b7280"></span> Personal
-          <span class="nav-badge" id="proj-pe-count" style="background:#374151;color:#9ca3af;">0</span>
-        </div>
+        <div class="nav-item" onclick="showProjectFilter('CW',this)"><span class="task-project-dot" style="background:#60a5fa"></span> ConsultingWhiz <span class="nav-badge" id="proj-cw-count" style="background:var(--blue-bg);color:var(--blue);">0</span></div>
+        <div class="nav-item" onclick="showProjectFilter('GovCon',this)"><span class="task-project-dot" style="background:#34d399"></span> TheGovConBD <span class="nav-badge" id="proj-gc-count" style="background:var(--green-bg);color:var(--green);">0</span></div>
+        <div class="nav-item" onclick="showProjectFilter('Viral',this)"><span class="task-project-dot" style="background:#a78bfa"></span> ViralAILabs <span class="nav-badge" id="proj-vl-count" style="background:var(--purple-bg);color:var(--purple);">0</span></div>
+        <div class="nav-item" onclick="showProjectFilter('Personal',this)"><span class="task-project-dot" style="background:#6b7280"></span> Personal <span class="nav-badge" id="proj-pe-count" style="background:#374151;color:#9ca3af;">0</span></div>
       </div>
     </nav>
 
-    <!-- MAIN PANE -->
     <main class="main-pane">
 
       <!-- ═══ TODAY VIEW ═══ -->
       <div class="view active" id="view-today">
         <div class="page-header">
-          <div class="page-title">📋 Today's Briefing</div>
+          <div class="page-title">🎯 $50k Mission — Day <span id="day-number">1</span> of 30</div>
           <div class="page-sub" id="today-date-sub"></div>
         </div>
 
-        <!-- KPI ROW -->
+        <!-- REVENUE TRACKER -->
+        <div class="rev-tracker">
+          <div class="rev-left">
+            <div class="rev-label-sm">💰 Revenue Collected</div>
+            <div class="rev-amount">$<span id="rev-current-display">0</span></div>
+            <div class="rev-of-goal">of $50,000 goal · <span id="rev-pct-text">0%</span> there</div>
+          </div>
+          <div class="rev-bar-wrap">
+            <div class="rev-bar-labels"><span>$0</span><span>$12,500</span><span>$25,000</span><span>$37,500</span><span>$50k 🏁</span></div>
+            <div class="rev-bar-track"><div class="rev-bar-fill" id="rev-bar-fill" style="width:0%"></div></div>
+            <div class="rev-milestones"><span>Q1</span><span>Q2</span><span>Q3</span><span>Q4</span><span>Goal</span></div>
+          </div>
+          <div class="rev-right">
+            <div class="rev-stat"><div class="rev-stat-val" id="rev-remaining-val">$50k</div><div class="rev-stat-lbl">Still Needed</div></div>
+            <div class="rev-stat"><div class="rev-stat-val" id="rev-daily-needed">$1,667</div><div class="rev-stat-lbl">$/Day Needed</div></div>
+            <div class="rev-stat"><div class="rev-stat-val ok" id="rev-days-left">30</div><div class="rev-stat-lbl">Days Left</div></div>
+          </div>
+        </div>
+
+        <!-- KPI GRID — $50k reverse-engineered -->
         <div class="kpi-grid">
-          <div class="kpi-card red">
-            <div class="kpi-label">Unread Emails</div>
-            <div class="kpi-value red">50+</div>
-            <div class="kpi-change"><span class="down">↑</span> Needs attention</div>
+          <div class="kpi-card green" onclick="editKpi('pipeline')">
+            <div class="kpi-label">💼 Active Pipeline</div>
+            <div class="kpi-value green">$<span id="kpi-pipeline"><input class="kpi-edit-input" id="kpi-pipeline-input" value="0" type="text" onblur="saveKpi('pipeline',this.value)" onclick="event.stopPropagation()" placeholder="0"/></span></div>
+            <div class="kpi-change">Weighted open proposals</div>
+            <div class="kpi-hint">Tap to update</div>
           </div>
-          <div class="kpi-card red">
-            <div class="kpi-label">Action Required</div>
-            <div class="kpi-value red">8</div>
-            <div class="kpi-change">Overdue proposals</div>
+          <div class="kpi-card blue" onclick="editKpi('calls')">
+            <div class="kpi-label">📞 Calls Booked</div>
+            <div class="kpi-value blue"><input class="kpi-edit-input" id="kpi-calls-input" value="0" type="text" onblur="saveKpi('calls',this.value)" onclick="event.stopPropagation()" placeholder="0"/></div>
+            <div class="kpi-change">Target: 5 calls/week</div>
+            <div class="kpi-hint">Tap to update</div>
           </div>
-          <div class="kpi-card green">
-            <div class="kpi-label">Gov Opp Alerts</div>
-            <div class="kpi-value green">9+</div>
-            <div class="kpi-change"><span class="up">↑</span> New today</div>
+          <div class="kpi-card red" onclick="editKpi('proposals')">
+            <div class="kpi-label">📄 Open Proposals</div>
+            <div class="kpi-value red"><input class="kpi-edit-input" id="kpi-proposals-input" value="8" type="text" onblur="saveKpi('proposals',this.value)" onclick="event.stopPropagation()" placeholder="0"/></div>
+            <div class="kpi-change">8 overdue — act today</div>
+            <div class="kpi-hint">Tap to update</div>
           </div>
           <div class="kpi-card yellow">
-            <div class="kpi-label">Deadlines Today</div>
-            <div class="kpi-value yellow">2</div>
-            <div class="kpi-change">Expire at midnight</div>
+            <div class="kpi-label">✅ Goals Done Today</div>
+            <div class="kpi-value yellow"><span id="kpi-goals-done">0</span>/5</div>
+            <div class="kpi-change">Check off below</div>
           </div>
         </div>
 
-        <!-- AI RECOMMENDATION -->
+        <!-- AI PACE CHECK -->
         <div class="ai-banner">
-          <div class="ai-label">🤖 AI Recommendation</div>
-          <p><strong style="color:#e4e4e7;">Your #1 priority is the AIGovBid proposal backlog</strong> — 8 overdue proposals (1–35 days past due) need immediate triage. The GitHub compliance lead pipeline is also broken — fix it before CW loses inbound leads. Two registration deadlines expire <strong style="color:#fbbf24;">TODAY</strong>: ASBCC Simply Matchmaking and Venture Summit West.</p>
+          <div class="ai-label">💰 $50k Pace Analysis</div>
+          <p>To hit <strong style="color:#4ade80">$50,000 in 30 days</strong> you need <strong style="color:#4ade80">$1,667/day</strong>. With 3 active revenue streams: <strong>CW target $20k</strong> (consulting + Upwork), <strong>GovConBD target $18k</strong> (webinars + proposal services), <strong>ViralAILabs target $12k</strong> (client onboarding). <strong style="color:#fbbf24">The AIGovBid backlog is your fastest unlock</strong> — 8 stalled proposals = estimated $24k–$40k in potential revenue if closed this week.</p>
         </div>
 
-        <!-- TOP 5 GOALS -->
+        <!-- TOP 5 REVENUE GOALS -->
         <div class="section">
-          <div class="section-hdr indigo">🎯 Top 5 Goals for Today</div>
-
-          <div class="goal-card">
-            <div class="goal-num">1</div>
-            <div class="goal-content">
-              <div class="g-title"><span class="badge crit">URGENT</span><span class="badge govcon">GovCon</span> Triage 8 Overdue AIGovBid Proposals</div>
-              <div class="g-desc">Log into aigovbid.com and process each overdue proposal. Critical: <em>Dynamics CRM Migration (1 day)</em> — still salvageable. Formally close anything 30+ days (Chemistry CPRR BACH AK — 35 days).</div>
-            </div>
-          </div>
-          <div class="goal-card">
-            <div class="goal-num">2</div>
-            <div class="goal-content">
-              <div class="g-title"><span class="badge crit">FIX NOW</span><span class="badge cw">CW</span> Repair GitHub Compliance Lead Pipeline</div>
-              <div class="g-desc">Daily Compliance Lead Pipeline failed on consultingwhiz11/website-compliance (commit 14c2358). Check Actions logs → patch → re-run. Every day broken = missed inbound leads.</div>
-            </div>
-          </div>
-          <div class="goal-card">
-            <div class="goal-num">3</div>
-            <div class="goal-content">
-              <div class="g-title"><span class="badge crit">TODAY ONLY</span><span class="badge govcon">GovCon</span> Register: ASBCC Simply Matchmaking (May 13)</div>
-              <div class="g-desc">FINAL DAY to register for ASBCC virtual B2G matchmaking event May 13. Direct agency connection for TheGovConBD — register at americansbcc.org now.</div>
-            </div>
-          </div>
-          <div class="goal-card">
-            <div class="goal-num">4</div>
-            <div class="goal-content">
-              <div class="g-title"><span class="badge crit">OVERDUE</span><span class="badge cw">CW</span> Pay Zoom Invoice (7 Days Past Due)</div>
-              <div class="g-desc">Zoom invoice 7 days overdue on contact@consultingwhiz.com. Risk of webinar suspension. Pay at zoom.us/billing.</div>
-            </div>
-          </div>
-          <div class="goal-card">
-            <div class="goal-num">5</div>
-            <div class="goal-content">
-              <div class="g-title"><span class="badge new-b">NEW</span><span class="badge govcon">GovCon</span> Review COMMBUYS: Event Management BD-26-1036</div>
-              <div class="g-desc">MA Executive Office of Education posted BD-26-1036 with same-day amendment. Active solicitation — check commbuys.com scope for GovConBD client bid potential.</div>
-            </div>
-          </div>
+          <div class="section-hdr indigo"><span>🎯 Today's Top 5 Revenue Moves</span><span id="goals-progress" style="font-size:11px;font-weight:600;color:var(--text3)"></span></div>
+          <div id="today-goals-list"></div>
         </div>
 
         <!-- ACTION REQUIRED -->
         <div class="section">
-          <div class="section-hdr red">🔴 Action Required</div>
-          <div class="card">
-            <div class="card-title red">AIGovBid: 8 Overdue Proposals</div>
-            <div class="card-meta">mikela@aigovbid.com · From: noreply@aigovbid.com</div>
-            <table class="prop-table">
-              <tr><th>Proposal</th><th style="text-align:center;white-space:nowrap">Days OD</th></tr>
-              <tr><td style="color:var(--red)">Dynamics CRM Migration Support, Portal Dev & Train-the-Trainer</td><td style="text-align:center;color:var(--red);font-weight:700">1</td></tr>
-              <tr><td>Data Abstraction and NLP Solution</td><td style="text-align:center;color:var(--yellow)">7</td></tr>
-              <tr><td>Information Technology Support Services (ITSS)</td><td style="text-align:center;color:var(--yellow)">8</td></tr>
-              <tr><td>Naval Info Warfighting Dev Center — EW Data Support</td><td style="text-align:center;color:var(--yellow)">8</td></tr>
-              <tr><td>RFI/SS — Program & Budget Enterprise System (PBES) 2026</td><td style="text-align:center;color:var(--yellow)">8</td></tr>
-              <tr><td>DJ10 — Data Monitoring & Sensing / Structured Data (VA)</td><td style="text-align:center;color:var(--red)">13</td></tr>
-              <tr><td>Early Detection of Wildfires Using AI / Thermal Monitoring</td><td style="text-align:center;color:var(--red)">13</td></tr>
-              <tr><td style="color:var(--red);font-weight:700">Chemistry and Immunoassay CPRR for BACH, AK</td><td style="text-align:center;color:var(--red);font-weight:800">35</td></tr>
-            </table>
-            <div class="card-action" style="margin-top:10px">→ Log in to aigovbid.com → Review each → Close or escalate</div>
-          </div>
-          <div class="card">
-            <div class="card-title red">GitHub: Workflow FAILED — website-compliance</div>
-            <div class="card-meta">consultingwhiz11/website-compliance · Commit: 14c2358 · Branch: main</div>
-            <div class="card-action">"Daily Compliance Lead Pipeline (Staged)" failed → Check GitHub Actions logs and fix</div>
-          </div>
-          <div class="card">
-            <div class="card-title red">Zoom Invoice 7 Days Past Due</div>
-            <div class="card-meta">billing@zoom.us → contact@consultingwhiz.com</div>
-            <div class="card-action">→ Pay at zoom.us/billing — risk of service suspension affecting client webinars</div>
-          </div>
+          <div class="section-hdr red"><span>🔴 Action Required</span><span id="action-count-label" style="font-size:11px;color:var(--text3)"></span></div>
+          <div id="today-actions-list"></div>
+          <div class="dismissed-bar" id="dismissed-bar-actions" style="display:none" onclick="toggleShowDismissed('actions')"></div>
         </div>
 
         <!-- REVIEW & DECIDE -->
         <div class="section">
-          <div class="section-hdr yellow">🟡 Review & Decide</div>
-          <div class="card">
-            <div class="card-title yellow">⏰ EXPIRES TONIGHT — Venture Summit West Early Bird</div>
-            <div class="card-meta">venturesummits@ · Deadline: Midnight tonight</div>
-            <div class="card-action">→ Decide on attendance for ViralAILabs / CW BD</div>
-          </div>
-          <div class="card">
-            <div class="card-title">CMMC L2: GCC High vs. Google Workspace for Gov</div>
-            <div class="card-meta">Overwatch Tools newsletter</div>
-            <div class="card-action">→ Forward to CW clients pursuing CMMC L2 / use as GovCon content</div>
-          </div>
-          <div class="card">
-            <div class="card-title">AI Procurement Webinar — How Agencies Approach AI</div>
-            <div class="card-meta">Zoom · Live today — check for replay</div>
-            <div class="card-action">→ High relevance for GovConBD BD strategy and client advisory</div>
-          </div>
-          <div class="card">
-            <div class="card-title">Fireflies Recap: Lunch & Learn Brain²! (L5.ai)</div>
-            <div class="card-meta">fred@fireflies.ai · Via: prince.singh@l5.ai</div>
-            <div class="card-action">→ Review for L5.ai partnership relevance</div>
-          </div>
+          <div class="section-hdr yellow"><span>🟡 Review &amp; Decide</span></div>
+          <div id="today-decide-list"></div>
+          <div class="dismissed-bar" id="dismissed-bar-decide" style="display:none" onclick="toggleShowDismissed('decide')"></div>
         </div>
       </div>
 
       <!-- ═══ TASKS VIEW ═══ -->
       <div class="view" id="view-tasks">
-        <div class="page-header">
-          <div class="page-title">✅ Tasks</div>
-        </div>
+        <div class="page-header"><div class="page-title">✅ Tasks</div></div>
         <div class="tasks-layout" style="height:auto">
-
-          <!-- Task sub-nav -->
           <div class="task-sidebar" id="task-sub-nav">
-            <div class="task-nav-item active" onclick="showTaskFilter('today-tasks', this)">📅 Today <span class="t-count" id="cnt-today">0</span></div>
-            <div class="task-nav-item" onclick="showTaskFilter('upcoming', this)">📆 Upcoming <span class="t-count" id="cnt-upcoming">0</span></div>
-            <div class="task-nav-item" onclick="showTaskFilter('all-tasks', this)">📝 All Tasks <span class="t-count" id="cnt-all">0</span></div>
-            <div class="task-nav-item" onclick="showTaskFilter('completed', this)">✓ Completed <span class="t-count" id="cnt-done">0</span></div>
+            <div class="task-nav-item active" onclick="showTaskFilter('today-tasks',this)">📅 Today <span class="t-count" id="cnt-today">0</span></div>
+            <div class="task-nav-item" onclick="showTaskFilter('upcoming',this)">📆 Upcoming <span class="t-count" id="cnt-upcoming">0</span></div>
+            <div class="task-nav-item" onclick="showTaskFilter('all-tasks',this)">📝 All Tasks <span class="t-count" id="cnt-all">0</span></div>
+            <div class="task-nav-item" onclick="showTaskFilter('completed',this)">✓ Completed <span class="t-count" id="cnt-done">0</span></div>
           </div>
-
-          <!-- Task main -->
           <div class="task-main" id="task-main-area">
             <div class="task-view-title" id="task-view-label">Today</div>
             <div class="task-view-count" id="task-view-count"></div>
-
-            <!-- Add task -->
-            <div class="add-task-bar" onclick="openAddTask()" id="add-task-bar">
-              <span class="plus">+</span>
-              <span>Add task</span>
-            </div>
+            <div class="add-task-bar" onclick="openAddTask()" id="add-task-bar"><span class="plus">+</span><span>Add task</span></div>
             <div class="add-task-form" id="add-task-form">
-              <input type="text" class="atf-title" id="atf-title" placeholder="Task name" />
+              <input type="text" class="atf-title" id="atf-title" placeholder="Task name"/>
               <textarea class="atf-notes" id="atf-notes" placeholder="Notes (optional)"></textarea>
               <div class="atf-toolbar">
                 <select class="atf-select" id="atf-project">
@@ -692,29 +489,23 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
                   <option value="3">🔵 P3 – Medium</option>
                   <option value="4" selected>⚪ P4 – Low</option>
                 </select>
-                <input type="date" class="atf-date" id="atf-due" />
+                <input type="date" class="atf-date" id="atf-due"/>
                 <div class="atf-actions">
                   <button class="atf-btn cancel" onclick="closeAddTask()">Cancel</button>
                   <button class="atf-btn primary" onclick="addTask()">Add Task</button>
                 </div>
               </div>
             </div>
-
-            <!-- Task list -->
             <div id="task-list"></div>
             <div id="completed-section" class="completed-section" style="display:none">
-              <div class="completed-toggle" onclick="toggleCompleted()">
-                <span id="completed-arrow">▸</span> Completed (<span id="completed-count">0</span>)
-              </div>
-              <div id="completed-list" style="display:none; margin-top:10px;"></div>
+              <div class="completed-toggle" onclick="toggleCompleted()"><span id="completed-arrow">▸</span> Completed (<span id="completed-count">0</span>)</div>
+              <div id="completed-list" style="display:none;margin-top:10px;"></div>
             </div>
           </div>
-
-          <!-- Task detail panel -->
           <div class="task-detail" id="task-detail-panel">
             <button class="td-close" onclick="closeDetail()">✕</button>
             <div class="td-label">Task</div>
-            <input type="text" class="td-title-input" id="td-title" placeholder="Task name" />
+            <input type="text" class="td-title-input" id="td-title" placeholder="Task name"/>
             <div class="td-label">Notes</div>
             <textarea class="td-notes" id="td-notes" placeholder="Add notes, links, or context..."></textarea>
             <div class="td-label">Project</div>
@@ -732,7 +523,7 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
               <option value="4">⚪ P4 – Low</option>
             </select>
             <div class="td-label">Due Date</div>
-            <input type="date" class="td-date" id="td-due" />
+            <input type="date" class="td-date" id="td-due"/>
             <button class="td-save" onclick="saveDetail()">Save Changes</button>
           </div>
         </div>
@@ -742,167 +533,125 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
       <div class="view" id="view-inbox">
         <div class="page-header">
           <div class="page-title">📧 Inbox — Today</div>
-          <div class="page-sub">50+ unread emails · mikela@consultingwhiz.com · mikela@aigovbid.com</div>
+          <div class="page-sub">50+ unread · mikela@consultingwhiz.com · mikela@aigovbid.com</div>
         </div>
         <div class="inbox-filter">
-          <div class="filter-chip active" onclick="filterInbox('all', this)">All</div>
-          <div class="filter-chip" onclick="filterInbox('action', this)">🔴 Action</div>
-          <div class="filter-chip" onclick="filterInbox('govcon', this)">🏛️ GovCon</div>
-          <div class="filter-chip" onclick="filterInbox('decide', this)">🟡 Decide</div>
-          <div class="filter-chip" onclick="filterInbox('low', this)">⚪ Low Priority</div>
+          <div class="filter-chip active" onclick="filterInbox('all',this)">All</div>
+          <div class="filter-chip" onclick="filterInbox('action',this)">🔴 Action</div>
+          <div class="filter-chip" onclick="filterInbox('govcon',this)">🏛️ GovCon</div>
+          <div class="filter-chip" onclick="filterInbox('decide',this)">🟡 Decide</div>
+          <div class="filter-chip" onclick="filterInbox('low',this)">⚪ Low Priority</div>
         </div>
-        <div id="inbox-list">
-          <!-- populated by JS -->
-        </div>
+        <div id="inbox-list"></div>
       </div>
 
       <!-- ═══ GOV OPPS VIEW ═══ -->
       <div class="view" id="view-govops">
         <div class="page-header">
           <div class="page-title">🏛️ Gov Opportunities</div>
-          <div class="page-sub">9 new alerts today · COMMBUYS · OpenGov · HigherGov · Region 4 ESC</div>
+          <div class="page-sub">9 alerts today · Revenue potential: $40k–$120k</div>
         </div>
-
         <div class="section">
-          <div class="section-hdr red">🔴 High Priority</div>
-          <div class="opp-card">
-            <div class="opp-priority-dot high"></div>
-            <div>
-              <div class="opp-card-title">BD-26-1036: Event Management Products & Professional Services</div>
-              <div class="opp-card-meta">COMMBUYS · MA Executive Office of Education · Amendment issued same day</div>
-              <div><span class="badge govcon">GovCon</span><span class="badge crit">AMENDMENT</span></div>
-              <div class="opp-card-action" style="margin-top:6px">→ Check commbuys.com for due date — amendment signals active procurement</div>
-            </div>
-          </div>
-          <div class="opp-card">
-            <div class="opp-priority-dot high"></div>
-            <div>
-              <div class="opp-card-title">Lumberton Housing Authority — Computer Services</div>
-              <div class="opp-card-meta">InternationaleProcurement · Lumberton, NC</div>
-              <div><span class="badge cw">CW</span></div>
-              <div class="opp-card-action" style="margin-top:6px">→ Strong CW fit for IT/computer services — review scope and bid</div>
-            </div>
-          </div>
+          <div class="section-hdr red">🔴 High Priority — Bid Now</div>
+          <div class="opp-card"><div class="opp-priority-dot high"></div><div><div class="opp-card-title">BD-26-1036: Event Management Products &amp; Professional Services</div><div class="opp-card-meta">COMMBUYS · MA Executive Office of Education · Amendment issued same day</div><div><span class="badge govcon">GovCon</span><span class="badge crit">AMENDMENT</span><span class="badge money">$Revenue</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Active procurement — check commbuys.com for due date and scope</div></div></div>
+          <div class="opp-card"><div class="opp-priority-dot high"></div><div><div class="opp-card-title">Lumberton Housing Authority — Computer Services</div><div class="opp-card-meta">InternationaleProcurement · Lumberton, NC</div><div><span class="badge cw">CW</span><span class="badge money">$5k–$25k est</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Strong CW fit for IT/computer services — review scope and bid</div></div></div>
         </div>
-
         <div class="section">
-          <div class="section-hdr yellow">🟡 Review</div>
-          <div class="opp-card">
-            <div class="opp-priority-dot med"></div>
-            <div>
-              <div class="opp-card-title">Traffic Software for Analytics, Crash Data and Reporting</div>
-              <div class="opp-card-meta">OpenGov · County of San Mateo, CA</div>
-              <div><span class="badge cw">CW</span></div>
-              <div class="opp-card-action" style="margin-top:6px">→ IT/Analytics software — potential CW opportunity, check NAICS</div>
-            </div>
-          </div>
-          <div class="opp-card">
-            <div class="opp-priority-dot med"></div>
-            <div>
-              <div class="opp-card-title">Live Agent Services — San Mateo Medical Center</div>
-              <div class="opp-card-meta">OpenGov · County of San Mateo, CA</div>
-              <div><span class="badge cw">CW</span></div>
-              <div class="opp-card-action" style="margin-top:6px">→ Contact center / BPO potential — review scope</div>
-            </div>
-          </div>
-          <div class="opp-card">
-            <div class="opp-priority-dot med"></div>
-            <div>
-              <div class="opp-card-title">SAP FAR 13 Saved Search — 3 New Results</div>
-              <div class="opp-card-meta">HigherGov · Federal · 05/07/2026</div>
-              <div><span class="badge govcon">GovCon</span></div>
-              <div class="opp-card-action" style="margin-top:6px">→ Check HigherGov dashboard for 3 new federal contract opportunities</div>
-            </div>
-          </div>
-          <div class="opp-card">
-            <div class="opp-priority-dot med"></div>
-            <div>
-              <div class="opp-card-title">Addendum 1: Facilities Management Software and Solutions (26-12)</div>
-              <div class="opp-card-meta">Region 4 ESC</div>
-              <div><span class="badge govcon">GovCon</span><span class="badge crit">AMENDMENT</span></div>
-              <div class="opp-card-action" style="margin-top:6px">→ Review addendum changes before bid close</div>
-            </div>
-          </div>
-          <div class="opp-card">
-            <div class="opp-priority-dot med"></div>
-            <div>
-              <div class="opp-card-title">MDA AI SIDECAR / Navy ONR SBIR III / AFWERX TTS + FDA/HHS Matchmaking Days</div>
-              <div class="opp-card-meta">OS Fresh Squeezed Daily · Federal</div>
-              <div><span class="badge govcon">GovCon</span></div>
-              <div class="opp-card-action" style="margin-top:6px">→ Multiple AI-adjacent federal contracts — review for GovConBD clients</div>
-            </div>
-          </div>
+          <div class="section-hdr yellow">🟡 Review This Week</div>
+          <div class="opp-card"><div class="opp-priority-dot med"></div><div><div class="opp-card-title">Traffic Software for Analytics, Crash Data and Reporting</div><div class="opp-card-meta">OpenGov · County of San Mateo, CA</div><div><span class="badge cw">CW</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ IT/Analytics software — check NAICS alignment</div></div></div>
+          <div class="opp-card"><div class="opp-priority-dot med"></div><div><div class="opp-card-title">Live Agent Services — San Mateo Medical Center</div><div class="opp-card-meta">OpenGov · County of San Mateo, CA</div><div><span class="badge cw">CW</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Contact center / BPO potential — review scope</div></div></div>
+          <div class="opp-card"><div class="opp-priority-dot med"></div><div><div class="opp-card-title">SAP FAR 13 Saved Search — 3 New Results</div><div class="opp-card-meta">HigherGov · Federal · 05/07/2026</div><div><span class="badge govcon">GovCon</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Check HigherGov dashboard for 3 new federal contracts</div></div></div>
+          <div class="opp-card"><div class="opp-priority-dot med"></div><div><div class="opp-card-title">MDA AI SIDECAR / Navy ONR SBIR III / AFWERX TTS + FDA/HHS Matchmaking</div><div class="opp-card-meta">OS Fresh Squeezed Daily · Federal</div><div><span class="badge govcon">GovCon</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ AI-adjacent federal contracts — review for GovConBD clients</div></div></div>
         </div>
-
         <div class="section">
           <div class="section-hdr">⚪ Low Priority / FYI</div>
-          <div class="opp-card">
-            <div class="opp-priority-dot low"></div>
-            <div>
-              <div class="opp-card-title">9500 Pescadero Creek Road Alarm System</div>
-              <div class="opp-card-meta">OpenGov · County of San Mateo, CA</div>
-              <div class="opp-card-action" style="margin-top:6px">→ Security/alarm — not a core CW/GovCon focus area</div>
-            </div>
-          </div>
-          <div class="opp-card">
-            <div class="opp-priority-dot low"></div>
-            <div>
-              <div class="opp-card-title">WSSC Water Police, Security Officer Uniform</div>
-              <div class="opp-card-meta">OpenGov · Washington Suburban Sanitary Commission, MD</div>
-              <div class="opp-card-action" style="margin-top:6px">→ Non-core — skip</div>
-            </div>
-          </div>
+          <div class="opp-card"><div class="opp-priority-dot low"></div><div><div class="opp-card-title">9500 Pescadero Creek Road Alarm System</div><div class="opp-card-meta">OpenGov · County of San Mateo, CA</div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Not core focus — skip</div></div></div>
+          <div class="opp-card"><div class="opp-priority-dot low"></div><div><div class="opp-card-title">WSSC Water Police — Security Officer Uniform</div><div class="opp-card-meta">OpenGov · Washington Suburban Sanitary Commission, MD</div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Non-core — skip</div></div></div>
         </div>
       </div>
 
-      <!-- ═══ METRICS VIEW ═══ -->
+      <!-- ═══ METRICS / $50k TRACKER VIEW ═══ -->
       <div class="view" id="view-metrics">
         <div class="page-header">
-          <div class="page-title">📊 Business Metrics</div>
-          <div class="page-sub">Update these weekly — data as of May 7, 2026</div>
+          <div class="page-title">📊 $50k Mission Tracker</div>
+          <div class="page-sub">Day <span id="metrics-day">1</span> of 30 · Update numbers weekly</div>
         </div>
 
-        <div class="metrics-grid">
-          <div class="metric-card">
-            <div class="metric-biz" style="color:var(--blue)">🔵 ConsultingWhiz</div>
-            <div class="metric-row"><span class="metric-key">Active Clients</span><span class="metric-val blue">—</span></div>
-            <div class="metric-row"><span class="metric-key">Monthly Revenue</span><span class="metric-val green">—</span></div>
-            <div class="metric-row"><span class="metric-key">Open Proposals</span><span class="metric-val yellow">—</span></div>
-            <div class="metric-row"><span class="metric-key">Pipeline Value</span><span class="metric-val blue">—</span></div>
-            <div class="metric-row"><span class="metric-key">Lead Pipeline (Compliance)</span><span class="metric-val red">BROKEN</span></div>
-            <div class="progress-wrap">
-              <div class="progress-label"><span>Monthly Goal</span><span>—%</span></div>
-              <div class="progress-bar"><div class="progress-fill indigo" style="width:0%"></div></div>
+        <!-- MAIN GOAL BAR -->
+        <div class="goal-bar-wrap">
+          <div class="goal-bar-title">💰 Total Revenue — May 2026</div>
+          <div class="goal-bar-sub">$<span id="m-rev-current">0</span> collected of $50,000 goal · <span id="m-days-left">30</span> days remaining · Need $<span id="m-daily-pace">1,667</span>/day</div>
+          <div class="goal-bar-track"><div class="goal-bar-fill" id="m-goal-bar" style="width:0%"><span class="goal-bar-pct" id="m-goal-pct">0%</span></div></div>
+          <div class="goal-bar-markers"><span>$0</span><span>$10k</span><span>$20k</span><span>$30k</span><span>$40k</span><span>$50k 🏁</span></div>
+        </div>
+
+        <!-- BIZ SPLIT -->
+        <div class="biz-split">
+          <div class="biz-card">
+            <div class="biz-name" style="color:var(--blue)">🔵 ConsultingWhiz — Target $20k</div>
+            <div class="biz-rev green">$<span id="m-cw-rev">0</span></div>
+            <div class="biz-target">of $20,000 target</div>
+            <div class="biz-bar-sm"><div class="biz-bar-fill" id="m-cw-bar" style="width:0%;background:linear-gradient(90deg,#2563eb,#60a5fa)"></div></div>
+            <div style="margin-top:14px">
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Active Clients</span><span class="metric-val blue" id="m-cw-clients">—</span></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Open Proposals</span><span class="metric-val yellow" id="m-cw-proposals">—</span></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Upwork Revenue</span><span class="metric-val green" id="m-cw-upwork">—</span></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Compliance Leads</span><span class="metric-val red">BROKEN</span></div>
             </div>
           </div>
-
-          <div class="metric-card">
-            <div class="metric-biz" style="color:var(--green)">🟢 TheGovConBD</div>
-            <div class="metric-row"><span class="metric-key">Active Clients</span><span class="metric-val blue">—</span></div>
-            <div class="metric-row"><span class="metric-key">Monthly Revenue</span><span class="metric-val green">—</span></div>
-            <div class="metric-row"><span class="metric-key">Overdue Proposals</span><span class="metric-val red">8</span></div>
-            <div class="metric-row"><span class="metric-key">Webinars This Month</span><span class="metric-val yellow">—</span></div>
-            <div class="metric-row"><span class="metric-key">Signups / Webinar</span><span class="metric-val blue">—</span></div>
-            <div class="progress-wrap">
-              <div class="progress-label"><span>Monthly Goal</span><span>—%</span></div>
-              <div class="progress-bar"><div class="progress-fill green" style="width:0%"></div></div>
+          <div class="biz-card">
+            <div class="biz-name" style="color:var(--green)">🟢 TheGovConBD — Target $18k</div>
+            <div class="biz-rev green">$<span id="m-gc-rev">0</span></div>
+            <div class="biz-target">of $18,000 target</div>
+            <div class="biz-bar-sm"><div class="biz-bar-fill" id="m-gc-bar" style="width:0%;background:linear-gradient(90deg,#059669,#34d399)"></div></div>
+            <div style="margin-top:14px">
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Active Clients</span><span class="metric-val blue" id="m-gc-clients">—</span></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Overdue Proposals</span><span class="metric-val red">8</span></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Webinars This Month</span><span class="metric-val yellow" id="m-gc-webinars">—</span></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Webinar Signups</span><span class="metric-val blue" id="m-gc-signups">—</span></div>
             </div>
           </div>
-
-          <div class="metric-card">
-            <div class="metric-biz" style="color:var(--purple)">🟣 ViralAILabs</div>
-            <div class="metric-row"><span class="metric-key">Active Clients</span><span class="metric-val blue">—</span></div>
-            <div class="metric-row"><span class="metric-key">Monthly Revenue</span><span class="metric-val green">—</span></div>
-            <div class="metric-row"><span class="metric-key">Booked Calls / Week</span><span class="metric-val yellow">—</span></div>
-            <div class="metric-row"><span class="metric-key">Email Sequences Live</span><span class="metric-val blue">—</span></div>
-            <div class="metric-row"><span class="metric-key">Reply Rate Avg</span><span class="metric-val green">—</span></div>
-            <div class="progress-wrap">
-              <div class="progress-label"><span>Monthly Goal</span><span>—%</span></div>
-              <div class="progress-bar"><div class="progress-fill" style="width:0%;background:linear-gradient(90deg,#7c3aed,#a78bfa)"></div></div>
+          <div class="biz-card">
+            <div class="biz-name" style="color:var(--purple)">🟣 ViralAILabs — Target $12k</div>
+            <div class="biz-rev green">$<span id="m-vl-rev">0</span></div>
+            <div class="biz-target">of $12,000 target</div>
+            <div class="biz-bar-sm"><div class="biz-bar-fill" id="m-vl-bar" style="width:0%;background:linear-gradient(90deg,#7c3aed,#a78bfa)"></div></div>
+            <div style="margin-top:14px">
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Active Clients</span><span class="metric-val blue" id="m-vl-clients">—</span></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Onboarded This Month</span><span class="metric-val yellow" id="m-vl-onboarded">—</span></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Calls Booked/Week</span><span class="metric-val green" id="m-vl-calls">—</span></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Reply Rate Avg</span><span class="metric-val blue" id="m-vl-reply">—</span></div>
             </div>
           </div>
         </div>
 
+        <!-- REVENUE FUNNEL -->
+        <div class="section">
+          <div class="section-hdr indigo">🔁 Revenue Funnel — This Month</div>
+          <div class="card">
+            <div class="funnel-row"><span class="funnel-label">👁 Leads / Opps Identified</span><span class="funnel-val blue" id="f-leads">—</span><span class="funnel-arrow">↓</span><span class="funnel-rate" id="f-leads-rate"></span></div>
+            <div class="funnel-row"><span class="funnel-label">📞 Strategy Calls Booked</span><span class="funnel-val yellow" id="f-calls">—</span><span class="funnel-arrow">↓</span><span class="funnel-rate" id="f-calls-rate"></span></div>
+            <div class="funnel-row"><span class="funnel-label">📄 Proposals Sent</span><span class="funnel-val" id="f-proposals">—</span><span class="funnel-arrow">↓</span><span class="funnel-rate" id="f-proposals-rate"></span></div>
+            <div class="funnel-row"><span class="funnel-label">🤝 Deals Closed</span><span class="funnel-val green" id="f-closed">—</span><span class="funnel-arrow"></span><span class="funnel-rate"></span></div>
+          </div>
+        </div>
+
+        <!-- WHAT IT TAKES -->
+        <div class="section">
+          <div class="section-hdr yellow">📐 What $50k Requires (Reverse Engineered)</div>
+          <div class="card">
+            <div style="font-size:12px;line-height:1.9;color:var(--text2)">
+              <div>📌 <strong style="color:var(--text)">Avg deal size $3k</strong> → need <strong style="color:var(--yellow)">17 closed deals</strong> in 30 days = 4–5/week</div>
+              <div>📌 <strong style="color:var(--text)">Avg deal size $5k</strong> → need <strong style="color:var(--yellow)">10 closed deals</strong> in 30 days</div>
+              <div>📌 At 30% close rate → need <strong style="color:var(--yellow)">33 proposals sent</strong> (or 17 at 50% close)</div>
+              <div>📌 At 50% proposal rate → need <strong style="color:var(--yellow)">66 qualified discovery calls</strong></div>
+              <div>📌 At 20% call booking rate → need <strong style="color:var(--yellow)">330 outreach touches</strong> (ViralAILabs handles this)</div>
+              <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);color:var(--green)">✅ The fastest path: close the AIGovBid backlog (8 proposals × ~$3–5k avg = <strong>$24k–$40k</strong>)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO PIPELINE -->
         <div class="section">
           <div class="section-hdr indigo">📈 SEO / Content Pipeline</div>
           <div class="card">
@@ -911,420 +660,372 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
             <table class="prop-table" style="margin-top:8px">
               <tr><th>Site</th><th>Last Post</th><th>IndexNow</th></tr>
               <tr><td>ConsultingWhiz.com</td><td>May 6 — Pentagon AI</td><td style="color:var(--green)">✓ 202</td></tr>
-              <tr><td>AIGovBid.com (TheGovConBD)</td><td>May 6 — Pentagon AI</td><td style="color:var(--green)">✓ 202</td></tr>
+              <tr><td>AIGovBid.com</td><td>May 6 — Pentagon AI</td><td style="color:var(--green)">✓ 202</td></tr>
               <tr><td>ViralAILabs.com</td><td>May 6 — Pentagon AI</td><td style="color:var(--green)">✓ 202</td></tr>
             </table>
           </div>
           <div class="card">
-            <div class="card-title">GitHub Deployments</div>
-            <div class="card-meta">All 3 sites: GitHub → DigitalOcean (digitalocean-deploy branch)</div>
-            <div class="card-action" style="color:var(--red)">⚠ website-compliance Daily Compliance Lead Pipeline — FAILED (commit 14c2358)</div>
+            <div class="card-title" style="color:var(--red)">⚠ GitHub: website-compliance Pipeline FAILED</div>
+            <div class="card-meta">commit 14c2358 · branch: main · Revenue impact: ~$3–8k/month in missed compliance leads</div>
           </div>
         </div>
       </div>
 
     </main>
   </div>
-
-  <div class="footer">⚡ Command Center · Auto-generated daily · Businesses: ConsultingWhiz · TheGovConBD · ViralAILabs</div>
+  <div class="footer">⚡ Command Center · $50k Mission · ConsultingWhiz · TheGovConBD · ViralAILabs</div>
 </div>
 
 <script>
-/* ═══════════════════════════════════════════
-   AUTH
-═══════════════════════════════════════════ */
-const HASH = 'e9010d491a7c3ce6f87c40078ece679de6fb8e950afe657b32004d55e3401c25';
-const AUTH_KEY = 'cc_auth_v2';
-
-async function sha256(str) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
-}
-function showApp() {
-  document.getElementById('lock-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  initApp();
-}
-function logout() {
-  localStorage.removeItem(AUTH_KEY); sessionStorage.removeItem(AUTH_KEY);
-  document.getElementById('lock-screen').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('pw-input').value = '';
-  document.getElementById('pw-error').textContent = '';
-}
-async function unlock() {
-  const pw = document.getElementById('pw-input').value;
-  const remember = document.getElementById('remember-me').checked;
-  if (!pw) { document.getElementById('pw-error').textContent = 'Enter your password.'; return; }
-  const hash = await sha256(pw);
-  if (hash === HASH) {
-    if (remember) localStorage.setItem(AUTH_KEY,'1'); else sessionStorage.setItem(AUTH_KEY,'1');
-    showApp();
-  } else {
-    document.getElementById('pw-error').textContent = 'Incorrect password. Try again.';
-    document.getElementById('pw-input').value = ''; document.getElementById('pw-input').focus();
-  }
-}
-document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
-if (localStorage.getItem(AUTH_KEY) || sessionStorage.getItem(AUTH_KEY)) showApp();
+/* ═══ AUTH ═══ */
+const HASH='e9010d491a7c3ce6f87c40078ece679de6fb8e950afe657b32004d55e3401c25';
+const AUTH_KEY='cc_auth_v2';
+async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');}
+function showApp(){document.getElementById('lock-screen').style.display='none';document.getElementById('app').style.display='flex';initApp();}
+function logout(){localStorage.removeItem(AUTH_KEY);sessionStorage.removeItem(AUTH_KEY);document.getElementById('lock-screen').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('pw-input').value='';document.getElementById('pw-error').textContent='';}
+async function unlock(){const pw=document.getElementById('pw-input').value;const rem=document.getElementById('remember-me').checked;if(!pw){document.getElementById('pw-error').textContent='Enter your password.';return;}const h=await sha256(pw);if(h===HASH){if(rem)localStorage.setItem(AUTH_KEY,'1');else sessionStorage.setItem(AUTH_KEY,'1');showApp();}else{document.getElementById('pw-error').textContent='Incorrect password. Try again.';document.getElementById('pw-input').value='';document.getElementById('pw-input').focus();}}
+document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')unlock();});
+if(localStorage.getItem(AUTH_KEY)||sessionStorage.getItem(AUTH_KEY))showApp();
 else document.getElementById('pw-input').focus();
 
-/* ═══════════════════════════════════════════
-   APP INIT
-═══════════════════════════════════════════ */
-function initApp() {
-  // Set dates
-  const now = new Date();
-  const opts = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
-  const dateStr = now.toLocaleDateString('en-US', opts);
-  document.getElementById('topbar-date').textContent = dateStr;
-  document.getElementById('today-date-sub').textContent = dateStr + ' · Last updated 7:00 AM';
-  // Set default due date to today
-  const todayISO = now.toISOString().split('T')[0];
-  document.getElementById('atf-due').value = todayISO;
-  // Render tasks
+/* ═══ CONSTANTS ═══ */
+const GOAL=50000;
+const MISSION_START='2026-05-07'; // Day 1
+const MISSION_DAYS=30;
+const TODAY_ISO=new Date().toISOString().split('T')[0];
+
+/* ═══ KPI STATE ═══ */
+const KPI_KEY='cc_kpis_v1';
+let kpiState=JSON.parse(localStorage.getItem(KPI_KEY)||'{"revenue":0,"pipeline":0,"calls":0,"proposals":8}');
+function saveKpis(){localStorage.setItem(KPI_KEY,JSON.stringify(kpiState));}
+
+function saveKpi(key,val){
+  const n=parseFloat(val.replace(/[$,k]/gi,''))*(/k$/i.test(val)?1000:1)||0;
+  kpiState[key]=n;
+  saveKpis();
+  updateRevenueTracker();
+  updateTopbarPace();
+}
+function editKpi(key){document.getElementById('kpi-'+key+'-input')?.focus();}
+
+/* ═══ APP INIT ═══ */
+function initApp(){
+  const now=new Date();
+  const opts={weekday:'long',year:'numeric',month:'long',day:'numeric'};
+  const dateStr=now.toLocaleDateString('en-US',opts);
+  document.getElementById('topbar-date').textContent=dateStr;
+  document.getElementById('today-date-sub').textContent=dateStr+' · $50k Mission Control';
+
+  // Day number
+  const dayNum=Math.max(1,Math.ceil((now-new Date(MISSION_START))/(1000*60*60*24))+1);
+  document.querySelectorAll('#day-number,#metrics-day').forEach(el=>el.textContent=Math.min(dayNum,MISSION_DAYS));
+
+  // KPI inputs
+  if(document.getElementById('kpi-pipeline-input'))document.getElementById('kpi-pipeline-input').value=kpiState.pipeline?'$'+kpiState.pipeline.toLocaleString():'';
+  if(document.getElementById('kpi-calls-input'))document.getElementById('kpi-calls-input').value=kpiState.calls||'';
+  if(document.getElementById('kpi-proposals-input'))document.getElementById('kpi-proposals-input').value=kpiState.proposals||'8';
+
+  const todayISO=now.toISOString().split('T')[0];
+  if(document.getElementById('atf-due'))document.getElementById('atf-due').value=todayISO;
+
+  updateRevenueTracker();
+  updateTopbarPace();
+  renderTodayView();
   renderTasks();
   renderInbox();
   updateCounts();
 }
 
-/* ═══════════════════════════════════════════
-   NAV
-═══════════════════════════════════════════ */
-function showView(id, el) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('view-' + id).classList.add('active');
-  if (el) el.classList.add('active');
-  closeSidebar();
-}
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebar-overlay').classList.toggle('open');
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('open');
-}
+/* ═══ REVENUE TRACKER ═══ */
+function updateRevenueTracker(){
+  const rev=kpiState.revenue||0;
+  const pct=Math.min(100,Math.round(rev/GOAL*100));
+  const now=new Date();
+  const dayNum=Math.max(1,Math.ceil((now-new Date(MISSION_START))/(1000*60*60*24))+1);
+  const daysLeft=Math.max(1,MISSION_DAYS-dayNum+1);
+  const remaining=GOAL-rev;
+  const dailyNeeded=Math.ceil(remaining/daysLeft);
 
-/* ═══════════════════════════════════════════
-   TASKS ENGINE
-═══════════════════════════════════════════ */
-const TASKS_KEY = 'cc_tasks_v1';
-let tasks = JSON.parse(localStorage.getItem(TASKS_KEY) || '[]');
-let currentFilter = 'today-tasks';
-let activeTaskId = null;
+  // Today view
+  const revBar=document.getElementById('rev-bar-fill');
+  if(revBar)revBar.style.width=pct+'%';
+  const revDisp=document.getElementById('rev-current-display');
+  if(revDisp)revDisp.textContent=rev.toLocaleString();
+  const revPct=document.getElementById('rev-pct-text');
+  if(revPct)revPct.textContent=pct+'%';
+  const revRem=document.getElementById('rev-remaining-val');
+  if(revRem)revRem.textContent='$'+remaining.toLocaleString();
+  const revDaily=document.getElementById('rev-daily-needed');
+  if(revDaily){revDaily.textContent='$'+dailyNeeded.toLocaleString();revDaily.className='rev-stat-val'+(dailyNeeded>3000?' urgent':dailyNeeded>1667?' ok':'');}
+  const revDays=document.getElementById('rev-days-left');
+  if(revDays)revDays.textContent=daysLeft;
 
-function saveTasks() { localStorage.setItem(TASKS_KEY, JSON.stringify(tasks)); }
+  // Metrics view
+  const mRev=document.getElementById('m-rev-current');
+  if(mRev)mRev.textContent=rev.toLocaleString();
+  const mDays=document.getElementById('m-days-left');
+  if(mDays)mDays.textContent=daysLeft;
+  const mPace=document.getElementById('m-daily-pace');
+  if(mPace)mPace.textContent=dailyNeeded.toLocaleString();
+  const mBar=document.getElementById('m-goal-bar');
+  if(mBar)mBar.style.width=pct+'%';
+  const mPct=document.getElementById('m-goal-pct');
+  if(mPct)mPct.textContent=pct+'%';
 
-function genId() { return 't_' + Date.now() + '_' + Math.random().toString(36).slice(2,7); }
-
-function addTask() {
-  const title = document.getElementById('atf-title').value.trim();
-  if (!title) { document.getElementById('atf-title').focus(); return; }
-  const task = {
-    id: genId(),
-    title,
-    notes: document.getElementById('atf-notes').value.trim(),
-    project: document.getElementById('atf-project').value,
-    priority: parseInt(document.getElementById('atf-priority').value),
-    due: document.getElementById('atf-due').value,
-    done: false,
-    createdAt: new Date().toISOString()
-  };
-  tasks.unshift(task);
-  saveTasks();
-  closeAddTask();
-  renderTasks();
-  updateCounts();
+  // Biz bars (proportional targets: CW 40%, GovCon 36%, VAL 24%)
+  const cwRev=kpiState.cwRev||0,gcRev=kpiState.gcRev||0,vlRev=kpiState.vlRev||0;
+  const bars=[['m-cw-bar',cwRev,20000,'#2563eb','#60a5fa'],['m-gc-bar',gcRev,18000,'#059669','#34d399'],['m-vl-bar',vlRev,12000,'#7c3aed','#a78bfa']];
+  bars.forEach(([id,r,t,c1,c2])=>{const el=document.getElementById(id);if(el){el.style.width=Math.min(100,r/t*100)+'%';el.style.background=`linear-gradient(90deg,${c1},${c2})`;}});
+  ['cw','gc','vl'].forEach((k,i)=>{const el=document.getElementById('m-'+k+'-rev');if(el)el.textContent=[cwRev,gcRev,vlRev][i].toLocaleString();});
 }
 
-function toggleDone(id) {
-  const t = tasks.find(x => x.id === id);
-  if (!t) return;
-  t.done = !t.done;
-  t.completedAt = t.done ? new Date().toISOString() : null;
-  saveTasks();
-  renderTasks();
-  updateCounts();
+function updateTopbarPace(){
+  const rev=kpiState.revenue||0;
+  const now=new Date();
+  const dayNum=Math.max(1,Math.ceil((now-new Date(MISSION_START))/(1000*60*60*24))+1);
+  const onPace=rev>=(dayNum-1)*1667;
+  const el=document.getElementById('topbar-pace');
+  if(el)el.textContent=onPace?'✅ On Pace':'⚠ Behind Pace';
+  if(el)el.style.color=onPace?'var(--green)':'var(--red)';
 }
 
-function deleteTask(id) {
-  tasks = tasks.filter(x => x.id !== id);
-  saveTasks();
-  if (activeTaskId === id) closeDetail();
-  renderTasks();
-  updateCounts();
-}
+/* ═══ TODAY VIEW DATA ═══ */
+const GOALS_KEY='cc_today_goals_'+TODAY_ISO;
+const DISMISSED_KEY='cc_today_dismissed_'+TODAY_ISO;
+let goalsDone=new Set(JSON.parse(localStorage.getItem(GOALS_KEY)||'[]'));
+let dismissed=new Set(JSON.parse(localStorage.getItem(DISMISSED_KEY)||'[]'));
+let showDismissedActions=false,showDismissedDecide=false;
 
-function openDetail(id) {
-  const t = tasks.find(x => x.id === id);
-  if (!t) return;
-  activeTaskId = id;
-  document.getElementById('td-title').value = t.title;
-  document.getElementById('td-notes').value = t.notes || '';
-  document.getElementById('td-project').value = t.project || 'CW';
-  document.getElementById('td-priority').value = t.priority || 4;
-  document.getElementById('td-due').value = t.due || '';
-  document.getElementById('task-detail-panel').classList.add('open');
-}
-
-function saveDetail() {
-  const t = tasks.find(x => x.id === activeTaskId);
-  if (!t) return;
-  t.title = document.getElementById('td-title').value.trim() || t.title;
-  t.notes = document.getElementById('td-notes').value.trim();
-  t.project = document.getElementById('td-project').value;
-  t.priority = parseInt(document.getElementById('td-priority').value);
-  t.due = document.getElementById('td-due').value;
-  saveTasks();
-  renderTasks();
-  updateCounts();
-  // Visual feedback
-  const btn = document.querySelector('.td-save');
-  btn.textContent = '✓ Saved'; btn.style.background = 'var(--green-bg)'; btn.style.color = 'var(--green)';
-  setTimeout(() => { btn.textContent = 'Save Changes'; btn.style.background = ''; btn.style.color = ''; }, 1500);
-}
-
-function closeDetail() {
-  activeTaskId = null;
-  document.getElementById('task-detail-panel').classList.remove('open');
-}
-
-function openAddTask() {
-  document.getElementById('add-task-bar').style.display = 'none';
-  document.getElementById('add-task-form').classList.add('open');
-  document.getElementById('atf-title').focus();
-}
-function closeAddTask() {
-  document.getElementById('add-task-bar').style.display = 'flex';
-  document.getElementById('add-task-form').classList.remove('open');
-  document.getElementById('atf-title').value = '';
-  document.getElementById('atf-notes').value = '';
-  document.getElementById('atf-priority').value = '4';
-  document.getElementById('atf-due').value = new Date().toISOString().split('T')[0];
-}
-
-const projectColors = { CW:'#60a5fa', GovCon:'#34d399', Viral:'#a78bfa', Personal:'#6b7280' };
-const projectBgs = { CW:'#1e3a5f', GovCon:'#065f46', Viral:'#2d1f5c', Personal:'#374151' };
-const prioColors = { 1:'var(--red)', 2:'var(--yellow)', 3:'var(--blue)', 4:'var(--border)' };
-const prioLabels = { 1:'P1', 2:'P2', 3:'P3', 4:'P4' };
-
-function getFilteredTasks(filter) {
-  const today = new Date().toISOString().split('T')[0];
-  if (filter === 'today-tasks') return tasks.filter(t => !t.done && (!t.due || t.due <= today));
-  if (filter === 'upcoming') return tasks.filter(t => !t.done && t.due && t.due > today);
-  if (filter === 'all-tasks') return tasks.filter(t => !t.done);
-  if (filter === 'completed') return tasks.filter(t => t.done);
-  // project filter
-  return tasks.filter(t => !t.done && t.project === filter);
-}
-
-function renderTasks(filter) {
-  if (filter) currentFilter = filter;
-  const today = new Date().toISOString().split('T')[0];
-  const active = getFilteredTasks(currentFilter);
-  const done = tasks.filter(t => t.done);
-
-  const list = document.getElementById('task-list');
-  list.innerHTML = '';
-
-  if (active.length === 0) {
-    list.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text3);font-size:13px">No tasks here 🎉</div>';
-  } else {
-    active.forEach(t => {
-      const isOverdue = t.due && t.due < today && !t.done;
-      const pClass = t.priority <= 3 ? 'p' + t.priority : '';
-      const el = document.createElement('div');
-      el.className = 'task-item';
-      el.innerHTML = `
-        <div class="priority-bar p${t.priority}"></div>
-        <div class="t-check ${pClass}" onclick="toggleDone('${t.id}')"></div>
-        <div class="t-body" onclick="openDetail('${t.id}')" style="cursor:pointer">
-          <div class="t-title">${escHtml(t.title)}</div>
-          <div class="t-meta">
-            <span class="t-project" style="background:${projectBgs[t.project]||'#374151'};color:${projectColors[t.project]||'#9ca3af'}">${t.project}</span>
-            ${t.due ? `<span class="t-due ${isOverdue?'overdue':''}">${isOverdue?'⚠ ':''} ${formatDate(t.due)}</span>` : ''}
-            <span style="font-size:10px;color:${prioColors[t.priority]};font-weight:700">${prioLabels[t.priority]}</span>
-          </div>
-          ${t.notes ? `<div class="t-notes-preview">📝 ${escHtml(t.notes)}</div>` : ''}
-        </div>
-        <div class="t-actions">
-          <button class="t-action-btn" onclick="openDetail('${t.id}')" title="Edit">✏️</button>
-          <button class="t-action-btn" onclick="deleteTask('${t.id}')" title="Delete">🗑</button>
-        </div>`;
-      list.appendChild(el);
-    });
-  }
-
-  // Completed section
-  const compSection = document.getElementById('completed-section');
-  const compList = document.getElementById('completed-list');
-  document.getElementById('completed-count').textContent = done.length;
-  if (done.length > 0 && currentFilter !== 'completed') {
-    compSection.style.display = 'block';
-    compList.innerHTML = done.slice(0, 20).map(t => `
-      <div class="task-item completed">
-        <div class="priority-bar p4"></div>
-        <div class="t-check checked" onclick="toggleDone('${t.id}')"></div>
-        <div class="t-body">
-          <div class="t-title">${escHtml(t.title)}</div>
-          <div class="t-meta">
-            <span class="t-project" style="background:${projectBgs[t.project]||'#374151'};color:${projectColors[t.project]||'#9ca3af'}">${t.project}</span>
-          </div>
-        </div>
-        <div class="t-actions">
-          <button class="t-action-btn" onclick="deleteTask('${t.id}')">🗑</button>
-        </div>
-      </div>`).join('');
-  } else if (currentFilter === 'completed') {
-    compSection.style.display = 'none';
-    list.innerHTML = done.length === 0 ? '<div style="text-align:center;padding:32px;color:var(--text3);font-size:13px">No completed tasks yet</div>' :
-      done.map(t => `
-        <div class="task-item completed">
-          <div class="priority-bar p4"></div>
-          <div class="t-check checked" onclick="toggleDone('${t.id}')"></div>
-          <div class="t-body">
-            <div class="t-title">${escHtml(t.title)}</div>
-            <div class="t-meta">
-              <span class="t-project" style="background:${projectBgs[t.project]||'#374151'};color:${projectColors[t.project]||'#9ca3af'}">${t.project}</span>
-              ${t.completedAt ? `<span class="t-due">${formatDate(t.completedAt.split('T')[0])}</span>` : ''}
-            </div>
-          </div>
-          <div class="t-actions">
-            <button class="t-action-btn" onclick="deleteTask('${t.id}')">🗑</button>
-          </div>
-        </div>`).join('');
-  } else {
-    compSection.style.display = 'none';
-  }
-
-  // Update view label
-  const labels = { 'today-tasks':'Today', 'upcoming':'Upcoming', 'all-tasks':'All Tasks', 'completed':'Completed' };
-  document.getElementById('task-view-label').textContent = labels[currentFilter] || currentFilter;
-  document.getElementById('task-view-count').textContent = `${active.length} task${active.length !== 1 ? 's' : ''}`;
-}
-
-let completedOpen = false;
-function toggleCompleted() {
-  completedOpen = !completedOpen;
-  document.getElementById('completed-list').style.display = completedOpen ? 'block' : 'none';
-  document.getElementById('completed-arrow').textContent = completedOpen ? '▾' : '▸';
-}
-
-function showTaskFilter(filter, el) {
-  currentFilter = filter;
-  document.querySelectorAll('.task-nav-item').forEach(x => x.classList.remove('active'));
-  if (el) el.classList.add('active');
-  renderTasks(filter);
-}
-
-function showProjectFilter(proj, el) {
-  showView('tasks', null);
-  document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
-  if (el) el.classList.add('active');
-  currentFilter = proj;
-  document.querySelectorAll('.task-nav-item').forEach(x => x.classList.remove('active'));
-  renderTasks(proj);
-}
-
-function updateCounts() {
-  const today = new Date().toISOString().split('T')[0];
-  const active = tasks.filter(t => !t.done);
-  const todayTasks = tasks.filter(t => !t.done && (!t.due || t.due <= today));
-  const upcoming = tasks.filter(t => !t.done && t.due && t.due > today);
-  const done = tasks.filter(t => t.done);
-
-  document.getElementById('cnt-today').textContent = todayTasks.length;
-  document.getElementById('cnt-upcoming').textContent = upcoming.length;
-  document.getElementById('cnt-all').textContent = active.length;
-  document.getElementById('cnt-done').textContent = done.length;
-
-  const badge = document.getElementById('tasks-badge');
-  badge.textContent = active.length;
-
-  const projs = { CW: 'cw', GovCon: 'gc', Viral: 'vl', Personal: 'pe' };
-  Object.entries(projs).forEach(([proj, key]) => {
-    const count = tasks.filter(t => !t.done && t.project === proj).length;
-    const el = document.getElementById(`proj-${key}-count`);
-    if (el) el.textContent = count;
-  });
-}
-
-/* ═══════════════════════════════════════════
-   INBOX DATA
-═══════════════════════════════════════════ */
-const inboxData = [
-  { cat:'action', biz:'GovCon', from:'noreply@aigovbid.com', subject:'OVERDUE: Dynamics CRM Migration — 1 Day Past Due', action:'Log into aigovbid.com and close or escalate', time:'10:00 AM' },
-  { cat:'action', biz:'GovCon', from:'noreply@aigovbid.com', subject:'OVERDUE: 7 More Proposals — 7–35 Days Past Due', action:'Batch review all overdue proposals in aigovbid.com', time:'10:00 AM' },
-  { cat:'action', biz:'CW', from:'notifications@github.com', subject:'[consultingwhiz11/website-compliance] Run FAILED: Daily Compliance Lead Pipeline', action:'Check Actions tab in GitHub → fix commit 14c2358', time:'12:28 PM' },
-  { cat:'action', biz:'CW', from:'billing@zoom.us', subject:'Zoom Invoice 7 Days Past Due', action:'Pay immediately at zoom.us/billing', time:'3:00 PM' },
-  { cat:'govcon', biz:'GovCon', from:'notifications@mail.commbuys.com', subject:'Bid Notification — BD-26-1036-EDU02: Event Management Products & Professional Services', action:'Review bid at commbuys.com', time:'2:03 PM' },
-  { cat:'govcon', biz:'GovCon', from:'notifications@mail.commbuys.com', subject:'Bid Amendment Notification — BD-26-1036 (Amendment 1)', action:'Review amendment changes', time:'2:47 PM' },
-  { cat:'govcon', biz:'CW', from:'procurement-notifications@opengov.com', subject:'New Opp: County of San Mateo — Traffic Software for Analytics', action:'Review NAICS and scope', time:'3:43 PM' },
-  { cat:'govcon', biz:'CW', from:'procurement-notifications@opengov.com', subject:'New Opp: County of San Mateo — Live Agent Services', action:'Review scope for BPO potential', time:'2:01 PM' },
-  { cat:'govcon', biz:'GovCon', from:'subscriptions@highergov.com', subject:'HigherGov Saved Search Update — SAP FAR 13 (3 new results)', action:'Review 3 new federal opportunities in HigherGov dashboard', time:'11:41 AM' },
-  { cat:'govcon', biz:'GovCon', from:'support@internationaleprocurement.com', subject:'Lumberton Housing Authority, NC — Computer Services', action:'Review bid scope — strong CW fit', time:'2:33 PM' },
-  { cat:'govcon', biz:'GovCon', from:'region4esc@customer.ionwave.net', subject:'Region 4 ESC Bid Addendum: 26-12 Facilities Management Software', action:'Review addendum before bid close', time:'12:16 PM' },
-  { cat:'govcon', biz:'GovCon', from:'OSFreshSqueezedDaily@orangeslices.ai', subject:'CMS HQR / MDA AI SIDECAR / Navy ONR SBIR III / FDA Matchmaking Days', action:'Review AI-adjacent federal contracts for GovConBD clients', time:'12:24 PM' },
-  { cat:'decide', biz:'CW', from:'fred@fireflies.ai', subject:'Meeting Recap — Lunch & Learn: Brain²! (EMEA/AMER)', action:'Review for L5.ai partnership relevance', time:'4:05 PM' },
-  { cat:'decide', biz:'GovCon', from:'no-reply@zoom.us', subject:'Webinar reminder: How agencies approach AI procurement (LIVE)', action:'Watch now or find replay — highly relevant for GovConBD', time:'2:56 PM' },
-  { cat:'decide', biz:'CW', from:'info-overwatchtools.com@shared1.ccsend.com', subject:'CMMC L2 Platform Decision — GCC High vs Google Workspace for Gov', action:'Forward to CMMC-pursuing clients or use as content', time:'4:02 PM' },
-  { cat:'decide', biz:'CW', from:'venturesummits@youngstartupmailercampaign.com', subject:'Early Bird Rate Expires TODAY — Venture Summit West ⏰', action:'Decide on attendance before midnight', time:'3:05 PM' },
-  { cat:'decide', biz:'GovCon', from:'notify@americansbcc.org', subject:'FINAL DAY to Register — ASBCC ConnectPoint Simply Matchmaking May 13', action:'Register today at americansbcc.org', time:'1:31 PM' },
-  { cat:'low', biz:'CW', from:'marketing@engage.canva.com', subject:'Be the first to shop Canva Originals', action:'Newsletter — skip', time:'4:05 PM' },
-  { cat:'low', biz:'CW', from:'linkedin@em.linkedin.com', subject:'Thanks for being a valued member, Mikel', action:'Promotional — skip', time:'3:11 PM' },
-  { cat:'low', biz:'Personal', from:'noreply@news.paypal.com', subject:'Use your PayPal Balance wherever you shop', action:'Promotional — skip', time:'3:01 PM' },
-  { cat:'low', biz:'CW', from:'theaipixel@substack.com', subject:'OpenAI just swapped ChatGPT\'s brain — hallucinates 52% less', action:'Newsletter — read when time allows', time:'3:03 PM' },
+const todayGoals=[
+  {id:'g1',badges:[['🔥 URGENT','crit'],['GovCon','govcon']],title:'Close AIGovBid Proposal Backlog — 8 Stalled Deals',desc:'Your fastest $50k unlock. 8 proposals stalled 1–35 days. Log into aigovbid.com → triage each → formally close or escalate. Dynamics CRM Migration (1 day old) is still winnable.',revenue:'💰 Revenue at stake: $24k–$40k',project:'GovCon'},
+  {id:'g2',badges:[['🔥 FIX NOW','crit'],['CW','cw']],title:'Restore GitHub Compliance Lead Pipeline',desc:'Every day broken = $300–800 in missed leads. Commit 14c2358 on consultingwhiz11/website-compliance broke the Daily Compliance Lead Pipeline. Fix → re-run → verify.',revenue:'💰 Revenue impact: $3–8k/month in leads',project:'CW'},
+  {id:'g3',badges:[['📞 REVENUE','new-b'],['All','cw']],title:'Book 3 Strategy Calls This Week',desc:'3 new discovery calls = $9k–$15k in potential proposals. Work your warm list: past inquiries, webinar attendees, LinkedIn connections. Use Calendly link in every outreach.',revenue:'💰 Each call → avg $3–5k proposal',project:'CW'},
+  {id:'g4',badges:[['TODAY','crit'],['GovCon','govcon']],title:'Register: ASBCC B2G Matchmaking + Assess Commbuys BD-26-1036',desc:'FINAL DAY to register for ASBCC virtual matchmaking May 13 (direct agency connections). Also assess BD-26-1036 Event Management scope at commbuys.com for GovConBD client bid.',revenue:'💰 Pipeline: $10k–$50k per contract win',project:'GovCon'},
+  {id:'g5',badges:[['💳 PROTECT','yellow'],['CW','cw']],title:'Pay Zoom Invoice — Protect Webinar Revenue Channel',desc:'7 days overdue on contact@consultingwhiz.com. Webinar suspensions cut off GovConBD revenue pipeline. Pay at zoom.us/billing — takes 2 minutes.',revenue:'💰 Protects: $5k–$25k per webinar',project:'CW'},
 ];
 
-let activeInboxFilter = 'all';
-function filterInbox(filter, el) {
-  activeInboxFilter = filter;
-  document.querySelectorAll('.filter-chip').forEach(x => x.classList.remove('active'));
-  if (el) el.classList.add('active');
-  renderInbox();
+const todayActions=[
+  {id:'a1',title:'AIGovBid: 8 Overdue Proposals',meta:'mikela@aigovbid.com · noreply@aigovbid.com',action:'→ Log into aigovbid.com → triage each → close or escalate immediately',revenue:'Revenue at risk: $24k–$40k',isTable:true,project:'GovCon'},
+  {id:'a2',title:'GitHub: Workflow FAILED — website-compliance',meta:'consultingwhiz11/website-compliance · commit 14c2358',action:'→ Check GitHub Actions logs → fix pipeline → re-run to restore lead flow',revenue:'Missed leads: ~$300–800/day',project:'CW'},
+  {id:'a3',title:'Zoom Invoice 7 Days Past Due',meta:'billing@zoom.us → contact@consultingwhiz.com',action:'→ Pay at zoom.us/billing — webinar suspension risk',revenue:'Protects webinar revenue channel',project:'CW'},
+];
+
+const todayDecide=[
+  {id:'d1',title:'⏰ EXPIRES TONIGHT — Venture Summit West Early Bird',meta:'venturesummits@ · Deadline: Midnight tonight',action:'→ Decide: is this worth attending for ViralAILabs / CW BD?'},
+  {id:'d2',title:'ASBCC Simply Matchmaking — May 13',meta:'notify@americansbcc.org · Final day to register',action:'→ Register now at americansbcc.org for direct B2G agency connections'},
+  {id:'d3',title:'AI Procurement Webinar — How Agencies Approach AI',meta:'Zoom · Live today — replay may be available',action:'→ Watch/save replay — high relevance for GovConBD BD strategy'},
+  {id:'d4',title:'Fireflies Recap: Lunch & Learn Brain²! (L5.ai)',meta:'fred@fireflies.ai · Via: prince.singh@l5.ai',action:'→ Review for L5.ai partnership — potential ViralAILabs client'},
+];
+
+function saveTodayState(){localStorage.setItem(GOALS_KEY,JSON.stringify([...goalsDone]));localStorage.setItem(DISMISSED_KEY,JSON.stringify([...dismissed]));}
+
+function toggleGoal(id){goalsDone.has(id)?goalsDone.delete(id):goalsDone.add(id);saveTodayState();renderTodayGoals();updateTodayKPIs();}
+function dismissItem(id){dismissed.add(id);saveTodayState();renderTodayActions();renderTodayDecide();updateTodayKPIs();}
+function undismissItem(id){dismissed.delete(id);saveTodayState();renderTodayActions();renderTodayDecide();updateTodayKPIs();}
+function toggleShowDismissed(section){if(section==='actions'){showDismissedActions=!showDismissedActions;renderTodayActions();}else{showDismissedDecide=!showDismissedDecide;renderTodayDecide();}}
+
+function sendGoalToTasks(id){
+  const g=todayGoals.find(x=>x.id===id);if(!g)return;
+  tasks.unshift({id:genId(),title:g.title,notes:g.desc+'\n\n'+g.revenue,project:g.project||'Personal',priority:1,due:TODAY_ISO,done:false,createdAt:new Date().toISOString()});
+  saveTasks();updateCounts();showToast('📋 Added to Tasks: '+g.title.slice(0,40)+'…');
+}
+function sendActionToTasks(id){
+  const a=todayActions.find(x=>x.id===id);if(!a)return;
+  tasks.unshift({id:genId(),title:a.title,notes:a.action+'\n'+a.revenue,project:a.project||'Personal',priority:1,due:TODAY_ISO,done:false,createdAt:new Date().toISOString()});
+  saveTasks();updateCounts();showToast('📋 Added to Tasks');
+}
+function sendDecideToTasks(id){
+  const d=todayDecide.find(x=>x.id===id);if(!d)return;
+  tasks.unshift({id:genId(),title:d.title.replace(/^[⏰🔴🟡]\s*/,''),notes:d.action,project:'Personal',priority:2,due:TODAY_ISO,done:false,createdAt:new Date().toISOString()});
+  saveTasks();updateCounts();showToast('📋 Added to Tasks');
 }
 
-const bizColors = { CW:'#60a5fa', GovCon:'#34d399', Viral:'#a78bfa', Personal:'#6b7280' };
-const bizBgs = { CW:'#1e3a5f', GovCon:'#065f46', Viral:'#2d1f5c', Personal:'#374151' };
-const catColors = { action:'var(--red)', govcon:'var(--green)', decide:'var(--yellow)', low:'var(--text3)' };
-const catLabels = { action:'🔴 Action', govcon:'🏛️ GovCon', decide:'🟡 Decide', low:'⚪ FYI' };
+function updateTodayKPIs(){
+  const done=goalsDone.size;
+  document.getElementById('kpi-goals-done').textContent=done;
+  document.getElementById('goals-progress').textContent=done+' of '+todayGoals.length+' complete';
+  const active=todayActions.filter(a=>!dismissed.has(a.id)).length;
+  document.getElementById('action-count-label').textContent=active+' remaining';
+  document.getElementById('today-badge').textContent=todayGoals.filter(g=>!goalsDone.has(g.id)).length+todayActions.filter(a=>!dismissed.has(a.id)).length;
+}
 
-function renderInbox() {
-  const filtered = activeInboxFilter === 'all' ? inboxData : inboxData.filter(m => m.cat === activeInboxFilter);
-  const list = document.getElementById('inbox-list');
-  list.innerHTML = filtered.map(m => `
-    <div class="card" style="margin-bottom:8px">
-      <div style="display:flex;align-items:flex-start;gap:10px">
+function renderTodayGoals(){
+  document.getElementById('today-goals-list').innerHTML=todayGoals.map((g,i)=>{
+    const done=goalsDone.has(g.id);
+    return`<div class="goal-card${done?' done':''}">
+      <div class="goal-num${done?' done-num':''}">${done?'✓':i+1}</div>
+      <div class="goal-content" style="flex:1;min-width:0">
+        <div class="g-title${done?' done-title':''}">${g.badges.map(([l,c])=>`<span class="badge ${c}">${l}</span>`).join('')} ${escHtml(g.title)}</div>
+        <div class="g-desc">${escHtml(g.desc)}</div>
+        <div class="g-revenue">${g.revenue}</div>
+      </div>
+      <div class="goal-btns">
+        <button class="goal-check-btn${done?' checked':''}" onclick="toggleGoal('${g.id}')" title="${done?'Mark incomplete':'Mark done'}">${done?'✓':''}</button>
+        <button class="goal-task-btn" onclick="sendGoalToTasks('${g.id}')">📋 Task</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTodayActions(){
+  const bar=document.getElementById('dismissed-bar-actions');
+  const dc=todayActions.filter(a=>dismissed.has(a.id)).length;
+  document.getElementById('today-actions-list').innerHTML=todayActions.map(a=>{
+    const dis=dismissed.has(a.id);
+    if(dis&&!showDismissedActions)return'';
+    return`<div class="action-card${dis?' dismissed':''}">
+      <div class="ac-body">
+        <div class="ac-title red${dis?' done-t':''}">${escHtml(a.title)}</div>
+        <div class="ac-meta">${escHtml(a.meta)}</div>
+        <div class="ac-action">${escHtml(a.action)}</div>
+        ${a.revenue?`<div class="ac-revenue">💰 ${escHtml(a.revenue)}</div>`:''}
+        ${a.isTable?`<table class="prop-table"><tr><th>Proposal</th><th style="text-align:center">Days OD</th></tr><tr><td style="color:var(--red)">Dynamics CRM Migration Support</td><td style="text-align:center;color:var(--red);font-weight:700">1</td></tr><tr><td>Data Abstraction and NLP Solution</td><td style="text-align:center;color:var(--yellow)">7</td></tr><tr><td>Information Technology Support Services (ITSS)</td><td style="text-align:center;color:var(--yellow)">8</td></tr><tr><td>Naval Info Warfighting Dev Center — EW Data Support</td><td style="text-align:center;color:var(--yellow)">8</td></tr><tr><td>PBES 2026 / DJ10 VA / Wildfire AI / Chemistry CPRR</td><td style="text-align:center;color:var(--red)">8–35</td></tr></table>`:''}
+      </div>
+      <div class="ac-btns">
+        ${!dis?`<button class="ac-btn done-btn" onclick="dismissItem('${a.id}')">✓ Done</button><button class="ac-btn task-btn" onclick="sendActionToTasks('${a.id}')">📋 Task</button><button class="ac-btn skip-btn" onclick="dismissItem('${a.id}')">✕ Skip</button>`:`<button class="ac-btn restore-btn" onclick="undismissItem('${a.id}')">↩ Restore</button>`}
+      </div>
+    </div>`;
+  }).join('');
+  if(bar){bar.style.display=dc>0?'block':'none';bar.textContent=(showDismissedActions?'▾ Hide':'▸ Show')+' dismissed ('+dc+')';}
+}
+
+function renderTodayDecide(){
+  const bar=document.getElementById('dismissed-bar-decide');
+  const dc=todayDecide.filter(d=>dismissed.has(d.id)).length;
+  document.getElementById('today-decide-list').innerHTML=todayDecide.map(d=>{
+    const dis=dismissed.has(d.id);
+    if(dis&&!showDismissedDecide)return'';
+    return`<div class="card" style="${dis?'opacity:.35;background:var(--bg3)':''}">
+      <div style="display:flex;gap:12px;align-items:flex-start">
         <div style="flex:1;min-width:0">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap">
-            <span style="font-size:10px;font-weight:700;color:${catColors[m.cat]}">${catLabels[m.cat]}</span>
-            <span class="badge" style="background:${bizBgs[m.biz]||'#374151'};color:${bizColors[m.biz]||'#9ca3af'}">${m.biz}</span>
-            <span style="font-size:11px;color:var(--text3);margin-left:auto">${m.time}</span>
-          </div>
-          <div style="font-size:13px;font-weight:600;margin-bottom:3px">${escHtml(m.subject)}</div>
-          <div style="font-size:11px;color:var(--text3);margin-bottom:6px">${escHtml(m.from)}</div>
-          <div style="font-size:12px;color:var(--text2)">→ ${escHtml(m.action)}</div>
+          <div class="card-title${dis?'':' yellow'}" style="${dis?'text-decoration:line-through;color:var(--text3)':''}">${escHtml(d.title)}</div>
+          <div class="card-meta">${escHtml(d.meta)}</div>
+          <div class="card-action">${escHtml(d.action)}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;flex-shrink:0;min-width:72px">
+          ${!dis?`<button class="ac-btn done-btn" onclick="dismissItem('${d.id}')">✓ Done</button><button class="ac-btn task-btn" onclick="sendDecideToTasks('${d.id}')">📋 Task</button><button class="ac-btn skip-btn" onclick="dismissItem('${d.id}')">✕ Skip</button>`:`<button class="ac-btn restore-btn" onclick="undismissItem('${d.id}')">↩ Restore</button>`}
         </div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
+  if(bar){bar.style.display=dc>0?'block':'none';bar.textContent=(showDismissedDecide?'▾ Hide':'▸ Show')+' dismissed ('+dc+')';}
 }
 
-/* ═══════════════════════════════════════════
-   UTILS
-═══════════════════════════════════════════ */
-function escHtml(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function renderTodayView(){renderTodayGoals();renderTodayActions();renderTodayDecide();updateTodayKPIs();}
+
+/* ═══ NAV ═══ */
+function showView(id,el){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.getElementById('view-'+id).classList.add('active');if(el)el.classList.add('active');closeSidebar();}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');}
+
+/* ═══ TASKS ENGINE ═══ */
+const TASKS_KEY='cc_tasks_v1';
+let tasks=JSON.parse(localStorage.getItem(TASKS_KEY)||'[]');
+let currentFilter='today-tasks';
+let activeTaskId=null;
+function saveTasks(){localStorage.setItem(TASKS_KEY,JSON.stringify(tasks));}
+function genId(){return't_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);}
+
+function addTask(){
+  const title=document.getElementById('atf-title').value.trim();
+  if(!title){document.getElementById('atf-title').focus();return;}
+  tasks.unshift({id:genId(),title,notes:document.getElementById('atf-notes').value.trim(),project:document.getElementById('atf-project').value,priority:parseInt(document.getElementById('atf-priority').value),due:document.getElementById('atf-due').value,done:false,createdAt:new Date().toISOString()});
+  saveTasks();closeAddTask();renderTasks();updateCounts();
 }
-function formatDate(iso) {
-  if (!iso) return '';
-  const d = new Date(iso + 'T12:00:00');
-  return d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+function toggleDone(id){const t=tasks.find(x=>x.id===id);if(!t)return;t.done=!t.done;t.completedAt=t.done?new Date().toISOString():null;saveTasks();renderTasks();updateCounts();}
+function deleteTask(id){tasks=tasks.filter(x=>x.id!==id);saveTasks();if(activeTaskId===id)closeDetail();renderTasks();updateCounts();}
+function openDetail(id){const t=tasks.find(x=>x.id===id);if(!t)return;activeTaskId=id;document.getElementById('td-title').value=t.title;document.getElementById('td-notes').value=t.notes||'';document.getElementById('td-project').value=t.project||'CW';document.getElementById('td-priority').value=t.priority||4;document.getElementById('td-due').value=t.due||'';document.getElementById('task-detail-panel').classList.add('open');}
+function saveDetail(){const t=tasks.find(x=>x.id===activeTaskId);if(!t)return;t.title=document.getElementById('td-title').value.trim()||t.title;t.notes=document.getElementById('td-notes').value.trim();t.project=document.getElementById('td-project').value;t.priority=parseInt(document.getElementById('td-priority').value);t.due=document.getElementById('td-due').value;saveTasks();renderTasks();updateCounts();const btn=document.querySelector('.td-save');btn.textContent='✓ Saved';btn.style.background='var(--green-bg)';btn.style.color='var(--green)';setTimeout(()=>{btn.textContent='Save Changes';btn.style.background='';btn.style.color='';},1500);}
+function closeDetail(){activeTaskId=null;document.getElementById('task-detail-panel').classList.remove('open');}
+function openAddTask(){document.getElementById('add-task-bar').style.display='none';document.getElementById('add-task-form').classList.add('open');document.getElementById('atf-title').focus();}
+function closeAddTask(){document.getElementById('add-task-bar').style.display='flex';document.getElementById('add-task-form').classList.remove('open');document.getElementById('atf-title').value='';document.getElementById('atf-notes').value='';document.getElementById('atf-priority').value='4';document.getElementById('atf-due').value=new Date().toISOString().split('T')[0];}
+
+const projectColors={CW:'#60a5fa',GovCon:'#34d399',Viral:'#a78bfa',Personal:'#6b7280'};
+const projectBgs={CW:'#1e3a5f',GovCon:'#065f46',Viral:'#2d1f5c',Personal:'#374151'};
+const prioColors={1:'var(--red)',2:'var(--yellow)',3:'var(--blue)',4:'var(--border)'};
+const prioLabels={1:'P1',2:'P2',3:'P3',4:'P4'};
+
+function getFilteredTasks(f){const td=new Date().toISOString().split('T')[0];if(f==='today-tasks')return tasks.filter(t=>!t.done&&(!t.due||t.due<=td));if(f==='upcoming')return tasks.filter(t=>!t.done&&t.due&&t.due>td);if(f==='all-tasks')return tasks.filter(t=>!t.done);if(f==='completed')return tasks.filter(t=>t.done);return tasks.filter(t=>!t.done&&t.project===f);}
+
+function renderTasks(f){
+  if(f)currentFilter=f;
+  const today=new Date().toISOString().split('T')[0];
+  const active=getFilteredTasks(currentFilter);
+  const done=tasks.filter(t=>t.done);
+  const list=document.getElementById('task-list');
+  list.innerHTML='';
+  if(active.length===0){list.innerHTML='<div style="text-align:center;padding:32px;color:var(--text3);font-size:13px">No tasks here 🎉</div>';}
+  else{active.forEach(t=>{const ov=t.due&&t.due<today&&!t.done;const pC=t.priority<=3?'p'+t.priority:'';const el=document.createElement('div');el.className='task-item';el.innerHTML=`<div class="priority-bar p${t.priority}"></div><div class="t-check ${pC}" onclick="toggleDone('${t.id}')"></div><div class="t-body" onclick="openDetail('${t.id}')" style="cursor:pointer"><div class="t-title">${escHtml(t.title)}</div><div class="t-meta"><span class="t-project" style="background:${projectBgs[t.project]||'#374151'};color:${projectColors[t.project]||'#9ca3af'}">${t.project}</span>${t.due?`<span class="t-due ${ov?'overdue':''}">${ov?'⚠ ':''} ${formatDate(t.due)}</span>`:''}<span style="font-size:10px;color:${prioColors[t.priority]};font-weight:700">${prioLabels[t.priority]}</span></div>${t.notes?`<div class="t-notes-preview">📝 ${escHtml(t.notes)}</div>`:''}</div><div class="t-actions"><button class="t-action-btn" onclick="openDetail('${t.id}')" title="Edit">✏️</button><button class="t-action-btn" onclick="deleteTask('${t.id}')" title="Delete">🗑</button></div>`;list.appendChild(el);});}
+  const cs=document.getElementById('completed-section');const cl=document.getElementById('completed-list');
+  document.getElementById('completed-count').textContent=done.length;
+  if(done.length>0&&currentFilter!=='completed'){cs.style.display='block';cl.innerHTML=done.slice(0,20).map(t=>`<div class="task-item completed"><div class="priority-bar p4"></div><div class="t-check checked" onclick="toggleDone('${t.id}')"></div><div class="t-body"><div class="t-title">${escHtml(t.title)}</div><div class="t-meta"><span class="t-project" style="background:${projectBgs[t.project]||'#374151'};color:${projectColors[t.project]||'#9ca3af'}">${t.project}</span></div></div><div class="t-actions"><button class="t-action-btn" onclick="deleteTask('${t.id}')">🗑</button></div></div>`).join('');}
+  else if(currentFilter==='completed'){cs.style.display='none';list.innerHTML=done.length===0?'<div style="text-align:center;padding:32px;color:var(--text3)">No completed tasks yet</div>':done.map(t=>`<div class="task-item completed"><div class="priority-bar p4"></div><div class="t-check checked" onclick="toggleDone('${t.id}')"></div><div class="t-body"><div class="t-title">${escHtml(t.title)}</div><div class="t-meta"><span class="t-project" style="background:${projectBgs[t.project]||'#374151'};color:${projectColors[t.project]||'#9ca3af'}">${t.project}</span>${t.completedAt?`<span class="t-due">${formatDate(t.completedAt.split('T')[0])}</span>`:''}</div></div><div class="t-actions"><button class="t-action-btn" onclick="deleteTask('${t.id}')">🗑</button></div></div>`).join('');}
+  else{cs.style.display='none';}
+  const labels={'today-tasks':'Today','upcoming':'Upcoming','all-tasks':'All Tasks','completed':'Completed'};
+  document.getElementById('task-view-label').textContent=labels[currentFilter]||currentFilter;
+  document.getElementById('task-view-count').textContent=active.length+' task'+(active.length!==1?'s':'');
 }
 
-// Close add-task form on Escape
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAddTask(); closeDetail(); } });
+let completedOpen=false;
+function toggleCompleted(){completedOpen=!completedOpen;document.getElementById('completed-list').style.display=completedOpen?'block':'none';document.getElementById('completed-arrow').textContent=completedOpen?'▾':'▸';}
+function showTaskFilter(f,el){currentFilter=f;document.querySelectorAll('.task-nav-item').forEach(x=>x.classList.remove('active'));if(el)el.classList.add('active');renderTasks(f);}
+function showProjectFilter(proj,el){showView('tasks',null);document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));if(el)el.classList.add('active');currentFilter=proj;document.querySelectorAll('.task-nav-item').forEach(x=>x.classList.remove('active'));renderTasks(proj);}
+
+function updateCounts(){
+  const today=new Date().toISOString().split('T')[0];
+  const todayTasks=tasks.filter(t=>!t.done&&(!t.due||t.due<=today));
+  const upcoming=tasks.filter(t=>!t.done&&t.due&&t.due>today);
+  const done=tasks.filter(t=>t.done);
+  document.getElementById('cnt-today').textContent=todayTasks.length;
+  document.getElementById('cnt-upcoming').textContent=upcoming.length;
+  document.getElementById('cnt-all').textContent=tasks.filter(t=>!t.done).length;
+  document.getElementById('cnt-done').textContent=done.length;
+  document.getElementById('tasks-badge').textContent=tasks.filter(t=>!t.done).length;
+  const projs={CW:'cw',GovCon:'gc',Viral:'vl',Personal:'pe'};
+  Object.entries(projs).forEach(([p,k])=>{const el=document.getElementById('proj-'+k+'-count');if(el)el.textContent=tasks.filter(t=>!t.done&&t.project===p).length;});
+}
+
+/* ═══ INBOX ═══ */
+const inboxData=[
+  {cat:'action',biz:'GovCon',from:'noreply@aigovbid.com',subject:'OVERDUE: Dynamics CRM Migration — 1 Day Past Due',action:'Log into aigovbid.com and close or escalate',time:'10:00 AM'},
+  {cat:'action',biz:'GovCon',from:'noreply@aigovbid.com',subject:'OVERDUE: 7 More Proposals — 7–35 Days Past Due',action:'Batch review all overdue proposals in aigovbid.com',time:'10:00 AM'},
+  {cat:'action',biz:'CW',from:'notifications@github.com',subject:'[consultingwhiz11/website-compliance] Run FAILED: Daily Compliance Lead Pipeline',action:'Check Actions tab in GitHub → fix commit 14c2358',time:'12:28 PM'},
+  {cat:'action',biz:'CW',from:'billing@zoom.us',subject:'Zoom Invoice 7 Days Past Due',action:'Pay immediately at zoom.us/billing',time:'3:00 PM'},
+  {cat:'govcon',biz:'GovCon',from:'notifications@mail.commbuys.com',subject:'Bid Notification — BD-26-1036-EDU02: Event Management Products',action:'Review bid at commbuys.com',time:'2:03 PM'},
+  {cat:'govcon',biz:'GovCon',from:'notifications@mail.commbuys.com',subject:'Bid Amendment Notification — BD-26-1036 (Amendment 1)',action:'Review amendment changes',time:'2:47 PM'},
+  {cat:'govcon',biz:'CW',from:'procurement-notifications@opengov.com',subject:'New Opp: County of San Mateo — Traffic Software for Analytics',action:'Review NAICS and scope',time:'3:43 PM'},
+  {cat:'govcon',biz:'CW',from:'procurement-notifications@opengov.com',subject:'New Opp: County of San Mateo — Live Agent Services',action:'Review scope for BPO potential',time:'2:01 PM'},
+  {cat:'govcon',biz:'GovCon',from:'subscriptions@highergov.com',subject:'HigherGov Saved Search Update — SAP FAR 13 (3 new results)',action:'Review 3 new federal opportunities in HigherGov dashboard',time:'11:41 AM'},
+  {cat:'govcon',biz:'GovCon',from:'support@internationaleprocurement.com',subject:'Lumberton Housing Authority, NC — Computer Services',action:'Review bid scope — strong CW fit',time:'2:33 PM'},
+  {cat:'govcon',biz:'GovCon',from:'OSFreshSqueezedDaily@orangeslices.ai',subject:'CMS HQR / MDA AI SIDECAR / Navy ONR SBIR III / FDA Matchmaking',action:'Review AI-adjacent federal contracts for GovConBD clients',time:'12:24 PM'},
+  {cat:'decide',biz:'CW',from:'fred@fireflies.ai',subject:'Meeting Recap — Lunch & Learn: Brain²! (EMEA/AMER)',action:'Review for L5.ai partnership relevance',time:'4:05 PM'},
+  {cat:'decide',biz:'GovCon',from:'no-reply@zoom.us',subject:'Webinar reminder: How agencies approach AI procurement (LIVE)',action:'Watch now or find replay — relevant for GovConBD',time:'2:56 PM'},
+  {cat:'decide',biz:'CW',from:'info-overwatchtools.com@shared1.ccsend.com',subject:'CMMC L2 Platform Decision — GCC High vs Google Workspace',action:'Forward to CMMC-pursuing clients or use as content',time:'4:02 PM'},
+  {cat:'decide',biz:'CW',from:'venturesummits@youngstartupmailercampaign.com',subject:'Early Bird Rate Expires TODAY — Venture Summit West ⏰',action:'Decide on attendance before midnight',time:'3:05 PM'},
+  {cat:'decide',biz:'GovCon',from:'notify@americansbcc.org',subject:'FINAL DAY — ASBCC ConnectPoint Simply Matchmaking May 13',action:'Register today at americansbcc.org',time:'1:31 PM'},
+  {cat:'low',biz:'CW',from:'marketing@engage.canva.com',subject:'Be the first to shop Canva Originals',action:'Newsletter — skip',time:'4:05 PM'},
+  {cat:'low',biz:'CW',from:'linkedin@em.linkedin.com',subject:'Thanks for being a valued member, Mikel',action:'Promotional — skip',time:'3:11 PM'},
+  {cat:'low',biz:'Personal',from:'noreply@news.paypal.com',subject:'Use your PayPal Balance wherever you shop',action:'Promotional — skip',time:'3:01 PM'},
+  {cat:'low',biz:'CW',from:'theaipixel@substack.com',subject:"OpenAI just swapped ChatGPT's brain — hallucinates 52% less",action:'Newsletter — read when time allows',time:'3:03 PM'},
+];
+
+let activeInboxFilter='all';
+function filterInbox(f,el){activeInboxFilter=f;document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('active'));if(el)el.classList.add('active');renderInbox();}
+const bizColors={CW:'#60a5fa',GovCon:'#34d399',Viral:'#a78bfa',Personal:'#6b7280'};
+const bizBgs={CW:'#1e3a5f',GovCon:'#065f46',Viral:'#2d1f5c',Personal:'#374151'};
+const catColors={action:'var(--red)',govcon:'var(--green)',decide:'var(--yellow)',low:'var(--text3)'};
+const catLabels={action:'🔴 Action',govcon:'🏛️ GovCon',decide:'🟡 Decide',low:'⚪ FYI'};
+function renderInbox(){
+  const filtered=activeInboxFilter==='all'?inboxData:inboxData.filter(m=>m.cat===activeInboxFilter);
+  document.getElementById('inbox-list').innerHTML=filtered.map(m=>`<div class="card" style="margin-bottom:8px"><div style="display:flex;align-items:flex-start;gap:10px"><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap"><span style="font-size:10px;font-weight:700;color:${catColors[m.cat]}">${catLabels[m.cat]}</span><span class="badge" style="background:${bizBgs[m.biz]||'#374151'};color:${bizColors[m.biz]||'#9ca3af'}">${m.biz}</span><span style="font-size:11px;color:var(--text3);margin-left:auto">${m.time}</span></div><div style="font-size:13px;font-weight:600;margin-bottom:3px">${escHtml(m.subject)}</div><div style="font-size:11px;color:var(--text3);margin-bottom:6px">${escHtml(m.from)}</div><div style="font-size:12px;color:var(--text2)">→ ${escHtml(m.action)}</div></div></div></div>`).join('');
+}
+
+/* ═══ UTILS ═══ */
+function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function formatDate(iso){if(!iso)return'';const d=new Date(iso+'T12:00:00');return d.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
+let toastTimer=null;
+function showToast(msg){let t=document.getElementById('cc-toast');if(!t){t=document.createElement('div');t.id='cc-toast';t.className='toast';document.body.appendChild(t);}t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2500);}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeAddTask();closeDetail();}});
 </script>
 </body>
 </html>
