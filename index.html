@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>⚡ Command Center — $50k Mission</title>
+<meta name="description" content="$50k Mission Control — ConsultingWhiz · TheGovConBD · ViralAILabs">
+<meta name="theme-color" content="#6366f1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="⚡ Command Center">
+<link rel="manifest" href="manifest.json">
 <style>
 :root {
   --bg:#1a1d27;--bg2:#23263a;--bg3:#12141f;--bg4:#1e2133;
@@ -304,6 +311,124 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 /* FOOTER */
 .footer{text-align:center;font-size:11px;color:var(--text3);padding:14px;border-top:1px solid var(--border);flex-shrink:0;background:var(--bg3);}
 
+/* LIGHT MODE */
+html.light{
+  --bg:#f0f4f8;--bg2:#ffffff;--bg3:#e8ecf0;--bg4:#dde3ea;
+  --border:#d1d5db;--border2:#c5cad1;
+  --text:#111827;--text2:#374151;--text3:#6b7280;
+}
+html.light .topbar{background:var(--bg2);}
+html.light .sidebar{background:var(--bg2);}
+html.light .lock-card{background:var(--bg2);}
+html.light .lock-input{background:var(--bg3);color:var(--text);}
+
+/* SETTINGS PANEL */
+.settings-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;}
+.settings-overlay.open{display:block;}
+.settings-panel{position:fixed;top:0;right:-340px;width:320px;height:100%;background:var(--bg2);border-left:1px solid var(--border);z-index:501;display:flex;flex-direction:column;transition:right .25s ease;overflow-y:auto;}
+.settings-panel.open{right:0;}
+.settings-hdr{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.settings-hdr h2{font-size:16px;font-weight:700;}
+.settings-close{background:none;border:none;color:var(--text2);font-size:18px;cursor:pointer;padding:4px;}
+.settings-body{padding:20px;flex:1;}
+.settings-section{margin-bottom:24px;}
+.settings-section h3{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);font-weight:700;margin-bottom:12px;}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border2);}
+.settings-row:last-child{border-bottom:none;}
+.settings-row-label{font-size:13px;color:var(--text2);}
+.settings-toggle{position:relative;width:40px;height:22px;cursor:pointer;}
+.settings-toggle input{opacity:0;width:0;height:0;}
+.settings-toggle-track{position:absolute;inset:0;background:var(--border);border-radius:11px;transition:background .2s;}
+.settings-toggle input:checked+.settings-toggle-track{background:var(--indigo);}
+.settings-toggle-thumb{position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform .2s;}
+.settings-toggle input:checked~.settings-toggle-thumb{transform:translateX(18px);}
+.settings-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--text);outline:none;margin-bottom:8px;}
+.settings-input:focus{border-color:var(--indigo);}
+.settings-btn{width:100%;background:linear-gradient(135deg,var(--indigo2),var(--indigo3));color:#fff;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .2s;}
+.settings-btn:hover{opacity:.9;}
+.settings-btn.secondary{background:var(--bg4);color:var(--text2);border:1px solid var(--border);}
+.settings-msg{font-size:12px;min-height:18px;margin-top:8px;color:var(--green);}
+
+/* SEARCH MODAL */
+.search-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:600;display:none;align-items:flex-start;justify-content:center;padding-top:80px;}
+.search-overlay.open{display:flex;}
+.search-box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;width:100%;max-width:560px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.4);}
+.search-input-row{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border);}
+.search-icon{font-size:16px;color:var(--text3);}
+.search-input{flex:1;background:none;border:none;font-size:16px;color:var(--text);outline:none;}
+.search-input::placeholder{color:var(--text3);}
+.search-kbd{font-size:10px;color:var(--text3);background:var(--bg4);border:1px solid var(--border);border-radius:4px;padding:2px 6px;cursor:pointer;}
+.search-results{max-height:400px;overflow-y:auto;}
+.search-section-label{padding:10px 18px 4px;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);font-weight:700;}
+.search-result-item{display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;transition:background .1s;}
+.search-result-item:hover,.search-result-item.selected{background:rgba(99,102,241,.12);}
+.search-result-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0;}
+.search-result-body{flex:1;min-width:0;}
+.search-result-title{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.search-result-sub{font-size:11px;color:var(--text3);}
+.search-empty{padding:24px;text-align:center;color:var(--text3);font-size:13px;}
+.search-hint{padding:10px 18px;border-top:1px solid var(--border);font-size:11px;color:var(--text3);display:flex;gap:16px;}
+
+/* SUBTASKS */
+.subtask-list{margin-top:10px;}
+.subtask-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border2);}
+.subtask-item:last-child{border-bottom:none;}
+.subtask-check{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .15s;}
+.subtask-check.done{background:var(--green);border-color:var(--green);color:#fff;}
+.subtask-text{flex:1;font-size:12px;color:var(--text2);}
+.subtask-text.done{text-decoration:line-through;color:var(--text3);}
+.subtask-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px;padding:0 2px;}
+.subtask-del:hover{color:var(--red);}
+.subtask-add-row{display:flex;gap:6px;margin-top:8px;}
+.subtask-add-input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:12px;color:var(--text);outline:none;}
+.subtask-add-input:focus{border-color:var(--indigo);}
+.subtask-add-btn{background:var(--indigo2);color:#fff;border:none;border-radius:6px;padding:6px 10px;font-size:12px;cursor:pointer;}
+
+/* RECUR */
+.recur-badge{font-size:10px;background:var(--purple-bg);color:var(--purple);padding:2px 6px;border-radius:8px;font-weight:600;}
+.td-recur-select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--text);outline:none;margin-top:4px;}
+
+/* TASK STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;}
+.stat-card{background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:14px;text-align:center;}
+.stat-val{font-size:24px;font-weight:800;color:var(--indigo);}
+.stat-lbl{font-size:10px;color:var(--text3);margin-top:3px;text-transform:uppercase;letter-spacing:.8px;}
+
+/* METRIC EDITABLE FIELDS */
+.metric-edit-input{background:transparent;border:none;border-bottom:1px dashed var(--border);color:var(--text);font-size:14px;font-weight:700;width:70px;text-align:right;outline:none;padding:0 2px;}
+.metric-edit-input:focus{border-bottom-color:var(--indigo);}
+
+/* REVENUE PROMPT */
+.rev-prompt-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:450;display:none;align-items:center;justify-content:center;padding:24px;}
+.rev-prompt-overlay.open{display:flex;}
+.rev-prompt-card{background:var(--bg2);border-radius:16px;padding:28px;max-width:380px;width:100%;text-align:center;border:1px solid var(--border);box-shadow:0 24px 64px rgba(0,0,0,.4);}
+.rev-prompt-card h3{font-size:18px;font-weight:800;margin-bottom:8px;}
+.rev-prompt-card p{font-size:13px;color:var(--text2);margin-bottom:18px;}
+.rev-prompt-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;font-size:20px;font-weight:700;color:var(--green);text-align:center;outline:none;margin-bottom:12px;}
+.rev-prompt-input:focus{border-color:var(--green);}
+.rev-prompt-btns{display:flex;gap:8px;}
+.rev-prompt-save{flex:1;background:linear-gradient(135deg,#059669,#34d399);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;}
+.rev-prompt-skip{background:var(--bg4);color:var(--text2);border:1px solid var(--border);border-radius:8px;padding:12px 18px;font-size:13px;cursor:pointer;}
+
+/* INBOX ACTIONS */
+.inbox-item-btns{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;}
+.inbox-item-btn{font-size:10px;font-weight:600;padding:4px 8px;border-radius:6px;border:none;cursor:pointer;transition:opacity .15s;}
+.inbox-item-btn:hover{opacity:.85;}
+.inbox-btn-done{background:var(--green-bg);color:var(--green);}
+.inbox-btn-task{background:var(--blue-bg);color:var(--blue);}
+.inbox-btn-skip{background:var(--bg4);color:var(--text3);}
+.inbox-btn-restore{background:var(--yellow-bg);color:var(--yellow);}
+
+/* OPP BUTTONS */
+.opp-card-btns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.opp-btn{font-size:10px;font-weight:600;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;transition:all .15s;}
+.opp-btn-track{background:var(--green-bg);color:var(--green);}
+.opp-btn-track:hover{background:#064e3b;}
+.opp-btn-webinar{background:var(--purple-bg);color:var(--purple);}
+.opp-btn-webinar:hover{background:#1e0f3c;}
+.opp-btn-task{background:var(--blue-bg);color:var(--blue);}
+.opp-btn-task.tracked{background:var(--green-bg);color:var(--green);cursor:default;}
+
 /* MOBILE */
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;}
 @media(max-width:768px){
@@ -352,6 +477,10 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
     </div>
     <div class="topbar-right">
       <span id="topbar-pace" style="font-size:11px;color:var(--text3);"></span>
+      <button class="topbar-btn" onclick="openSearch()" title="Search (Ctrl+K)">🔍 Search</button>
+      <button class="topbar-btn" onclick="exportTasksCSV()" title="Export tasks as CSV">📥 Export</button>
+      <button class="topbar-btn" id="theme-btn" onclick="toggleTheme()">☀️ Light</button>
+      <button class="topbar-btn" onclick="openSettings()">⚙️ Settings</button>
       <button class="topbar-btn" onclick="logout()">🔒 Lock</button>
     </div>
   </div>
@@ -432,10 +561,10 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
           </div>
         </div>
 
-        <!-- AI PACE CHECK -->
-        <div class="ai-banner">
-          <div class="ai-label">💰 $50k Pace Analysis</div>
-          <p>To hit <strong style="color:#4ade80">$50,000 in 30 days</strong> you need <strong style="color:#4ade80">$1,667/day</strong>. With 3 active revenue streams: <strong>CW target $20k</strong> (consulting + Upwork), <strong>GovConBD target $18k</strong> (webinars + proposal services), <strong>ViralAILabs target $12k</strong> (client onboarding). <strong style="color:#fbbf24">The AIGovBid backlog is your fastest unlock</strong> — 8 stalled proposals = estimated $24k–$40k in potential revenue if closed this week.</p>
+        <!-- AI PACE CHECK — dynamic -->
+        <div class="ai-banner" id="ai-banner">
+          <div class="ai-label" id="ai-banner-label">💰 $50k Pace Analysis</div>
+          <p id="ai-banner-text">To hit <strong style="color:#4ade80">$50,000 in 30 days</strong> you need <strong style="color:#4ade80">$1,667/day</strong>. With 3 active revenue streams: <strong>CW target $20k</strong> (consulting + Upwork), <strong>GovConBD target $18k</strong> (webinars + proposal services), <strong>ViralAILabs target $12k</strong> (client onboarding). <strong style="color:#fbbf24">The AIGovBid backlog is your fastest unlock</strong> — 8 stalled proposals = estimated $24k–$40k in potential revenue if closed this week.</p>
         </div>
 
         <!-- TOP 5 REVENUE GOALS -->
@@ -524,7 +653,21 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
             </select>
             <div class="td-label">Due Date</div>
             <input type="date" class="td-date" id="td-due"/>
+            <div class="td-label">Recurring</div>
+            <select class="td-recur-select" id="td-recur">
+              <option value="">None</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+            <div class="td-label" style="margin-top:14px">Subtasks</div>
+            <div class="subtask-list" id="subtask-list"></div>
+            <div class="subtask-add-row">
+              <input type="text" class="subtask-add-input" id="subtask-new-input" placeholder="Add subtask…" onkeydown="if(event.key==='Enter')addSubtask()"/>
+              <button class="subtask-add-btn" onclick="addSubtask()">+</button>
+            </div>
             <button class="td-save" onclick="saveDetail()">Save Changes</button>
+            <button class="td-save" style="background:var(--red-bg);color:var(--red);border-color:transparent;margin-top:6px" onclick="deleteTask(activeTaskId);closeDetail()">🗑 Delete Task</button>
           </div>
         </div>
       </div>
@@ -553,20 +696,25 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
         </div>
         <div class="section">
           <div class="section-hdr red">🔴 High Priority — Bid Now</div>
-          <div class="opp-card"><div class="opp-priority-dot high"></div><div><div class="opp-card-title">BD-26-1036: Event Management Products &amp; Professional Services</div><div class="opp-card-meta">COMMBUYS · MA Executive Office of Education · Amendment issued same day</div><div><span class="badge govcon">GovCon</span><span class="badge crit">AMENDMENT</span><span class="badge money">$Revenue</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Active procurement — check commbuys.com for due date and scope</div></div></div>
-          <div class="opp-card"><div class="opp-priority-dot high"></div><div><div class="opp-card-title">Lumberton Housing Authority — Computer Services</div><div class="opp-card-meta">InternationaleProcurement · Lumberton, NC</div><div><span class="badge cw">CW</span><span class="badge money">$5k–$25k est</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Strong CW fit for IT/computer services — review scope and bid</div></div></div>
+          <div class="opp-card"><div class="opp-priority-dot high"></div><div style="flex:1"><div class="opp-card-title">BD-26-1036: Event Management Products &amp; Professional Services</div><div class="opp-card-meta">COMMBUYS · MA Executive Office of Education · Amendment issued same day</div><div><span class="badge govcon">GovCon</span><span class="badge crit">AMENDMENT</span><span class="badge money">$Revenue</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Active procurement — check commbuys.com for due date and scope</div><div class="opp-card-btns"><button class="opp-btn opp-btn-track" id="opp-track-bd26" onclick="trackOpp('BD-26-1036: Event Management Products','$25k–$50k est','opp-track-bd26')">📥 Add to Pipeline</button><button class="opp-btn opp-btn-webinar" onclick="showToast('💡 Use govcon-webinar skill to run webinar scoring on this opp')">🎙 Webinar Hint</button><button class="opp-btn opp-btn-task" onclick="oppToTask('BD-26-1036: Event Management Products','commbuys.com · MA Education · Review scope and bid')">📋 Create Task</button></div></div></div></div>
+          <div class="opp-card"><div class="opp-priority-dot high"></div><div style="flex:1"><div class="opp-card-title">Lumberton Housing Authority — Computer Services</div><div class="opp-card-meta">InternationaleProcurement · Lumberton, NC</div><div><span class="badge cw">CW</span><span class="badge money">$5k–$25k est</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Strong CW fit for IT/computer services — review scope and bid</div><div class="opp-card-btns"><button class="opp-btn opp-btn-track" id="opp-track-lhc" onclick="trackOpp('Lumberton Housing Authority — Computer Services','$5k–$25k est','opp-track-lhc')">📥 Add to Pipeline</button><button class="opp-btn opp-btn-task" onclick="oppToTask('Lumberton Housing Authority: Computer Services','Review scope at InternationaleProcurement')">📋 Create Task</button></div></div></div></div>
         </div>
         <div class="section">
           <div class="section-hdr yellow">🟡 Review This Week</div>
-          <div class="opp-card"><div class="opp-priority-dot med"></div><div><div class="opp-card-title">Traffic Software for Analytics, Crash Data and Reporting</div><div class="opp-card-meta">OpenGov · County of San Mateo, CA</div><div><span class="badge cw">CW</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ IT/Analytics software — check NAICS alignment</div></div></div>
-          <div class="opp-card"><div class="opp-priority-dot med"></div><div><div class="opp-card-title">Live Agent Services — San Mateo Medical Center</div><div class="opp-card-meta">OpenGov · County of San Mateo, CA</div><div><span class="badge cw">CW</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Contact center / BPO potential — review scope</div></div></div>
-          <div class="opp-card"><div class="opp-priority-dot med"></div><div><div class="opp-card-title">SAP FAR 13 Saved Search — 3 New Results</div><div class="opp-card-meta">HigherGov · Federal · 05/07/2026</div><div><span class="badge govcon">GovCon</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Check HigherGov dashboard for 3 new federal contracts</div></div></div>
-          <div class="opp-card"><div class="opp-priority-dot med"></div><div><div class="opp-card-title">MDA AI SIDECAR / Navy ONR SBIR III / AFWERX TTS + FDA/HHS Matchmaking</div><div class="opp-card-meta">OS Fresh Squeezed Daily · Federal</div><div><span class="badge govcon">GovCon</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ AI-adjacent federal contracts — review for GovConBD clients</div></div></div>
+          <div class="opp-card"><div class="opp-priority-dot med"></div><div style="flex:1"><div class="opp-card-title">Traffic Software for Analytics, Crash Data and Reporting</div><div class="opp-card-meta">OpenGov · County of San Mateo, CA</div><div><span class="badge cw">CW</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ IT/Analytics software — check NAICS alignment</div><div class="opp-card-btns"><button class="opp-btn opp-btn-track" id="opp-track-traf" onclick="trackOpp('San Mateo Traffic Software Analytics','$10k–$50k est','opp-track-traf')">📥 Add to Pipeline</button><button class="opp-btn opp-btn-task" onclick="oppToTask('San Mateo: Traffic Software Analytics','OpenGov · Check NAICS alignment before bidding')">📋 Create Task</button></div></div></div></div>
+          <div class="opp-card"><div class="opp-priority-dot med"></div><div style="flex:1"><div class="opp-card-title">Live Agent Services — San Mateo Medical Center</div><div class="opp-card-meta">OpenGov · County of San Mateo, CA</div><div><span class="badge cw">CW</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Contact center / BPO potential — review scope</div><div class="opp-card-btns"><button class="opp-btn opp-btn-track" id="opp-track-live" onclick="trackOpp('San Mateo Live Agent Services','$15k–$60k est','opp-track-live')">📥 Add to Pipeline</button><button class="opp-btn opp-btn-task" onclick="oppToTask('San Mateo: Live Agent Services','OpenGov · Contact center/BPO scope review')">📋 Create Task</button></div></div></div></div>
+          <div class="opp-card"><div class="opp-priority-dot med"></div><div style="flex:1"><div class="opp-card-title">SAP FAR 13 Saved Search — 3 New Results</div><div class="opp-card-meta">HigherGov · Federal · 05/07/2026</div><div><span class="badge govcon">GovCon</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Check HigherGov dashboard for 3 new federal contracts</div><div class="opp-card-btns"><button class="opp-btn opp-btn-webinar" onclick="showToast('💡 Use govcon-webinar skill to score SAP FAR 13 opportunities')">🎙 Webinar Hint</button><button class="opp-btn opp-btn-task" onclick="oppToTask('SAP FAR 13: Review 3 New Federal Results','Log into HigherGov dashboard and assess each')">📋 Create Task</button></div></div></div></div>
+          <div class="opp-card"><div class="opp-priority-dot med"></div><div style="flex:1"><div class="opp-card-title">MDA AI SIDECAR / Navy ONR SBIR III / AFWERX TTS + FDA/HHS Matchmaking</div><div class="opp-card-meta">OS Fresh Squeezed Daily · Federal</div><div><span class="badge govcon">GovCon</span></div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ AI-adjacent federal contracts — review for GovConBD clients</div><div class="opp-card-btns"><button class="opp-btn opp-btn-webinar" onclick="showToast('💡 MDA AI SIDECAR could make an excellent webinar topic — run govcon-webinar skill')">🎙 Webinar Hint</button><button class="opp-btn opp-btn-task" onclick="oppToTask('Review: MDA AI SIDECAR / Navy ONR / AFWERX / FDA','OS Fresh Squeezed Daily — assess for GovConBD clients')">📋 Create Task</button></div></div></div></div>
         </div>
         <div class="section">
           <div class="section-hdr">⚪ Low Priority / FYI</div>
-          <div class="opp-card"><div class="opp-priority-dot low"></div><div><div class="opp-card-title">9500 Pescadero Creek Road Alarm System</div><div class="opp-card-meta">OpenGov · County of San Mateo, CA</div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Not core focus — skip</div></div></div>
-          <div class="opp-card"><div class="opp-priority-dot low"></div><div><div class="opp-card-title">WSSC Water Police — Security Officer Uniform</div><div class="opp-card-meta">OpenGov · Washington Suburban Sanitary Commission, MD</div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Non-core — skip</div></div></div>
+          <div class="opp-card"><div class="opp-priority-dot low"></div><div style="flex:1"><div class="opp-card-title">9500 Pescadero Creek Road Alarm System</div><div class="opp-card-meta">OpenGov · County of San Mateo, CA</div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Not core focus — skip</div><div class="opp-card-btns"><button class="opp-btn opp-btn-task" onclick="oppToTask('San Mateo: Pescadero Alarm System','Non-core — review if capacity allows')">📋 Create Task</button></div></div></div></div>
+          <div class="opp-card"><div class="opp-priority-dot low"></div><div style="flex:1"><div class="opp-card-title">WSSC Water Police — Security Officer Uniform</div><div class="opp-card-meta">OpenGov · Washington Suburban Sanitary Commission, MD</div><div style="font-size:12px;color:var(--text2);margin-top:6px">→ Non-core — skip</div></div></div></div>
+        </div>
+        <!-- OPP PIPELINE TRACKER -->
+        <div class="section">
+          <div class="section-hdr green">✅ Tracked Pipeline — Added from Opps</div>
+          <div id="opp-pipeline-list"><div style="text-align:center;padding:16px;color:var(--text3);font-size:13px">Click "Add to Pipeline" on any opp above to track it here</div></div>
         </div>
       </div>
 
@@ -575,6 +723,13 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
         <div class="page-header">
           <div class="page-title">📊 $50k Mission Tracker</div>
           <div class="page-sub">Day <span id="metrics-day">1</span> of 30 · Update numbers weekly</div>
+        </div>
+
+        <!-- TASK COMPLETION STATS -->
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-val" id="stat-done-today">0</div><div class="stat-lbl">Done Today</div></div>
+          <div class="stat-card"><div class="stat-val" id="stat-done-week">0</div><div class="stat-lbl">Done This Week</div></div>
+          <div class="stat-card"><div class="stat-val" id="stat-active">0</div><div class="stat-lbl">Active Tasks</div></div>
         </div>
 
         <!-- MAIN GOAL BAR -->
@@ -590,37 +745,37 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
           <div class="biz-card">
             <div class="biz-name" style="color:var(--blue)">🔵 ConsultingWhiz — Target $20k</div>
             <div class="biz-rev green">$<span id="m-cw-rev">0</span></div>
-            <div class="biz-target">of $20,000 target</div>
+            <div class="biz-target" style="display:flex;align-items:center;gap:6px">of $20,000 target <input class="metric-edit-input" id="inp-cw-rev" placeholder="0" onblur="saveBizRev('cwRev',this.value)" title="Click to edit CW revenue"/></div>
             <div class="biz-bar-sm"><div class="biz-bar-fill" id="m-cw-bar" style="width:0%;background:linear-gradient(90deg,#2563eb,#60a5fa)"></div></div>
             <div style="margin-top:14px">
-              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Active Clients</span><span class="metric-val blue" id="m-cw-clients">—</span></div>
-              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Open Proposals</span><span class="metric-val yellow" id="m-cw-proposals">—</span></div>
-              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Upwork Revenue</span><span class="metric-val green" id="m-cw-upwork">—</span></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Active Clients</span><input class="metric-edit-input" id="m-cw-clients" placeholder="—" onblur="saveMiscMetric('cwClients',this.value)"/></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Open Proposals</span><input class="metric-edit-input" id="m-cw-proposals" placeholder="—" onblur="saveMiscMetric('cwProposals',this.value)"/></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Upwork Revenue $</span><input class="metric-edit-input" id="m-cw-upwork" placeholder="—" onblur="saveMiscMetric('cwUpwork',this.value)"/></div>
               <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Compliance Leads</span><span class="metric-val red">BROKEN</span></div>
             </div>
           </div>
           <div class="biz-card">
             <div class="biz-name" style="color:var(--green)">🟢 TheGovConBD — Target $18k</div>
             <div class="biz-rev green">$<span id="m-gc-rev">0</span></div>
-            <div class="biz-target">of $18,000 target</div>
+            <div class="biz-target" style="display:flex;align-items:center;gap:6px">of $18,000 target <input class="metric-edit-input" id="inp-gc-rev" placeholder="0" onblur="saveBizRev('gcRev',this.value)" title="Click to edit GovConBD revenue"/></div>
             <div class="biz-bar-sm"><div class="biz-bar-fill" id="m-gc-bar" style="width:0%;background:linear-gradient(90deg,#059669,#34d399)"></div></div>
             <div style="margin-top:14px">
-              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Active Clients</span><span class="metric-val blue" id="m-gc-clients">—</span></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Active Clients</span><input class="metric-edit-input" id="m-gc-clients" placeholder="—" onblur="saveMiscMetric('gcClients',this.value)"/></div>
               <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Overdue Proposals</span><span class="metric-val red">8</span></div>
-              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Webinars This Month</span><span class="metric-val yellow" id="m-gc-webinars">—</span></div>
-              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Webinar Signups</span><span class="metric-val blue" id="m-gc-signups">—</span></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Webinars This Month</span><input class="metric-edit-input" id="m-gc-webinars" placeholder="—" onblur="saveMiscMetric('gcWebinars',this.value)"/></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Webinar Signups</span><input class="metric-edit-input" id="m-gc-signups" placeholder="—" onblur="saveMiscMetric('gcSignups',this.value)"/></div>
             </div>
           </div>
           <div class="biz-card">
             <div class="biz-name" style="color:var(--purple)">🟣 ViralAILabs — Target $12k</div>
             <div class="biz-rev green">$<span id="m-vl-rev">0</span></div>
-            <div class="biz-target">of $12,000 target</div>
+            <div class="biz-target" style="display:flex;align-items:center;gap:6px">of $12,000 target <input class="metric-edit-input" id="inp-vl-rev" placeholder="0" onblur="saveBizRev('vlRev',this.value)" title="Click to edit ViralAILabs revenue"/></div>
             <div class="biz-bar-sm"><div class="biz-bar-fill" id="m-vl-bar" style="width:0%;background:linear-gradient(90deg,#7c3aed,#a78bfa)"></div></div>
             <div style="margin-top:14px">
-              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Active Clients</span><span class="metric-val blue" id="m-vl-clients">—</span></div>
-              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Onboarded This Month</span><span class="metric-val yellow" id="m-vl-onboarded">—</span></div>
-              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Calls Booked/Week</span><span class="metric-val green" id="m-vl-calls">—</span></div>
-              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Reply Rate Avg</span><span class="metric-val blue" id="m-vl-reply">—</span></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Active Clients</span><input class="metric-edit-input" id="m-vl-clients" placeholder="—" onblur="saveMiscMetric('vlClients',this.value)"/></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Onboarded This Month</span><input class="metric-edit-input" id="m-vl-onboarded" placeholder="—" onblur="saveMiscMetric('vlOnboarded',this.value)"/></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Calls Booked/Week</span><input class="metric-edit-input" id="m-vl-calls" placeholder="—" onblur="saveMiscMetric('vlCalls',this.value)"/></div>
+              <div class="metric-row"><span style="font-size:12px;color:var(--text2)">Reply Rate Avg</span><input class="metric-edit-input" id="m-vl-reply" placeholder="—" onblur="saveMiscMetric('vlReply',this.value)"/></div>
             </div>
           </div>
         </div>
@@ -629,10 +784,11 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
         <div class="section">
           <div class="section-hdr indigo">🔁 Revenue Funnel — This Month</div>
           <div class="card">
-            <div class="funnel-row"><span class="funnel-label">👁 Leads / Opps Identified</span><span class="funnel-val blue" id="f-leads">—</span><span class="funnel-arrow">↓</span><span class="funnel-rate" id="f-leads-rate"></span></div>
-            <div class="funnel-row"><span class="funnel-label">📞 Strategy Calls Booked</span><span class="funnel-val yellow" id="f-calls">—</span><span class="funnel-arrow">↓</span><span class="funnel-rate" id="f-calls-rate"></span></div>
-            <div class="funnel-row"><span class="funnel-label">📄 Proposals Sent</span><span class="funnel-val" id="f-proposals">—</span><span class="funnel-arrow">↓</span><span class="funnel-rate" id="f-proposals-rate"></span></div>
-            <div class="funnel-row"><span class="funnel-label">🤝 Deals Closed</span><span class="funnel-val green" id="f-closed">—</span><span class="funnel-arrow"></span><span class="funnel-rate"></span></div>
+            <div style="font-size:11px;color:var(--text3);margin-bottom:10px">Click any number to edit → rates update automatically</div>
+            <div class="funnel-row"><span class="funnel-label">👁 Leads / Opps Identified</span><input class="metric-edit-input" id="f-leads" placeholder="—" value="" onblur="saveFunnel('fLeads',this.value)" style="width:50px"/><span class="funnel-arrow">↓</span><span class="funnel-rate" id="f-leads-rate"></span></div>
+            <div class="funnel-row"><span class="funnel-label">📞 Strategy Calls Booked</span><input class="metric-edit-input" id="f-calls" placeholder="—" value="" onblur="saveFunnel('fCalls',this.value)" style="width:50px"/><span class="funnel-arrow">↓</span><span class="funnel-rate" id="f-calls-rate"></span></div>
+            <div class="funnel-row"><span class="funnel-label">📄 Proposals Sent</span><input class="metric-edit-input" id="f-proposals" placeholder="—" value="" onblur="saveFunnel('fProposals',this.value)" style="width:50px"/><span class="funnel-arrow">↓</span><span class="funnel-rate" id="f-proposals-rate"></span></div>
+            <div class="funnel-row"><span class="funnel-label">🤝 Deals Closed</span><input class="metric-edit-input" id="f-closed" placeholder="—" value="" onblur="saveFunnel('fClosed',this.value)" style="width:50px"/><span class="funnel-arrow"></span><span class="funnel-rate" id="f-closed-rate" style="color:var(--green)"></span></div>
           </div>
         </div>
 
@@ -674,6 +830,95 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
     </main>
   </div>
   <div class="footer">⚡ Command Center · $50k Mission · ConsultingWhiz · TheGovConBD · ViralAILabs</div>
+</div>
+
+<!-- SETTINGS PANEL -->
+<div class="settings-overlay" id="settings-overlay" onclick="closeSettings()"></div>
+<div class="settings-panel" id="settings-panel">
+  <div class="settings-hdr">
+    <h2>⚙️ Settings</h2>
+    <button class="settings-close" onclick="closeSettings()">✕</button>
+  </div>
+  <div class="settings-body">
+    <div class="settings-section">
+      <h3>Appearance</h3>
+      <div class="settings-row">
+        <span class="settings-row-label">🌙 Dark Mode</span>
+        <label class="settings-toggle">
+          <input type="checkbox" id="dark-mode-toggle" checked onchange="applyThemeFromToggle(this.checked)"/>
+          <div class="settings-toggle-track"></div>
+          <div class="settings-toggle-thumb"></div>
+        </label>
+      </div>
+    </div>
+    <div class="settings-section">
+      <h3>Revenue Entry</h3>
+      <div style="margin-bottom:8px;font-size:12px;color:var(--text2)">Update your current revenue to track $50k progress</div>
+      <input type="text" class="settings-input" id="settings-rev-input" placeholder="e.g. 12500" oninput="previewRevenue(this.value)"/>
+      <button class="settings-btn" onclick="saveRevenueFromSettings()">💰 Update Revenue</button>
+      <div style="margin-top:8px;font-size:12px;color:var(--text3)">Current: $<span id="settings-rev-display">0</span></div>
+    </div>
+    <div class="settings-section">
+      <h3>Change Password</h3>
+      <input type="password" class="settings-input" id="settings-new-pw" placeholder="New password"/>
+      <input type="password" class="settings-input" id="settings-confirm-pw" placeholder="Confirm new password"/>
+      <button class="settings-btn" onclick="changePassword()">🔑 Change Password</button>
+      <div class="settings-msg" id="settings-pw-msg"></div>
+    </div>
+    <div class="settings-section">
+      <h3>Data</h3>
+      <div class="settings-row">
+        <span class="settings-row-label">Export Tasks CSV</span>
+        <button class="topbar-btn" onclick="exportTasksCSV()" style="font-size:11px">📥 Export</button>
+      </div>
+      <div class="settings-row">
+        <span class="settings-row-label">Clear All Tasks</span>
+        <button class="topbar-btn" onclick="clearAllTasks()" style="font-size:11px;color:var(--red)">🗑 Clear</button>
+      </div>
+    </div>
+    <div class="settings-section">
+      <h3>About</h3>
+      <div style="font-size:12px;color:var(--text3);line-height:1.6">
+        ⚡ Command Center v2.0<br>
+        $50k Mission Control<br>
+        May 7 – June 6, 2026<br>
+        All data stored locally
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div class="search-overlay" id="search-overlay" onclick="handleSearchOverlayClick(event)">
+  <div class="search-box" onclick="event.stopPropagation()">
+    <div class="search-input-row">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" id="search-input" placeholder="Search tasks, inbox, opportunities..." oninput="runSearch(this.value)" onkeydown="handleSearchKey(event)"/>
+      <span class="search-kbd" onclick="closeSearch()">Esc</span>
+    </div>
+    <div class="search-results" id="search-results">
+      <div class="search-empty">Start typing to search across all sections…</div>
+    </div>
+    <div class="search-hint">
+      <span>↑↓ navigate</span>
+      <span>Enter to open</span>
+      <span>Esc to close</span>
+    </div>
+  </div>
+</div>
+
+<!-- REVENUE QUICK-ENTRY PROMPT -->
+<div class="rev-prompt-overlay" id="rev-prompt-overlay">
+  <div class="rev-prompt-card">
+    <div style="font-size:36px;margin-bottom:8px">💰</div>
+    <h3>What's your revenue so far?</h3>
+    <p>Enter your current collected revenue to start tracking your $50k mission progress.</p>
+    <input type="text" class="rev-prompt-input" id="rev-prompt-input" placeholder="0" oninput="this.value=this.value.replace(/[^0-9.]/g,'')"/>
+    <div class="rev-prompt-btns">
+      <button class="rev-prompt-save" onclick="saveRevenueFromPrompt()">Save & Track 🚀</button>
+      <button class="rev-prompt-skip" onclick="skipRevPrompt()">Skip for now</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -929,10 +1174,10 @@ function genId(){return't_'+Date.now()+'_'+Math.random().toString(36).slice(2,7)
 function addTask(){
   const title=document.getElementById('atf-title').value.trim();
   if(!title){document.getElementById('atf-title').focus();return;}
-  tasks.unshift({id:genId(),title,notes:document.getElementById('atf-notes').value.trim(),project:document.getElementById('atf-project').value,priority:parseInt(document.getElementById('atf-priority').value),due:document.getElementById('atf-due').value,done:false,createdAt:new Date().toISOString()});
-  saveTasks();closeAddTask();renderTasks();updateCounts();
+  tasks.unshift({id:genId(),title,notes:document.getElementById('atf-notes').value.trim(),project:document.getElementById('atf-project').value,priority:parseInt(document.getElementById('atf-priority').value),due:document.getElementById('atf-due').value,done:false,createdAt:new Date().toISOString(),subtasks:[],recur:null});
+  saveTasks();closeAddTask();renderTasks();updateCounts();showToast('✅ Task added!');
 }
-function toggleDone(id){const t=tasks.find(x=>x.id===id);if(!t)return;t.done=!t.done;t.completedAt=t.done?new Date().toISOString():null;saveTasks();renderTasks();updateCounts();}
+function toggleDone(id){const t=tasks.find(x=>x.id===id);if(!t)return;t.done=!t.done;t.completedAt=t.done?new Date().toISOString():null;saveTasks();renderTasks();updateCounts();if(typeof updateTaskStats!=='undefined')updateTaskStats();}
 function deleteTask(id){tasks=tasks.filter(x=>x.id!==id);saveTasks();if(activeTaskId===id)closeDetail();renderTasks();updateCounts();}
 function openDetail(id){const t=tasks.find(x=>x.id===id);if(!t)return;activeTaskId=id;document.getElementById('td-title').value=t.title;document.getElementById('td-notes').value=t.notes||'';document.getElementById('td-project').value=t.project||'CW';document.getElementById('td-priority').value=t.priority||4;document.getElementById('td-due').value=t.due||'';document.getElementById('task-detail-panel').classList.add('open');}
 function saveDetail(){const t=tasks.find(x=>x.id===activeTaskId);if(!t)return;t.title=document.getElementById('td-title').value.trim()||t.title;t.notes=document.getElementById('td-notes').value.trim();t.project=document.getElementById('td-project').value;t.priority=parseInt(document.getElementById('td-priority').value);t.due=document.getElementById('td-due').value;saveTasks();renderTasks();updateCounts();const btn=document.querySelector('.td-save');btn.textContent='✓ Saved';btn.style.background='var(--green-bg)';btn.style.color='var(--green)';setTimeout(()=>{btn.textContent='Save Changes';btn.style.background='';btn.style.color='';},1500);}
@@ -1010,14 +1255,46 @@ const inboxData=[
 ];
 
 let activeInboxFilter='all';
+const INBOX_DISMISSED_KEY='cc_inbox_dismissed_'+TODAY_ISO;
+let inboxDismissed=new Set(JSON.parse(localStorage.getItem(INBOX_DISMISSED_KEY)||'[]'));
+function saveInboxDismissed(){localStorage.setItem(INBOX_DISMISSED_KEY,JSON.stringify([...inboxDismissed]));}
+function dismissInbox(i){inboxDismissed.add(i);saveInboxDismissed();renderInbox();}
+function restoreInbox(i){inboxDismissed.delete(i);saveInboxDismissed();renderInbox();}
+function inboxToTask(idx){
+  const m=inboxData[idx];if(!m)return;
+  tasks.unshift({id:genId(),title:m.subject.slice(0,80),notes:m.action,project:m.biz==='GovCon'?'GovCon':m.biz==='Viral'?'Viral':'CW',priority:m.cat==='action'?1:2,due:TODAY_ISO,done:false,createdAt:new Date().toISOString(),subtasks:[],recur:null});
+  saveTasks();updateCounts();showToast('📋 Added to Tasks: '+m.subject.slice(0,40)+'…');
+}
 function filterInbox(f,el){activeInboxFilter=f;document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('active'));if(el)el.classList.add('active');renderInbox();}
 const bizColors={CW:'#60a5fa',GovCon:'#34d399',Viral:'#a78bfa',Personal:'#6b7280'};
 const bizBgs={CW:'#1e3a5f',GovCon:'#065f46',Viral:'#2d1f5c',Personal:'#374151'};
 const catColors={action:'var(--red)',govcon:'var(--green)',decide:'var(--yellow)',low:'var(--text3)'};
 const catLabels={action:'🔴 Action',govcon:'🏛️ GovCon',decide:'🟡 Decide',low:'⚪ FYI'};
 function renderInbox(){
-  const filtered=activeInboxFilter==='all'?inboxData:inboxData.filter(m=>m.cat===activeInboxFilter);
-  document.getElementById('inbox-list').innerHTML=filtered.map(m=>`<div class="card" style="margin-bottom:8px"><div style="display:flex;align-items:flex-start;gap:10px"><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap"><span style="font-size:10px;font-weight:700;color:${catColors[m.cat]}">${catLabels[m.cat]}</span><span class="badge" style="background:${bizBgs[m.biz]||'#374151'};color:${bizColors[m.biz]||'#9ca3af'}">${m.biz}</span><span style="font-size:11px;color:var(--text3);margin-left:auto">${m.time}</span></div><div style="font-size:13px;font-weight:600;margin-bottom:3px">${escHtml(m.subject)}</div><div style="font-size:11px;color:var(--text3);margin-bottom:6px">${escHtml(m.from)}</div><div style="font-size:12px;color:var(--text2)">→ ${escHtml(m.action)}</div></div></div></div>`).join('');
+  const allFiltered=activeInboxFilter==='all'?inboxData:inboxData.filter(m=>m.cat===activeInboxFilter);
+  const dismissed=allFiltered.filter((_,i)=>inboxDismissed.has(inboxData.indexOf(allFiltered[i]>-1?allFiltered[i]:_)));
+  document.getElementById('inbox-list').innerHTML=allFiltered.map((m,fi)=>{
+    const idx=inboxData.indexOf(m);
+    const dis=inboxDismissed.has(idx);
+    return`<div class="card" style="margin-bottom:8px;${dis?'opacity:.35;':''}">
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap">
+            <span style="font-size:10px;font-weight:700;color:${catColors[m.cat]}">${catLabels[m.cat]}</span>
+            <span class="badge" style="background:${bizBgs[m.biz]||'#374151'};color:${bizColors[m.biz]||'#9ca3af'}">${m.biz}</span>
+            <span style="font-size:11px;color:var(--text3);margin-left:auto">${m.time}</span>
+          </div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:3px${dis?';text-decoration:line-through;color:var(--text3)':''}">${escHtml(m.subject)}</div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:6px">${escHtml(m.from)}</div>
+          <div style="font-size:12px;color:var(--text2)">→ ${escHtml(m.action)}</div>
+          <div class="inbox-item-btns">
+            ${!dis?`<button class="inbox-item-btn inbox-btn-done" onclick="dismissInbox(${idx})">✓ Done</button><button class="inbox-item-btn inbox-btn-task" onclick="inboxToTask(${idx})">📋 Task</button><button class="inbox-item-btn inbox-btn-skip" onclick="dismissInbox(${idx})">✕ Skip</button>`
+            :`<button class="inbox-item-btn inbox-btn-restore" onclick="restoreInbox(${idx})">↩ Restore</button>`}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 /* ═══ UTILS ═══ */
@@ -1025,7 +1302,375 @@ function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt
 function formatDate(iso){if(!iso)return'';const d=new Date(iso+'T12:00:00');return d.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
 let toastTimer=null;
 function showToast(msg){let t=document.getElementById('cc-toast');if(!t){t=document.createElement('div');t.id='cc-toast';t.className='toast';document.body.appendChild(t);}t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2500);}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeAddTask();closeDetail();}});
+
+/* ═══ THEME / LIGHT-DARK MODE (G-19) ═══ */
+const THEME_KEY='cc_theme_v1';
+function applyTheme(){
+  const isDark=localStorage.getItem(THEME_KEY)!=='light';
+  document.documentElement.classList.toggle('light',!isDark);
+  const btn=document.getElementById('theme-btn');
+  if(btn)btn.textContent=isDark?'☀️ Light':'🌙 Dark';
+  const tog=document.getElementById('dark-mode-toggle');
+  if(tog)tog.checked=isDark;
+}
+function toggleTheme(){
+  const isDark=localStorage.getItem(THEME_KEY)!=='light';
+  localStorage.setItem(THEME_KEY,isDark?'light':'dark');
+  applyTheme();
+}
+function applyThemeFromToggle(checked){
+  localStorage.setItem(THEME_KEY,checked?'dark':'light');
+  applyTheme();
+}
+
+/* ═══ SETTINGS PANEL (G-10) ═══ */
+function openSettings(){
+  document.getElementById('settings-overlay').classList.add('open');
+  document.getElementById('settings-panel').classList.add('open');
+  document.getElementById('settings-rev-display').textContent=(kpiState.revenue||0).toLocaleString();
+  document.getElementById('settings-rev-input').value=kpiState.revenue||'';
+}
+function closeSettings(){
+  document.getElementById('settings-overlay').classList.remove('open');
+  document.getElementById('settings-panel').classList.remove('open');
+}
+function previewRevenue(v){/* live preview */}
+function saveRevenueFromSettings(){
+  const v=parseFloat(document.getElementById('settings-rev-input').value)||0;
+  kpiState.revenue=v;saveKpis();updateRevenueTracker();updateTopbarPace();updateAIBanner();
+  document.getElementById('settings-rev-display').textContent=v.toLocaleString();
+  showToast('💰 Revenue updated: $'+v.toLocaleString());
+  // close prompt if open
+  document.getElementById('rev-prompt-overlay').classList.remove('open');
+}
+async function changePassword(){
+  const np=document.getElementById('settings-new-pw').value;
+  const cp=document.getElementById('settings-confirm-pw').value;
+  const msg=document.getElementById('settings-pw-msg');
+  if(!np){msg.style.color='var(--red)';msg.textContent='Enter a new password.';return;}
+  if(np!==cp){msg.style.color='var(--red)';msg.textContent='Passwords do not match.';return;}
+  const h=await sha256(np);
+  localStorage.setItem('cc_pw_hash',h);
+  msg.style.color='var(--green)';msg.textContent='✓ Password changed! Logout to apply.';
+  document.getElementById('settings-new-pw').value='';
+  document.getElementById('settings-confirm-pw').value='';
+}
+// Override getHash in unlock to support changed password
+const ORIG_HASH='e9010d491a7c3ce6f87c40078ece679de6fb8e950afe657b32004d55e3401c25';
+function getActiveHash(){return localStorage.getItem('cc_pw_hash')||ORIG_HASH;}
+// Patch unlock to use dynamic hash
+(function patchUnlock(){
+  const origUnlock=window.unlock;
+  window.unlock=async function(){
+    const pw=document.getElementById('pw-input').value;
+    const rem=document.getElementById('remember-me').checked;
+    if(!pw){document.getElementById('pw-error').textContent='Enter your password.';return;}
+    const h=await sha256(pw);
+    if(h===getActiveHash()){
+      if(rem)localStorage.setItem(AUTH_KEY,'1');else sessionStorage.setItem(AUTH_KEY,'1');
+      showApp();
+    }else{document.getElementById('pw-error').textContent='Incorrect password. Try again.';document.getElementById('pw-input').value='';document.getElementById('pw-input').focus();}
+  };
+})();
+function clearAllTasks(){if(!confirm('Delete ALL tasks? This cannot be undone.'))return;tasks=[];saveTasks();renderTasks();updateCounts();showToast('🗑 All tasks cleared');}
+
+/* ═══ SEARCH MODAL (G-14) ═══ */
+let searchSelectedIdx=-1;
+function openSearch(){
+  document.getElementById('search-overlay').classList.add('open');
+  document.getElementById('search-input').value='';
+  document.getElementById('search-results').innerHTML='<div class="search-empty">Start typing to search…</div>';
+  searchSelectedIdx=-1;
+  setTimeout(()=>document.getElementById('search-input').focus(),50);
+}
+function closeSearch(){document.getElementById('search-overlay').classList.remove('open');}
+function handleSearchOverlayClick(e){if(e.target===document.getElementById('search-overlay'))closeSearch();}
+function runSearch(q){
+  q=q.trim().toLowerCase();
+  const res=document.getElementById('search-results');
+  if(!q){res.innerHTML='<div class="search-empty">Start typing to search…</div>';searchSelectedIdx=-1;return;}
+  const groups=[];
+  // Tasks
+  const taskHits=tasks.filter(t=>t.title.toLowerCase().includes(q)||(t.notes||'').toLowerCase().includes(q)).slice(0,6);
+  if(taskHits.length){
+    groups.push(`<div class="search-section-label">✅ Tasks</div>`);
+    taskHits.forEach((t,i)=>{
+      groups.push(`<div class="search-result-item" data-type="task" data-id="${t.id}" onclick="searchGo('task','${t.id}')"><span class="search-result-icon">✅</span><div class="search-result-body"><div class="search-result-title">${escHtml(t.title)}</div><div class="search-result-sub">${t.project} · ${t.due||'No due date'}</div></div></div>`);
+    });
+  }
+  // Inbox
+  const inboxHits=inboxData.filter(m=>m.subject.toLowerCase().includes(q)||m.action.toLowerCase().includes(q)||m.from.toLowerCase().includes(q)).slice(0,5);
+  if(inboxHits.length){
+    groups.push(`<div class="search-section-label">📧 Inbox</div>`);
+    inboxHits.forEach(m=>{
+      groups.push(`<div class="search-result-item" onclick="searchGo('inbox',null)"><span class="search-result-icon">📧</span><div class="search-result-body"><div class="search-result-title">${escHtml(m.subject)}</div><div class="search-result-sub">${escHtml(m.from)}</div></div></div>`);
+    });
+  }
+  if(groups.length===0){res.innerHTML='<div class="search-empty">No results for "'+escHtml(q)+'"</div>';}
+  else{res.innerHTML=groups.join('');searchSelectedIdx=-1;}
+}
+function handleSearchKey(e){
+  const items=document.querySelectorAll('.search-result-item');
+  if(e.key==='ArrowDown'){e.preventDefault();searchSelectedIdx=Math.min(searchSelectedIdx+1,items.length-1);items.forEach((el,i)=>el.classList.toggle('selected',i===searchSelectedIdx));}
+  else if(e.key==='ArrowUp'){e.preventDefault();searchSelectedIdx=Math.max(searchSelectedIdx-1,0);items.forEach((el,i)=>el.classList.toggle('selected',i===searchSelectedIdx));}
+  else if(e.key==='Enter'){if(searchSelectedIdx>=0&&items[searchSelectedIdx])items[searchSelectedIdx].click();}
+  else if(e.key==='Escape'){closeSearch();}
+}
+function searchGo(type,id){
+  closeSearch();
+  if(type==='task'){
+    showView('tasks',document.querySelector('.nav-item:nth-child(2)'));
+    renderTasks('all-tasks');
+    setTimeout(()=>openDetail(id),100);
+  }else if(type==='inbox'){
+    showView('inbox',document.querySelector('.nav-item:nth-child(3)'));
+  }
+}
+
+/* ═══ SUBTASKS (G-11) ═══ */
+function renderSubtasks(tid){
+  const t=tasks.find(x=>x.id===tid);if(!t)return;
+  if(!t.subtasks)t.subtasks=[];
+  document.getElementById('subtask-list').innerHTML=t.subtasks.map((s,i)=>`
+    <div class="subtask-item">
+      <div class="subtask-check ${s.done?'done':''}" onclick="toggleSubtask('${tid}',${i})">${s.done?'✓':''}</div>
+      <span class="subtask-text ${s.done?'done':''}">${escHtml(s.text)}</span>
+      <button class="subtask-del" onclick="deleteSubtask('${tid}',${i})">✕</button>
+    </div>`).join('');
+}
+function addSubtask(){
+  const inp=document.getElementById('subtask-new-input');
+  const text=inp.value.trim();if(!text||!activeTaskId)return;
+  const t=tasks.find(x=>x.id===activeTaskId);if(!t)return;
+  if(!t.subtasks)t.subtasks=[];
+  t.subtasks.push({text,done:false});
+  saveTasks();inp.value='';renderSubtasks(activeTaskId);
+}
+function toggleSubtask(tid,i){
+  const t=tasks.find(x=>x.id===tid);if(!t||!t.subtasks)return;
+  t.subtasks[i].done=!t.subtasks[i].done;saveTasks();renderSubtasks(tid);
+}
+function deleteSubtask(tid,i){
+  const t=tasks.find(x=>x.id===tid);if(!t||!t.subtasks)return;
+  t.subtasks.splice(i,1);saveTasks();renderSubtasks(tid);
+}
+
+/* ═══ RECURRING TASKS (G-12) ═══ */
+function checkRecurring(){
+  const today=new Date().toISOString().split('T')[0];
+  const RECUR_KEY='cc_recur_checked_'+today;
+  if(localStorage.getItem(RECUR_KEY))return; // already checked today
+  let added=0;
+  tasks.filter(t=>t.recur&&t.done&&t.completedAt).forEach(t=>{
+    const lastDone=new Date(t.completedAt);
+    const now=new Date();
+    let shouldClone=false;
+    if(t.recur==='daily'&&(now-lastDone)>=(1000*60*60*20))shouldClone=true;
+    else if(t.recur==='weekly'&&(now-lastDone)>=(1000*60*60*24*6))shouldClone=true;
+    else if(t.recur==='monthly'&&(now-lastDone)>=(1000*60*60*24*25))shouldClone=true;
+    if(shouldClone){
+      tasks.push({id:genId(),title:t.title,notes:t.notes,project:t.project,priority:t.priority,due:today,done:false,createdAt:new Date().toISOString(),subtasks:[],recur:t.recur});
+      added++;
+    }
+  });
+  if(added>0){saveTasks();updateCounts();showToast('🔁 '+added+' recurring task'+(added>1?'s':'')+' added');}
+  localStorage.setItem(RECUR_KEY,'1');
+}
+
+/* ═══ DYNAMIC AI BANNER (G-16) ═══ */
+function updateAIBanner(){
+  const rev=kpiState.revenue||0;
+  const pct=Math.round(rev/GOAL*100);
+  const banner=document.getElementById('ai-banner');
+  const label=document.getElementById('ai-banner-label');
+  const text=document.getElementById('ai-banner-text');
+  if(!banner)return;
+  let html='',lbl='',color='';
+  if(pct===0){
+    lbl='🚨 Mission Critical — Get Started Now';color='var(--red)';
+    html=`You're at <strong style="color:var(--red)">$0 of $50,000</strong>. The fastest unlock: close the <strong>AIGovBid proposal backlog</strong> (8 stalled deals × avg $3–5k = <strong style="color:#fbbf24">$24k–$40k</strong>). Start there — right now. Every day at $0 costs you $1,667 in pace.`;
+  }else if(pct<25){
+    lbl='⚡ Momentum Building — Push Hard';color='var(--yellow)';
+    html=`You're at <strong style="color:var(--yellow)">$${rev.toLocaleString()} (${pct}%)</strong>. Keep pushing — you're in the critical early stage. <strong>Book 3 more strategy calls</strong> this week. Your pipeline needs to be at least <strong style="color:var(--green)">$${Math.round((GOAL-rev)*1.5).toLocaleString()}</strong> to hit $50k.`;
+  }else if(pct<50){
+    lbl='📈 Quarter Way There — Maintain Pace';color='var(--blue)';
+    html=`At <strong style="color:var(--blue)">$${rev.toLocaleString()} (${pct}%)</strong> — solid start! You're in the second quarter of the mission. Focus on <strong>converting proposals to closes</strong>. At your current pace, check if daily revenue ≥ $1,667/day.`;
+  }else if(pct<75){
+    lbl='🔥 Halfway There — Accelerate Closing';color='var(--indigo)';
+    html=`<strong style="color:var(--indigo)">$${rev.toLocaleString()} — ${pct}% complete!</strong> Excellent progress. Now it's about <strong>acceleration</strong> — convert your open proposals faster. Don't let deals stall. Push ViralAILabs outreach for the final sprint.`;
+  }else if(pct<100){
+    lbl='🏆 Final Sprint — Close it Out!';color='var(--green)';
+    html=`<strong style="color:var(--green)">$${rev.toLocaleString()} — ${pct}% done!</strong> 🔥 You're in the final stretch. Just <strong style="color:#4ade80">$${(GOAL-rev).toLocaleString()} remaining</strong>. One or two more closes and you hit the goal. This is the moment — don't let up!`;
+  }else{
+    lbl='🎉 GOAL ACHIEVED — $50k Mission Complete!';color='#fbbf24';
+    html=`<strong style="color:#fbbf24">YOU DID IT!</strong> 🎉 $${rev.toLocaleString()} collected — <strong>$50k mission accomplished!</strong> Time to set the next goal. What's your 60-day target?`;
+  }
+  banner.style.borderColor=color;banner.style.background='rgba(0,0,0,.15)';
+  if(label){label.textContent=lbl;label.style.color=color;}
+  if(text)text.innerHTML=html;
+}
+
+/* ═══ REVENUE QUICK-ENTRY PROMPT (G-20) ═══ */
+function checkRevenuePrompt(){
+  const SKIP_KEY='cc_rev_prompt_skip_'+TODAY_ISO;
+  if((kpiState.revenue||0)===0&&!localStorage.getItem(SKIP_KEY)){
+    setTimeout(()=>document.getElementById('rev-prompt-overlay').classList.add('open'),1500);
+  }
+}
+function saveRevenueFromPrompt(){
+  const v=parseFloat(document.getElementById('rev-prompt-input').value)||0;
+  kpiState.revenue=v;saveKpis();updateRevenueTracker();updateTopbarPace();updateAIBanner();
+  document.getElementById('rev-prompt-overlay').classList.remove('open');
+  if(v>0)showToast('💰 Revenue set: $'+v.toLocaleString()+' — tracker updated!');
+}
+function skipRevPrompt(){
+  const SKIP_KEY='cc_rev_prompt_skip_'+TODAY_ISO;
+  localStorage.setItem(SKIP_KEY,'1');
+  document.getElementById('rev-prompt-overlay').classList.remove('open');
+}
+
+/* ═══ EXPORT TASKS CSV (G-18) ═══ */
+function exportTasksCSV(){
+  const header=['ID','Title','Notes','Project','Priority','Due','Done','Created','Recurring'];
+  const rows=tasks.map(t=>[t.id,'"'+String(t.title||'').replace(/"/g,'""')+'"','"'+String(t.notes||'').replace(/"/g,'""').replace(/\n/g,' ')+'"',t.project||'',t.priority||4,t.due||'',t.done?'Yes':'No',t.createdAt?t.createdAt.split('T')[0]:'',t.recur||'']);
+  const csv=[header,...rows].map(r=>r.join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='command-center-tasks-'+TODAY_ISO+'.csv';a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  showToast('📥 Tasks exported as CSV');
+}
+
+/* ═══ BIZ REVENUE EDITABLE (G-02) ═══ */
+function saveBizRev(key,val){
+  const n=parseFloat(String(val).replace(/[$,k]/gi,''))*(/k$/i.test(val)?1000:1)||0;
+  kpiState[key]=n;
+  // Sum all three biz revs into total revenue
+  const total=(kpiState.cwRev||0)+(kpiState.gcRev||0)+(kpiState.vlRev||0);
+  kpiState.revenue=total;
+  saveKpis();updateRevenueTracker();updateTopbarPace();updateAIBanner();
+  showToast('💰 Revenue updated: $'+n.toLocaleString());
+}
+function saveMiscMetric(key,val){kpiState[key]=val;saveKpis();}
+
+/* ═══ FUNNEL EDITABLE (G-03) ═══ */
+function saveFunnel(key,val){
+  kpiState[key]=parseFloat(val)||0;saveKpis();updateFunnelRates();
+}
+function updateFunnelRates(){
+  const leads=kpiState.fLeads||0,calls=kpiState.fCalls||0,proposals=kpiState.fProposals||0,closed=kpiState.fClosed||0;
+  const rate=(a,b)=>b>0?Math.round(a/b*100)+'%':'—';
+  const el=id=>document.getElementById(id);
+  if(el('f-leads-rate'))el('f-leads-rate').textContent=calls>0?rate(calls,leads)+' call rate':'';
+  if(el('f-calls-rate'))el('f-calls-rate').textContent=proposals>0?rate(proposals,calls)+' proposal rate':'';
+  if(el('f-proposals-rate'))el('f-proposals-rate').textContent=closed>0?rate(closed,proposals)+' close rate':'';
+  if(el('f-closed-rate'))el('f-closed-rate').textContent=closed>0&&leads>0?rate(closed,leads)+' overall':closed>0?closed+' closed':'';
+}
+function initFunnelInputs(){
+  ['fLeads','fCalls','fProposals','fClosed'].forEach(k=>{
+    const ids={fLeads:'f-leads',fCalls:'f-calls',fProposals:'f-proposals',fClosed:'f-closed'};
+    const el=document.getElementById(ids[k]);
+    if(el&&kpiState[k])el.value=kpiState[k];
+  });
+  ['m-cw-clients','m-cw-proposals','m-cw-upwork','m-gc-clients','m-gc-webinars','m-gc-signups','m-vl-clients','m-vl-onboarded','m-vl-calls','m-vl-reply'].forEach(id=>{
+    const k=id.replace('m-','').replace(/-([a-z])/g,(_,c)=>c.toUpperCase());
+    const el=document.getElementById(id);if(el&&kpiState[k])el.value=kpiState[k];
+  });
+  const cwEl=document.getElementById('inp-cw-rev');if(cwEl)cwEl.value=kpiState.cwRev||'';
+  const gcEl=document.getElementById('inp-gc-rev');if(gcEl)gcEl.value=kpiState.gcRev||'';
+  const vlEl=document.getElementById('inp-vl-rev');if(vlEl)vlEl.value=kpiState.vlRev||'';
+  updateFunnelRates();
+}
+
+/* ═══ TASK STATS (G-15) ═══ */
+function updateTaskStats(){
+  const today=new Date().toISOString().split('T')[0];
+  const weekStart=new Date();weekStart.setDate(weekStart.getDate()-weekStart.getDay());
+  const weekISO=weekStart.toISOString().split('T')[0];
+  const doneToday=tasks.filter(t=>t.done&&t.completedAt&&t.completedAt.split('T')[0]===today).length;
+  const doneWeek=tasks.filter(t=>t.done&&t.completedAt&&t.completedAt.split('T')[0]>=weekISO).length;
+  const active=tasks.filter(t=>!t.done).length;
+  const e1=document.getElementById('stat-done-today');if(e1)e1.textContent=doneToday;
+  const e2=document.getElementById('stat-done-week');if(e2)e2.textContent=doneWeek;
+  const e3=document.getElementById('stat-active');if(e3)e3.textContent=active;
+}
+
+/* ═══ OPP PIPELINE (G-09) ═══ */
+const OPP_PIPELINE_KEY='cc_opp_pipeline_v1';
+let oppPipeline=JSON.parse(localStorage.getItem(OPP_PIPELINE_KEY)||'[]');
+function saveOppPipeline(){localStorage.setItem(OPP_PIPELINE_KEY,JSON.stringify(oppPipeline));}
+function trackOpp(title,est,btnId){
+  if(oppPipeline.find(o=>o.title===title)){showToast('Already in pipeline: '+title.slice(0,30));return;}
+  oppPipeline.push({title,est,added:TODAY_ISO,id:genId()});
+  saveOppPipeline();renderOppPipeline();
+  // Update pipeline KPI
+  const estNum=parseInt((est||'').replace(/[^0-9]/g,''))||5000;
+  kpiState.pipeline=(kpiState.pipeline||0)+estNum;saveKpis();
+  const inp=document.getElementById('kpi-pipeline-input');if(inp)inp.value='$'+kpiState.pipeline.toLocaleString();
+  updateRevenueTracker();
+  const btn=document.getElementById(btnId);
+  if(btn){btn.textContent='✓ In Pipeline';btn.className='opp-btn opp-btn-task tracked';btn.disabled=true;}
+  showToast('📥 Added to pipeline: '+title.slice(0,35));
+}
+function oppToTask(title,notes){
+  tasks.unshift({id:genId(),title,notes,project:'GovCon',priority:2,due:TODAY_ISO,done:false,createdAt:new Date().toISOString(),subtasks:[],recur:null});
+  saveTasks();updateCounts();showToast('📋 Task created: '+title.slice(0,40));
+}
+function removeOppFromPipeline(id){
+  oppPipeline=oppPipeline.filter(o=>o.id!==id);saveOppPipeline();renderOppPipeline();showToast('Removed from pipeline');}
+function renderOppPipeline(){
+  const el=document.getElementById('opp-pipeline-list');if(!el)return;
+  if(oppPipeline.length===0){el.innerHTML='<div style="text-align:center;padding:16px;color:var(--text3);font-size:13px">Click "Add to Pipeline" on any opp above to track it here</div>';return;}
+  el.innerHTML=oppPipeline.map(o=>`<div class="card" style="margin-bottom:8px;display:flex;align-items:center;gap:10px">
+    <div style="flex:1"><div style="font-size:13px;font-weight:600">${escHtml(o.title)}</div><div style="font-size:11px;color:var(--text3)">${o.est} · Added ${formatDate(o.added)}</div></div>
+    <button class="opp-btn" style="background:var(--red-bg);color:var(--red)" onclick="removeOppFromPipeline('${o.id}')">✕ Remove</button>
+  </div>`).join('');
+}
+
+/* ═══ DETAIL PANEL OVERRIDES (for subtasks + recur) ═══ */
+const _origOpenDetail=openDetail;
+window.openDetail=function(id){
+  _origOpenDetail(id);
+  const t=tasks.find(x=>x.id===id);if(!t)return;
+  if(!t.subtasks)t.subtasks=[];
+  if(!t.recur)t.recur=null;
+  renderSubtasks(id);
+  const recur=document.getElementById('td-recur');if(recur)recur.value=t.recur||'';
+};
+const _origSaveDetail=saveDetail;
+window.saveDetail=function(){
+  _origSaveDetail();
+  const t=tasks.find(x=>x.id===activeTaskId);if(!t)return;
+  t.recur=document.getElementById('td-recur').value||null;
+  saveTasks();renderTasks();
+};
+
+/* ═══ KEYBOARD SHORTCUTS ═══ */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeAddTask();closeDetail();closeSettings();closeSearch();document.getElementById('rev-prompt-overlay').classList.remove('open');}
+  if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();openSearch();}
+});
+
+/* ═══ PATCH initApp TO INCLUDE NEW FEATURES ═══ */
+const _origInitApp=initApp;
+window.initApp=function(){
+  _origInitApp();
+  applyTheme();
+  checkRecurring();
+  checkRevenuePrompt();
+  initFunnelInputs();
+  updateTaskStats();
+  updateAIBanner();
+  renderOppPipeline();
+  // Re-mark already-tracked opps
+  oppPipeline.forEach(o=>{
+    const btns=document.querySelectorAll('[id^="opp-track-"]');
+    btns.forEach(btn=>{
+      const title=o.title;
+      // Simple match attempt
+    });
+  });
+};
 </script>
 </body>
 </html>
